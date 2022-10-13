@@ -1,0 +1,9 @@
+<ngx-data-loader
+  #dataLoader
+  [getDataFn]="getDataFn"
+  [dataTemplate]="dataTemplate"
+></ngx-data-loader>
+
+<button (click)="dataLoader.reload()">reload</button>
+
+<ng-template #dataTemplate let-data> Data: {{ data }} </ng-template>

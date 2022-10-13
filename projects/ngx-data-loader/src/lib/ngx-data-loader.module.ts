@@ -15,4 +15,4 @@ import { DataComponent } from './data/data.component';
   exports: [NgxDataLoaderComponent],
   imports: [CommonModule],
 })
-export class DataLoaderModule {}
+export class NgxDataLoaderModule {}
