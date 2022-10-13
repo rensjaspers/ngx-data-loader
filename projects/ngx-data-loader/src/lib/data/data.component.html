@@ -1,0 +1,11 @@
+<ng-container
+  *ngTemplateOutlet="
+    dataTemplate || defaultDataTemplate;
+    context: { $implicit: data, loading: loading }
+  "
+></ng-container>
+
+<ng-template #defaultDataTemplate>
+  <div *ngIf="loading">reloading...</div>
+  <pre>{{ data | json }}</pre>
+</ng-template>

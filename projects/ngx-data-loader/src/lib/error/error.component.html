@@ -1,0 +1,11 @@
+<ng-container
+  *ngTemplateOutlet="
+    errorTemplate || defaultErrorTemplate;
+    context: { $implicit: error, reloadFn: reloadFn }
+  "
+></ng-container>
+
+<ng-template #defaultErrorTemplate>
+  Error. {{ error.message }}
+  <button (click)="reload.emit()">retry</button>
+</ng-template>

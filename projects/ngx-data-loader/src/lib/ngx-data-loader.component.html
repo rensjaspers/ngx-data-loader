@@ -1,0 +1,25 @@
+<ng-container *ngIf="vm$ | async as vm">
+  <lib-error
+    *ngIf="vm.error as error; else noError"
+    [error]="error"
+    [errorTemplate]="errorTemplate"
+    (reload)="reload()"
+  ></lib-error>
+
+  <ng-template #noError>
+    <lib-data
+      *ngIf="vm.loaded && (!vm.loading || showStaleData); else skeleton"
+      [data]="vm.data"
+      [loading]="vm.loading"
+      [dataTemplate]="dataTemplate"
+      [showStaleData]="showStaleData"
+    ></lib-data>
+  </ng-template>
+</ng-container>
+
+<ng-template #skeleton>
+  <lib-skeleton
+    [skeletonDelay]="skeletonDelay"
+    [skeletonTemplate]="skeletonTemplate"
+  ></lib-skeleton>
+</ng-template>
