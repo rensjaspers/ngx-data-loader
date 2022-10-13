@@ -25,6 +25,7 @@ import {
   map,
   retryWhen,
   scan,
+  switchMap,
   tap,
   timeout,
 } from 'rxjs/operators';
@@ -98,7 +99,7 @@ export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
   }
 
   private afterLoad() {
-    return this.loadTrigger$.pipe(exhaustMap(() => this.getData()));
+    return this.loadTrigger$.pipe(switchMap(() => this.getData()));
   }
 
   private getData() {
@@ -130,8 +131,8 @@ export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
     );
   }
 
-  private retry(error$: Observable<any>) {
-    return error$.pipe(
+  private retry(errors: Observable<any>) {
+    return errors.pipe(
       exhaustMap((error, count) =>
         count >= this.retries ? throwError(() => error) : timer(this.retryDelay)
       )

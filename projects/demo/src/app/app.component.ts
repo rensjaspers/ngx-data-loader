@@ -1,8 +1,7 @@
-import { GetUsersResponse } from './get-users-response.interface';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { delay, map } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { GetUsersResponse } from './get-users-response.interface';
 
 @Component({
   selector: 'app-root',
@@ -17,10 +16,9 @@ export class AppComponent {
   retryDelay = 1000;
 
   getUsers = () =>
-    this.http.get<GetUsersResponse>('https://reqres.in/api/users').pipe(
-      map((response) => response.data),
-      delay(3000)
-    );
+    this.http
+      .get<GetUsersResponse>('https://reqres.in/api/users')
+      .pipe(map((response) => response.data));
 
   constructor(private http: HttpClient) {}
 
