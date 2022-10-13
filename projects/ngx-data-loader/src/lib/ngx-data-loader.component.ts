@@ -49,7 +49,6 @@ export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
   @Input() retryDelay = 1000;
   @Input() showStaleData = false;
   @Input() skeletonDelay = 0;
-  @Input() skeletonMinDuration = 0;
   @Input() skeletonTemplate?: TemplateRef<any>;
   @Input() timeout = 30000;
   @Output() dataLoaded = new EventEmitter<T>();
@@ -104,10 +103,9 @@ export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
 
   private getData() {
     this.loadAttemptStarted.emit();
-    const skeletonDuration = this.skeletonDelay + this.skeletonMinDuration;
     return combineLatest([
       from(this.getDataFn()),
-      timer(skeletonDuration),
+      timer(this.skeletonDelay),
     ]).pipe(
       map(([data]) => ({ data, loaded: true, loading: false })),
       tap((state) => this.dataLoaded.emit(state.data)),
