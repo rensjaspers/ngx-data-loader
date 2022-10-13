@@ -15,15 +15,13 @@ import {
   Observable,
   of,
   ReplaySubject,
-  throwError,
   timer,
 } from 'rxjs';
 import {
   catchError,
   distinctUntilChanged,
-  exhaustMap,
   map,
-  retryWhen,
+  retry,
   scan,
   switchMap,
   tap,
@@ -111,7 +109,7 @@ export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
       map(([data]) => ({ data, loaded: true, loading: false })),
       tap((state) => this.dataLoaded.emit(state.data)),
       timeout(this.timeout),
-      retryWhen((error$) => this.retry(error$)),
+      retry({ count: this.retries, delay: this.retryDelay }),
       catchError((error) => this.onError(error)),
       tap(() => this.loadAttemptFinished.emit())
     );
@@ -128,14 +126,6 @@ export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
       a.loading === b.loading &&
       a.error === b.error &&
       a.loaded === b.loaded
-    );
-  }
-
-  private retry(errors: Observable<any>) {
-    return errors.pipe(
-      exhaustMap((error, count) =>
-        count >= this.retries ? throwError(() => error) : timer(this.retryDelay)
-      )
     );
   }
 }
