@@ -1,9 +1,88 @@
-<ngx-data-loader
-  #dataLoader
-  [getDataFn]="getDataFn"
-  [dataTemplate]="dataTemplate"
-></ngx-data-loader>
+<main>
+  <button (click)="dataLoader.reload()">Trigger reload</button>
 
-<button (click)="dataLoader.reload()">reload</button>
+  <ngx-data-loader
+    #dataLoader
+    [getDataFn]="getUsers"
+    [dataTemplate]="dataTemplate"
+    [skeletonTemplate]="skeletonTemplate"
+    [showStaleData]="showStaleData"
+    [skeletonDelay]="skeletonDelay"
+    [timeout]="timeout"
+    (loadingStateChange)="logChange($event)"
+  >
+    <ng-template #dataTemplate let-users let-loading="loading">
+      <div class="progress-bar" *ngIf="loading">
+        <div class="progress-bar-value"></div>
+      </div>
+      <div class="user-list" [class.dim]="loading">
+        <div *ngFor="let user of users" class="user">
+          <div class="avatar">
+            <img [src]="user.avatar" [alt]="user.first_name" />
+          </div>
+          <div class="label">
+            <div>
+              {{ user.first_name }}
+              {{ user.last_name }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
 
-<ng-template #dataTemplate let-data> Data: {{ data }} </ng-template>
+    <ng-template #skeletonTemplate>
+      <div class="user-list">
+        <div *ngFor="let _ of [].constructor(6)" class="user">
+          <div class="avatar">
+            <div class="skeleton"></div>
+          </div>
+          <div class="label">
+            <div class="skeleton">&nbsp;</div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </ngx-data-loader>
+</main>
+
+<div class="controls">
+  <div class="field">
+    <label for="timeout">timeout</label>
+    <input type="number" [(ngModel)]="timeout" id="timeout" />
+    <small>In milliseconds. Default: <code>30000</code></small>
+  </div>
+  <div class="field">
+    <label for="skeletonDelay">skeletonDelay</label>
+    <input type="number" [(ngModel)]="skeletonDelay" id="skeletonDelay" />
+    <small
+      >How many milliseconds to wait before showing or hiding the skeleton.
+      Default: <code>0</code></small
+    >
+  </div>
+  <div class="field">
+    <label for="retries">retries</label>
+    <input type="number" [(ngModel)]="retries" id="retries" />
+    <small
+      >How many retries of getDataFn before showing error template. Default:
+      <code>0</code></small
+    >
+  </div>
+  <div class="field">
+    <label for="retryDelay">retryDelay</label>
+    <input type="number" [(ngModel)]="retryDelay" id="retryDelay" />
+    <small
+      >How many milliseconds to wait before each retry. Default:
+      <code>1000</code></small
+    >
+  </div>
+  <div class="field">
+    <div class="checkbox">
+      <label for="showStaleData">showStaleData</label>
+      <input type="checkbox" id="showStaleData" [(ngModel)]="showStaleData" />
+    </div>
+    <small
+      >Whether to keep displaying old data while reloading. Shows the skeleton
+      template when set to false. Default: <code>false</code></small
+    >
+  </div>
+</div>
