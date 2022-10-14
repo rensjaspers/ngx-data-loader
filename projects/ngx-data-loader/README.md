@@ -2,6 +2,13 @@
 
 Async data container component for Angular 14+.
 
+<hr>
+
+[![NPM version](https://img.shields.io/npm/v/ngx-data-loader.svg)](https://www.npmjs.com/package/ngx-data-loader)
+[![NPM downloads](https://img.shields.io/npm/dm/ngx-data-loader.svg)](https://www.npmjs.com/package/ngx-data-loader)
+[![MIT license](https://img.shields.io/github/license/rensjaspers/ngx-data-loader)](https://github.com/rensjaspers/ngx-data-loader/blob/main/LICENSE)
+[![Minzipped size](https://img.shields.io/bundlephobia/minzip/ngx-data-loader)](https://bundlephobia.com/result?p=ngx-data-loader)
+
 Most async data loading in Angular is done the same way: show a loading indicator while the data is loading, then show the data when it's loaded, or show an error message or a retry button if the data failed to load.
 
 The NgxDataLoader component makes this easy. You only need to provide a `getDataFn` that returns an `Observable` or `Promise` with the data, and a `dataTemplate` that renders the data.
