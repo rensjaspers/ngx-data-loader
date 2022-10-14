@@ -8,16 +8,7 @@ import {
   Output,
   TemplateRef,
 } from '@angular/core';
-import {
-  combineLatest,
-  concat,
-  from,
-  merge,
-  Observable,
-  of,
-  ReplaySubject,
-  timer,
-} from 'rxjs';
+import { concat, from, merge, Observable, of, ReplaySubject } from 'rxjs';
 import {
   catchError,
   distinctUntilChanged,
@@ -103,11 +94,8 @@ export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
 
   private getData() {
     this.loadAttemptStarted.emit();
-    return combineLatest([
-      from(this.getDataFn()),
-      timer(this.skeletonDelay),
-    ]).pipe(
-      map(([data]) => ({ data, loaded: true, loading: false })),
+    return from(this.getDataFn()).pipe(
+      map((data) => ({ data, loaded: true, loading: false })),
       tap((state) => this.dataLoaded.emit(state.data)),
       timeout(this.timeout),
       retry({ count: this.retries, delay: this.retryDelay }),
