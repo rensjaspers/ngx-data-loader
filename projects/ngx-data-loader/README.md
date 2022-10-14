@@ -108,3 +108,7 @@ export class AppComponent {
 | Name     | Description                                                           |
 | -------- | --------------------------------------------------------------------- |
 | `reload` | Resets the loading state and calls the `getDataFn` that you provided. |
+
+## License
+
+The MIT License (MIT). Please see [License File](https://github.com/rensjaspers/ngx-data-loader/blob/main/LICENSE) for more information.
