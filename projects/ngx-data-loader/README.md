@@ -52,16 +52,12 @@ Use the component
   </ng-template>
 
   <!-- template while loading -->
-  <ng-template #skeletonTemplate>
-    <div class="loading">Loading...</div>
-  </ng-template>
+  <ng-template #skeletonTemplate> Loading... </ng-template>
 
   <!-- template when error occurs -->
   <ng-template #errorTemplate let-error let-retry="reloadFn">
-    <div class="error">
-      Oops, something went wrong! Details: {{ error.message }}
-      <button (click)="retry()">Retry</button>
-    </div>
+    Oops, something went wrong! Details: {{ error.message }}
+    <button (click)="retry()">Retry</button>
   </ng-template>
 </ngx-data-loader>
 ```
