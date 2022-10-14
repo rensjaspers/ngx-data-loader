@@ -75,14 +75,14 @@ export class AppComponent {
 
 ## Properties
 
-| Name                                                           | Description                                                                                       |
-| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| `@Input()`<br />`getDataFn: () => Observable<T> \| Promise<T>` | Function that returns the data to be loaded.                                                      |
-| `@Input()`<br />`retries: number`                              | Number of times to retry loading the data. Default: `0`                                           |
-| `@Input()`<br />`retryDelay: number`                           | Delay in milliseconds between retries. Default: `1000`                                            |
-| `@Input()`<br />`showStaleData: boolean`                       | Whether to show stale data while reloading. Default: `false`                                      |
-| `@Input()`<br />`skeletonDelay: number`                        | Delay in milliseconds before showing the skeleton. Default: `0`                                   |
-| `@Input()`<br />`timeout: number`                              | Number of milliseconds to wait for `getDataFn` to emit before throwing an error. Default: `30000` |
+| Name                                                           | Description                                                                      |
+| -------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `@Input()`<br />`getDataFn: () => Observable<T> \| Promise<T>` | Function that returns the data to be loaded.                                     |
+| `@Input()`<br />`retries: number`                              | Number of times to retry loading the data. Default: `0`                          |
+| `@Input()`<br />`retryDelay: number`                           | Delay in milliseconds between retries. Default: `1000`                           |
+| `@Input()`<br />`showStaleData: boolean`                       | Whether to show stale data while reloading. Default: `false`                     |
+| `@Input()`<br />`skeletonDelay: number`                        | Delay in milliseconds before showing the skeleton. Default: `0`                  |
+| `@Input()`<br />`timeout: number`                              | Number of milliseconds to wait for `getDataFn` to emit before throwing an error. |
 
 ## Events
 

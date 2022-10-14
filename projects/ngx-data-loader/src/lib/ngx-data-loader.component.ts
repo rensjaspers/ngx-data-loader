@@ -41,7 +41,7 @@ export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
   @Input() retryDelay = 1000;
   @Input() showStaleData = false;
   @Input() skeletonDelay = 0;
-  @Input() timeout = 30000;
+  @Input() timeout?: number;
   @Output() dataLoaded = new EventEmitter<T>();
   @Output() error = new EventEmitter<Error>();
   @Output() loadAttemptFinished = new EventEmitter<void>();
@@ -97,7 +97,7 @@ export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
     return from(this.getDataFn()).pipe(
       map((data) => ({ data, loaded: true, loading: false })),
       tap((state) => this.dataLoaded.emit(state.data)),
-      timeout(this.timeout),
+      this.timeout ? timeout(this.timeout) : tap(),
       retry({ count: this.retries, delay: this.retryDelay }),
       catchError((error) => this.onError(error)),
       tap(() => this.loadAttemptFinished.emit())
