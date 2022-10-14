@@ -11,8 +11,7 @@ Async data container component for Angular 14+.
 
 Most async data loading in Angular is done the same way: show a loading indicator while the data is loading, then show the data when it's loaded, or show an error message or a retry button if the data failed to load.
 
-The NgxDataLoader component makes this easy. You only need to provide a `getDataFn` that returns an `Observable` or `Promise` with the data, and a `dataTemplate` that renders the data.
-The component will handle the rest.
+The NgxDataLoader component makes this easy. You only need to provide a `getDataFn` that returns an `Observable` or `Promise` with the data, and the `data`, `skeleton` and `error` templates. The component will handle the rest.
 
 ## Demo
 
@@ -46,9 +45,23 @@ Use the component
 ```html
 <!-- app.component.html -->
 <ngx-data-loader [getDataFn]="getTodo">
+  <!-- template for showing loaded data -->
   <ng-template #dataTemplate let-todo>
     Title: {{ todo.title }} <br />
     Completed: {{ todo.completed ? 'Yes' : 'No' }}
+  </ng-template>
+
+  <!-- template while loading -->
+  <ng-template #skeletonTemplate>
+    <div class="loading">Loading...</div>
+  </ng-template>
+
+  <!-- template when error occurs -->
+  <ng-template #errorTemplate let-error let-retry="reloadFn">
+    <div class="error">
+      Oops, something went wrong! Details: {{ error.message }}
+      <button (click)="retry()">Retry</button>
+    </div>
   </ng-template>
 </ngx-data-loader>
 ```
