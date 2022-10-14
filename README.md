@@ -1,10 +1,10 @@
 # NgxDataLoader
 
-Data loader component for Angular 14+.
+Async data container component for Angular 14+.
 
 Most async data loading in Angular is done the same way: show a loading indicator while the data is loading, then show the data when it's loaded, or show an error message or a retry button if the data failed to load.
 
-The NgxDataLoader component makes this easy. You only need to provide a `getDataFn` that returns an observable with the data, and a `dataTemplate` that renders the data.
+The NgxDataLoader component makes this easy. You only need to provide a `getDataFn` that returns an `Observable` or `Promise` with the data, and a `dataTemplate` that renders the data.
 The component will handle the rest.
 
 ## Demo
@@ -38,7 +38,7 @@ Use the component
 
 ```html
 <!-- app.component.html -->
-<ngx-data-loader [loading]="loading" [dataTemplate]="getTodo">
+<ngx-data-loader [getDataFn]="getTodo">
   <ng-template #dataTemplate let-todo>
     Title: {{ todo.title }} <br />
     Completed: {{ todo.completed ? 'Yes' : 'No' }}
@@ -58,14 +58,19 @@ export class AppComponent {
 }
 ```
 
+## Templates
+
+| Name                                                                          | Description                                            |
+| ----------------------------------------------------------------------------- | ------------------------------------------------------ |
+| `@ContentChild('dataTemplate')`<br />`dataTemplate?: TemplateRef<any>`        | Template to be displayed when the data is loaded.      |
+| `@ContentChild('skeletonTemplate)`<br />`skeletonTemplate?: TemplateRef<any>` | Template to be displayed when the data is loading.     |
+| `@ContentChild('errorTemplate')`<br />`errorTemplate?: TemplateRef<any>`      | Template to be displayed when the data failed to load. |
+
 ## Properties
 
 | Name                                                           | Description                                                                                       |
 | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | `@Input()`<br />`getDataFn: () => Observable<T> \| Promise<T>` | Function that returns the data to be loaded.                                                      |
-| `@Input()`<br />`dataTemplate?: TemplateRef<any>`              | Template to be displayed when the data is loaded.                                                 |
-| `@Input()`<br />`skeletonTemplate?: TemplateRef<any>`          | Template to be displayed when the data is loading.                                                |
-| `@Input()`<br />`errorTemplate?: TemplateRef<any>`             | Template to be displayed when the data failed to load.                                            |
 | `@Input()`<br />`retries: number`                              | Number of times to retry loading the data. Default: `0`                                           |
 | `@Input()`<br />`retryDelay: number`                           | Delay in milliseconds between retries. Default: `1000`                                            |
 | `@Input()`<br />`showStaleData: boolean`                       | Whether to show stale data while reloading. Default: `false`                                      |

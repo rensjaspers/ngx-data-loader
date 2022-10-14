@@ -1,5 +1,6 @@
 import {
   Component,
+  ContentChild,
   EventEmitter,
   Input,
   OnChanges,
@@ -41,14 +42,14 @@ interface LoadingState<T> {
   styleUrls: ['./ngx-data-loader.component.scss'],
 })
 export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
-  @Input() dataTemplate?: TemplateRef<any>;
-  @Input() errorTemplate?: TemplateRef<any>;
+  @ContentChild('dataTemplate') dataTemplate?: TemplateRef<any>;
+  @ContentChild('errorTemplate') errorTemplate?: TemplateRef<any>;
+  @ContentChild('skeletonTemplate') skeletonTemplate?: TemplateRef<any>;
   @Input() getDataFn!: () => Observable<T> | Promise<T>;
   @Input() retries = 0;
   @Input() retryDelay = 1000;
   @Input() showStaleData = false;
   @Input() skeletonDelay = 0;
-  @Input() skeletonTemplate?: TemplateRef<any>;
   @Input() timeout = 30000;
   @Output() dataLoaded = new EventEmitter<T>();
   @Output() error = new EventEmitter<Error>();
