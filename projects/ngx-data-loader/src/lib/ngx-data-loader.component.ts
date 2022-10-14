@@ -106,7 +106,7 @@ export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
 
   private onError(error: any) {
     this.error.emit(error);
-    return of({ error, data: null, loading: false });
+    return of({ error, data: null, loaded: false, loading: false });
   }
 
   private stateHasChanged(a: LoadingState<T>, b: LoadingState<T>): boolean {
