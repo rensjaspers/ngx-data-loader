@@ -4,6 +4,7 @@ Async data container component for Angular 14+.
 
 <hr>
 
+[![Build status](https://img.shields.io/github/workflow/status/rensjaspers/ngx-data-loader/Tests)](https://github.com/rensjaspers/ngx-data-loader/actions/workflows/main.yml)
 [![NPM version](https://img.shields.io/npm/v/ngx-data-loader.svg)](https://www.npmjs.com/package/ngx-data-loader)
 [![NPM downloads](https://img.shields.io/npm/dm/ngx-data-loader.svg)](https://www.npmjs.com/package/ngx-data-loader)
 [![MIT license](https://img.shields.io/github/license/rensjaspers/ngx-data-loader)](https://github.com/rensjaspers/ngx-data-loader/blob/main/LICENSE)
