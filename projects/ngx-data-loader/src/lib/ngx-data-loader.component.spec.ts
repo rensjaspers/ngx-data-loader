@@ -51,7 +51,7 @@ describe('NgxDataLoaderComponent', () => {
     expect(getDataFnSpy).toHaveBeenCalled();
   });
 
-  it('should show only a skeleton component when loading first time', () => {
+  it('should render only a skeleton component when loading first time', () => {
     component.getDataFn = () => new Promise(() => {});
     component.reload();
     expect(getSkeletonEl()).toBeTruthy();
@@ -59,7 +59,7 @@ describe('NgxDataLoaderComponent', () => {
     expect(getErrorEl()).toBeNull();
   });
 
-  it('should show only the data when initial loading is done', fakeAsync(() => {
+  it('should render only the data when initial loading is done', fakeAsync(() => {
     component.getDataFn = () => of(testData);
     component.reload();
     tick();
@@ -69,7 +69,7 @@ describe('NgxDataLoaderComponent', () => {
     expect(getErrorEl()).toBeNull();
   }));
 
-  it('should show only an error when loading fails', fakeAsync(() => {
+  it('should render only an error when loading fails', fakeAsync(() => {
     component.getDataFn = () => throwError(() => new Error('test error'));
     component.reload();
     tick();
@@ -79,7 +79,7 @@ describe('NgxDataLoaderComponent', () => {
     expect(getSkeletonEl()).toBeNull();
   }));
 
-  it('should show the data template when reloading in stale data display mode', fakeAsync(() => {
+  it('should render the data template when reloading in stale data display mode', fakeAsync(() => {
     component.getDataFn = () => of(testData);
     component.showStaleData = true;
     component.reload();
@@ -93,7 +93,7 @@ describe('NgxDataLoaderComponent', () => {
     expect(fixture.nativeElement.querySelector('lib-data')).toBeTruthy();
   }));
 
-  it('should show an error when loading does not complete before the timeout', fakeAsync(() => {
+  it('should render an error when loading does not complete before the timeout', fakeAsync(() => {
     component.getDataFn = () => timer(100);
     component.timeout = 10;
     component.reload();
@@ -103,7 +103,7 @@ describe('NgxDataLoaderComponent', () => {
     flush();
   }));
 
-  it('should not show an error when loading completes before the timeout', fakeAsync(() => {
+  it('should not render an error when loading completes before the timeout', fakeAsync(() => {
     component.getDataFn = () => timer(100);
     component.timeout = 200;
     component.reload();
