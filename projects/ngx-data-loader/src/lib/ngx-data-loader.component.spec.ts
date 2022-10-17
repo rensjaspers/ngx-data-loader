@@ -1,3 +1,4 @@
+import { LoadingStateTemplatePipe } from './loading-state-template.pipe';
 import {
   ComponentFixture,
   fakeAsync,
@@ -29,6 +30,7 @@ describe('NgxDataLoaderComponent', () => {
         DataComponent,
         SkeletonComponent,
         ErrorComponent,
+        LoadingStateTemplatePipe,
       ],
     }).compileComponents();
 

@@ -1,25 +1,24 @@
 <ng-container *ngIf="loadingState$ | async as state">
-  <lib-error
-    *ngIf="state.error as error; else noError"
-    [error]="error"
-    [errorTemplate]="errorTemplate"
-    (reload)="reload()"
-  ></lib-error>
+  <ng-container [ngSwitch]="state | loadingStateTemplate">
+    <lib-error
+      *ngSwitchCase="'error'"
+      [error]="state.error"
+      [errorTemplate]="errorTemplate"
+      (reload)="reload()"
+    ></lib-error>
 
-  <ng-template #noError>
     <lib-data
-      *ngIf="state.loaded && (!state.loading || showStaleData); else skeleton"
+      *ngSwitchCase="'data'"
       [data]="state.data"
       [loading]="state.loading"
       [dataTemplate]="dataTemplate"
       [showStaleData]="showStaleData"
     ></lib-data>
-  </ng-template>
-</ng-container>
 
-<ng-template #skeleton>
-  <lib-skeleton
-    [skeletonDelay]="skeletonDelay"
-    [skeletonTemplate]="skeletonTemplate"
-  ></lib-skeleton>
-</ng-template>
+    <lib-skeleton
+      *ngSwitchCase="'skeleton'"
+      [skeletonDelay]="skeletonDelay"
+      [skeletonTemplate]="skeletonTemplate"
+    ></lib-skeleton>
+  </ng-container>
+</ng-container>

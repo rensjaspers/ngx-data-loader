@@ -19,13 +19,7 @@ import {
   tap,
   timeout,
 } from 'rxjs/operators';
-
-interface LoadingState<T> {
-  loading: boolean;
-  loaded: boolean;
-  error: Error | null;
-  data: T | null;
-}
+import { LoadingState } from './loading-state.interface';
 
 @Component({
   selector: 'ngx-data-loader',
