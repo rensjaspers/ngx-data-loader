@@ -9,9 +9,17 @@ Async data container component for Angular 14+.
 [![MIT license](https://img.shields.io/github/license/rensjaspers/ngx-data-loader)](https://github.com/rensjaspers/ngx-data-loader/blob/main/LICENSE)
 [![Minzipped size](https://img.shields.io/bundlephobia/minzip/ngx-data-loader)](https://bundlephobia.com/result?p=ngx-data-loader)
 
-Most async data loading in Angular is done the same way: show a loading indicator while the data is loading, then show the data when it's loaded, or show an error message or a retry button if the data failed to load.
+Most async data loading is done the same way: show a loading indicator while the data is loading, then show the data when it's loaded, or show an error message or a retry button if the data failed to load.
 
-The NgxDataLoader component makes this easy. You only need to provide a `getDataFn` that returns an `Observable` or `Promise` with the data, and the `data`, `skeleton` and `error` templates. The component will handle the rest.
+The `NgxDataLoaderComponent` makes this easy. You only need to provide a `getDataFn` that returns a `Promise` or `Observable` with the data, and the `data`, `skeleton` and `error` templates. The component will handle all of the logic for you.
+
+Features:
+
+- Bring your own template for each loading state
+- Automatic switching to the right template based on the loading state
+- Configure auto retry on error
+- Easily trigger a retry/reload
+- Cancel ongoing requests on component destroy or on reload
 
 ## Demo
 
@@ -45,16 +53,16 @@ Use the component
 ```html
 <!-- app.component.html -->
 <ngx-data-loader [getDataFn]="getTodo">
-  <!-- template for showing loaded data -->
+  <!-- showing once data has finished loading-->
   <ng-template #dataTemplate let-todo>
     Title: {{ todo.title }} <br />
     Completed: {{ todo.completed ? 'Yes' : 'No' }}
   </ng-template>
 
-  <!-- template while loading -->
+  <!-- showing during initial loading phase -->
   <ng-template #skeletonTemplate> Loading... </ng-template>
 
-  <!-- template when error occurs -->
+  <!-- showing when error occurs -->
   <ng-template #errorTemplate let-error let-retry="reloadFn">
     Oops, something went wrong! Details: {{ error.message }}
     <button (click)="retry()">Retry</button>
@@ -74,24 +82,24 @@ export class AppComponent {
 }
 ```
 
-## Templates
+## Template slots
 
-| Name                                                                          | Description                                            |
-| ----------------------------------------------------------------------------- | ------------------------------------------------------ |
-| `@ContentChild('dataTemplate')`<br />`dataTemplate?: TemplateRef<any>`        | Template to be displayed when the data is loaded.      |
-| `@ContentChild('skeletonTemplate)`<br />`skeletonTemplate?: TemplateRef<any>` | Template to be displayed when the data is loading.     |
-| `@ContentChild('errorTemplate')`<br />`errorTemplate?: TemplateRef<any>`      | Template to be displayed when the data failed to load. |
+| Name                                                                          | Description                                            | Local variables                                                                                                                                 |
+| ----------------------------------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@ContentChild('dataTemplate')`<br />`dataTemplate?: TemplateRef<any>`        | Template to be displayed when the data is loaded.      | `$implicit: T`: the resolved data.<br />`loading: boolean`: whether the data is reloading (only available if `showStaleData` is set to `true`). |
+| `@ContentChild('skeletonTemplate)`<br />`skeletonTemplate?: TemplateRef<any>` | Template to be displayed when the data is loading.     | _(none)_                                                                                                                                        |
+| `@ContentChild('errorTemplate')`<br />`errorTemplate?: TemplateRef<any>`      | Template to be displayed when the data failed to load. | `$implicit: Error<any>`: the error object.<br />`reloadFn: () => void`: can be called to trigger a retry.                                       |
 
 ## Properties
 
-| Name                                                           | Description                                                                      |
-| -------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `@Input()`<br />`getDataFn: () => Observable<T> \| Promise<T>` | Function that returns the data to be loaded.                                     |
-| `@Input()`<br />`retries: number`                              | Number of times to retry loading the data. Default: `0`                          |
-| `@Input()`<br />`retryDelay: number`                           | Delay in milliseconds between retries. Default: `1000`                           |
-| `@Input()`<br />`showStaleData: boolean`                       | Whether to show stale data while reloading. Default: `false`                     |
-| `@Input()`<br />`skeletonDelay: number`                        | Delay in milliseconds before showing the skeleton. Default: `0`                  |
-| `@Input()`<br />`timeout: number`                              | Number of milliseconds to wait for `getDataFn` to emit before throwing an error. |
+| Name                                                           | Description                                                                                               |
+| -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `@Input()`<br />`getDataFn: () => Observable<T> \| Promise<T>` | Function that returns a `Promise` or `Observable` of the data to be loaded. Called on init and on reload. |
+| `@Input()`<br />`retries: number`                              | Number of times to retry loading the data. Default: `0`                                                   |
+| `@Input()`<br />`retryDelay: number`                           | Delay in milliseconds between retries. Default: `1000`                                                    |
+| `@Input()`<br />`showStaleData: boolean`                       | Whether to show stale data while reloading. Default: `false`                                              |
+| `@Input()`<br />`skeletonDelay: number`                        | Delay in milliseconds before showing the skeleton. Default: `0`                                           |
+| `@Input()`<br />`timeout: number`                              | Number of milliseconds to wait for `getDataFn` to emit before throwing an error.                          |
 
 ## Events
 
