@@ -1,5 +1,5 @@
-import { LoadingState } from './../../../../dist/ngx-data-loader/lib/loading-state.interface.d';
 import { LoadingStateTemplatePipe } from './loading-state-template.pipe';
+import { LoadingState } from './loading-state.interface';
 
 describe('LoadingStateTemplatePipe', () => {
   const pipe = new LoadingStateTemplatePipe();
