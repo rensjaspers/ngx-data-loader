@@ -1,6 +1,6 @@
-<ng-container *ngIf="vm$ | async as vm">
+<ng-container *ngIf="loadingState$ | async as state">
   <lib-error
-    *ngIf="vm.error as error; else noError"
+    *ngIf="state.error as error; else noError"
     [error]="error"
     [errorTemplate]="errorTemplate"
     (reload)="reload()"
@@ -8,9 +8,9 @@
 
   <ng-template #noError>
     <lib-data
-      *ngIf="vm.loaded && (!vm.loading || showStaleData); else skeleton"
-      [data]="vm.data"
-      [loading]="vm.loading"
+      *ngIf="state.loaded && (!state.loading || showStaleData); else skeleton"
+      [data]="state.data"
+      [loading]="state.loading"
       [dataTemplate]="dataTemplate"
       [showStaleData]="showStaleData"
     ></lib-data>

@@ -47,7 +47,7 @@ export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
   @Output() loadAttemptFinished = new EventEmitter<void>();
   @Output() loadAttemptStarted = new EventEmitter<void>();
   @Output() loadingStateChange = new EventEmitter<LoadingState<T>>();
-  vm$!: Observable<LoadingState<T>>;
+  loadingState$!: Observable<LoadingState<T>>;
   private loadTrigger$ = new ReplaySubject<void>();
   private readonly initialState: LoadingState<T> = {
     loading: true,
@@ -59,7 +59,7 @@ export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
   constructor() {}
 
   ngOnInit(): void {
-    this.vm$ = this.getLoadingStateChanges().pipe(
+    this.loadingState$ = this.getLoadingStateChanges().pipe(
       scan((state, changes) => ({
         ...state,
         ...changes,
