@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build ngx-data-loader && ng build demo",
     "publish-lib": "npm run build && cd dist/ngx-data-loader && npm publish",
-    "test": "ng test"
+    "test": "ng run ngx-data-loader:test"
   },
   "private": false,
   "dependencies": {
