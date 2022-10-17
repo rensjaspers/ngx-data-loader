@@ -6,6 +6,6 @@
 ></ng-container>
 
 <ng-template #defaultErrorTemplate>
-  Error. {{ error.message }}
+  Error. {{ error?.message }}
   <button (click)="reload.emit()">retry</button>
 </ng-template>

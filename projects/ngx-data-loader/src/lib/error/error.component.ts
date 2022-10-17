@@ -14,7 +14,7 @@ import {
 })
 export class ErrorComponent implements OnInit {
   @Input() errorTemplate?: TemplateRef<any>;
-  @Input() error!: Error;
+  @Input() error?: Error;
   @Output() reload = new EventEmitter<void>();
 
   reloadFn = () => this.reload.emit();
