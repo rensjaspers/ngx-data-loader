@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 
 @Component({
-  selector: 'lib-data',
+  selector: 'ngx-data-loader-data',
   templateUrl: './data.component.html',
   styleUrls: ['./data.component.scss'],
 })

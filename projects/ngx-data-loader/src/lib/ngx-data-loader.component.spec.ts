@@ -19,9 +19,11 @@ describe('NgxDataLoaderComponent', () => {
 
   const testData = { data: 'data' };
   const getSkeletonEl = () =>
-    fixture.nativeElement.querySelector('lib-skeleton');
-  const getDataEl = () => fixture.nativeElement.querySelector('lib-data');
-  const getErrorEl = () => fixture.nativeElement.querySelector('lib-error');
+    fixture.nativeElement.querySelector('ngx-data-loader-skeleton');
+  const getDataEl = () =>
+    fixture.nativeElement.querySelector('ngx-data-loader-data');
+  const getErrorEl = () =>
+    fixture.nativeElement.querySelector('ngx-data-loader-error');
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -90,7 +92,9 @@ describe('NgxDataLoaderComponent', () => {
       .and.returnValue(new Promise(() => {}));
     tick();
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('lib-data')).toBeTruthy();
+    expect(
+      fixture.nativeElement.querySelector('ngx-data-loader-data')
+    ).toBeTruthy();
   }));
 
   it('should render an error when loading does not complete before the timeout', fakeAsync(() => {

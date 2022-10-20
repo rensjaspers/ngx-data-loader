@@ -2,7 +2,7 @@ import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 import { delay, Observable, of } from 'rxjs';
 
 @Component({
-  selector: 'lib-skeleton',
+  selector: 'ngx-data-loader-skeleton',
   templateUrl: './skeleton.component.html',
   styleUrls: ['./skeleton.component.scss'],
 })
