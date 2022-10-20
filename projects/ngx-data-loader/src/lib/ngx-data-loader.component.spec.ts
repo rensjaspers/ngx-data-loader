@@ -81,20 +81,32 @@ describe('NgxDataLoaderComponent', () => {
     expect(getSkeletonEl()).toBeNull();
   }));
 
-  it('should render the data template when reloading in stale data display mode', fakeAsync(() => {
+  it('should render only the data template when reloading in stale data display mode', fakeAsync(() => {
     component.getDataFn = () => of(testData);
     component.showStaleData = true;
     component.reload();
     tick();
-    fixture.detectChanges();
-    component.getDataFn = jasmine
-      .createSpy()
-      .and.returnValue(new Promise(() => {}));
+    component.getDataFn = () => new Promise(() => {});
+    component.reload();
     tick();
     fixture.detectChanges();
-    expect(
-      fixture.nativeElement.querySelector('ngx-data-loader-data')
-    ).toBeTruthy();
+    expect(getDataEl()).toBeTruthy();
+    expect(getSkeletonEl()).toBeNull();
+    expect(getErrorEl()).toBeNull();
+  }));
+
+  it('should render a skeleton when reloading and showing stale data is not allowed', fakeAsync(() => {
+    component.getDataFn = () => of(testData);
+    component.showStaleData = false;
+    component.reload();
+    tick();
+    component.getDataFn = () => new Promise(() => {});
+    component.reload();
+    tick();
+    fixture.detectChanges();
+    expect(getDataEl()).toBeNull();
+    expect(getSkeletonEl()).toBeTruthy();
+    expect(getErrorEl()).toBeNull();
   }));
 
   it('should render an error when loading does not complete before the timeout', fakeAsync(() => {

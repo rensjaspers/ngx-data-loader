@@ -1,5 +1,5 @@
 <ng-container *ngIf="loadingState$ | async as state">
-  <ng-container [ngSwitch]="state | loadingStateTemplate">
+  <ng-container [ngSwitch]="state | loadingStateTemplate: showStaleData">
     <ngx-data-loader-error
       *ngSwitchCase="'error'"
       [error]="state.error"
