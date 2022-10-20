@@ -41,6 +41,10 @@
         </div>
       </div>
     </ng-template>
+    <ng-template #errorTemplate let-error let-retry="reloadFn">
+      Oops! Something went wrong. {{ error.message }}
+      <button (click)="retry()">Retry</button>
+    </ng-template>
   </ngx-data-loader>
 </main>
 
