@@ -1,24 +1,24 @@
 <ng-container *ngIf="loadingState$ | async as state">
   <ng-container [ngSwitch]="state | loadingStateTemplate">
-    <lib-error
+    <ngx-data-loader-error
       *ngSwitchCase="'error'"
       [error]="state.error"
       [errorTemplate]="errorTemplate"
       (reload)="reload()"
-    ></lib-error>
+    ></ngx-data-loader-error>
 
-    <lib-data
+    <ngx-data-loader-data
       *ngSwitchCase="'data'"
       [data]="state.data"
       [loading]="state.loading"
       [dataTemplate]="dataTemplate"
       [showStaleData]="showStaleData"
-    ></lib-data>
+    ></ngx-data-loader-data>
 
-    <lib-skeleton
+    <ngx-data-loader-skeleton
       *ngSwitchCase="'skeleton'"
       [skeletonDelay]="skeletonDelay"
       [skeletonTemplate]="skeletonTemplate"
-    ></lib-skeleton>
+    ></ngx-data-loader-skeleton>
   </ng-container>
 </ng-container>

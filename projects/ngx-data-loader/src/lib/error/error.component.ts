@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'lib-error',
+  selector: 'ngx-data-loader-error',
   templateUrl: './error.component.html',
   styleUrls: ['./error.component.scss'],
 })
