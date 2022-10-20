@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build ngx-data-loader && ng build demo",
+    "build-lib": "ng build ngx-data-loader",
     "publish-lib": "npm run build && cd dist/ngx-data-loader && npm publish",
     "test": "ng run ngx-data-loader:test"
   },
