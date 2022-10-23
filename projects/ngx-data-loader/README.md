@@ -1,8 +1,6 @@
 # NgxDataLoader
 
-Async data container component for Angular 14+.
-
-<hr>
+Lightweight Angular 14+ component that loads async data, handles errors and switches templates based on loading state. 
 
 [![Build status](https://img.shields.io/github/workflow/status/rensjaspers/ngx-data-loader/Tests)](https://github.com/rensjaspers/ngx-data-loader/actions/workflows/main.yml)
 [![NPM version](https://img.shields.io/npm/v/ngx-data-loader.svg)](https://www.npmjs.com/package/ngx-data-loader)
@@ -12,17 +10,17 @@ Async data container component for Angular 14+.
 
 ## Description
 
-Most async data loading is done the same way: show a loading indicator while the data is loading, then show the data when it's loaded, or show an error message or a retry button if the data failed to load.
+Most async data loading is done the same way: show a loading indicator while the data is being retrieved, then show the data when it's loaded, or show an error message or a retry button if the data failed to load.
 
-The `NgxDataLoaderComponent` makes this easy. You only need to provide a `getDataFn` that returns a `Promise` or `Observable` with the data, and the `data`, `skeleton` and `error` templates. The component will handle all of the logic for you.
+The `NgxDataLoaderComponent` makes this easy. You only need to provide a `getDataFn` that returns a `Promise` or `Observable` of the data, and the `data`, `skeleton` and `error` templates. The component will handle all of the logic for you.
 
-Features:
+## Features
 
 - Bring your own template for each loading state
-- Automatic template switching based on the loading state
-- Configure auto retry and timeout
+- Automatic template switching
+- Configurable auto retry
 - Easy manual retry/reload
-- Cancel ongoing requests on component destroy or on reload
+- Automatic cancellation of ongoing http requests on reload/destroy
 
 ## Demo
 
