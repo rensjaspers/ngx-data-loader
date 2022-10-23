@@ -12,7 +12,9 @@ Lightweight Angular 14+ component that loads async data, handles errors and swit
 
 Most async data loading is done the same way: show a loading indicator while the data is being retrieved, then show the data when it's loaded, or show an error message or a retry button if the data failed to load.
 
-The `NgxDataLoaderComponent` makes this easy. You only need to provide a `getDataFn` that returns a `Promise` or `Observable` of the data, and the `data`, `skeleton` and `error` templates. The component will handle all of the logic for you.
+While this seems simple, getting the logic right can be challenging, especially when error handling or data reloading is involved.
+
+The `NgxDataLoaderComponent` makes it easy. You only need to provide a `getDataFn` that returns a `Promise` or `Observable` of the data, and the `data`, `skeleton` and `error` templates. The component will handle all of the logic for you.
 
 ## Features
 
