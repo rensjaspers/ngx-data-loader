@@ -19,7 +19,7 @@ You only need to provide a `getDataFn` that returns an `Observable` of the data,
 
 - Bring your own template for each loading state
 - Provides `cancel` and `reload` methods
-- Automatic cancellation of ongoing http requests on reload/destroy
+- Automatic cancellation of ongoing http requests on reload/destroy [^note]
 - Configure auto retry and timeouts
 - Supports server-side rendering through `initialData` input
 - Supports optimistic updates through `setData` method
@@ -120,7 +120,7 @@ export class AppComponent {
 | Name                               | Description                                                                      |
 | ---------------------------------- | -------------------------------------------------------------------------------- |
 | `reload: () => void`               | Resets the loading state and calls the `getDataFn` that you provided.            |
-| `cancel: () => void`               | Cancels the pending `getDataFn` and aborts any related http requests.            |
+| `cancel: () => void`               | Cancels the pending `getDataFn` and aborts any related http requests [^note].    |
 | `setData: (data: T) => void`       | Updates the loading state as if the passed data were loaded through `getDataFn`. |
 | `setError: (error: Error) => void` | Updates the loading state as if the passed error were thrown by `getDataFn`.     |
 
@@ -138,3 +138,7 @@ interface LoadingState<T> {
 ## License
 
 The MIT License (MIT). Please see [License File](https://github.com/rensjaspers/ngx-data-loader/blob/main/LICENSE) for more information.
+
+## Footnotes
+
+[^note]: Use must use Angular's `HttpClient` for http request cancellation to work.
