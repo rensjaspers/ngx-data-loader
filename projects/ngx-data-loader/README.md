@@ -124,6 +124,8 @@ export class AppComponent {
 | `setData: (data: T) => void`       | Updates the loading state as if the passed data were loaded through `getDataFn`. |
 | `setError: (error: Error) => void` | Updates the loading state as if the passed error were thrown by `getDataFn`.     |
 
+[^note]: You must use Angular's `HttpClient` for http request cancellation to work.
+
 ## Interfaces
 
 ```typescript
@@ -138,7 +140,3 @@ interface LoadingState<T> {
 ## License
 
 The MIT License (MIT). Please see [License File](https://github.com/rensjaspers/ngx-data-loader/blob/main/LICENSE) for more information.
-
-## Footnotes
-
-[^note]: Use must use Angular's `HttpClient` for http request cancellation to work.
