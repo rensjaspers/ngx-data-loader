@@ -1,9 +1,16 @@
 <main>
   <button (click)="dataLoader.reload()">Trigger reload</button>
+  <button (click)="dataLoader.cancel()">Cancel</button>
+  <button (click)="dataLoader.setData('some custom data')">
+    Set custom data
+  </button>
+  <button (click)="dataLoader.setError(getError('some custom error'))">
+    Set custom error
+  </button>
 
   <ngx-data-loader
     #dataLoader
-    [getDataFn]="getUsers"
+    [getDataFn]="getData"
     [retries]="retries"
     [retryDelay]="retryDelay"
     [showStaleData]="showStaleData"
@@ -11,36 +18,13 @@
     [timeout]="timeout"
     (loadingStateChange)="logChange($event)"
   >
-    <ng-template #dataTemplate let-users let-loading="loading">
-      <div class="progress-bar" *ngIf="loading">
-        <div class="progress-bar-value"></div>
-      </div>
+    <ng-template #dataTemplate let-data let-loading="loading">
+      <div *ngIf="loading">Reloading...</div>
       <div class="user-list" [class.dim]="loading">
-        <div *ngFor="let user of users" class="user">
-          <div class="avatar">
-            <img [src]="user.avatar" [alt]="user.first_name" />
-          </div>
-          <div class="label">
-            <div>
-              {{ user.first_name }}
-              {{ user.last_name }}
-            </div>
-          </div>
-        </div>
+        {{ data | json }}
       </div>
     </ng-template>
-    <ng-template #skeletonTemplate>
-      <div class="user-list">
-        <div *ngFor="let _ of [].constructor(6)" class="user">
-          <div class="avatar">
-            <div class="skeleton"></div>
-          </div>
-          <div class="label">
-            <div class="skeleton">&nbsp;</div>
-          </div>
-        </div>
-      </div>
-    </ng-template>
+    <ng-template #skeletonTemplate> Loading... </ng-template>
     <ng-template #errorTemplate let-error let-retry="reloadFn">
       Oops! Something went wrong. {{ error.message }}
       <button (click)="retry()">Retry</button>

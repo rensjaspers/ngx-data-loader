@@ -3,11 +3,13 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build ngx-data-loader && ng build demo",
-    "build-lib": "ng build ngx-data-loader",
-    "publish-lib": "npm run build-lib && cd dist/ngx-data-loader && npm publish",
-    "test": "ng run ngx-data-loader:test"
+    "build": "ng build ngx-data-loader",
+    "build:watch": "ng build ngx-data-loader --watch",
+    "publish": "npm run build-lib && cd dist/ngx-data-loader && npm publish",
+    "test": "ng run ngx-data-loader:test",
+    "test:cov": "ng run ngx-data-loader:test --no-watch --code-coverage",
+    "start-demo": "ng serve",
+    "build-demo": "ng build ngx-data-loader && ng build demo"
   },
   "private": false,
   "dependencies": {
