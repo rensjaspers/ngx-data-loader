@@ -8,9 +8,8 @@ describe('ErrorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ErrorComponent ]
-    })
-    .compileComponents();
+      declarations: [ErrorComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ErrorComponent);
     component = fixture.componentInstance;
@@ -19,5 +18,14 @@ describe('ErrorComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('reloadFn', () => {
+    it('should emit an error when called', () => {
+      spyOn(component.reload, 'emit');
+      expect(component.reload.emit).not.toHaveBeenCalled();
+      component.reloadFn();
+      expect(component.reload.emit).toHaveBeenCalled();
+    });
   });
 });

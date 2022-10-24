@@ -1,28 +1,28 @@
 # NgxDataLoader
 
-Lightweight Angular 14+ component that loads async data, handles errors and switches templates based on loading state. 
+Lightweight Angular component that loads async data, handles errors and switches templates based on loading state.
 
 [![Build status](https://img.shields.io/github/workflow/status/rensjaspers/ngx-data-loader/Tests)](https://github.com/rensjaspers/ngx-data-loader/actions/workflows/main.yml)
 [![NPM version](https://img.shields.io/npm/v/ngx-data-loader.svg)](https://www.npmjs.com/package/ngx-data-loader)
 [![NPM downloads](https://img.shields.io/npm/dm/ngx-data-loader.svg)](https://www.npmjs.com/package/ngx-data-loader)
 [![MIT license](https://img.shields.io/github/license/rensjaspers/ngx-data-loader)](https://github.com/rensjaspers/ngx-data-loader/blob/main/LICENSE)
 [![Minzipped size](https://img.shields.io/bundlephobia/minzip/ngx-data-loader)](https://bundlephobia.com/result?p=ngx-data-loader)
+[![CodeFactor](https://img.shields.io/codefactor/grade/github/rensjaspers/ngx-data-loader)](https://www.codefactor.io/repository/github/rensjaspers/ngx-data-loader)
 
 ## Description
 
-Most async data loading is done the same way: show a loading indicator while the data is being retrieved, then show the data when it's loaded, or show an error message or a retry button if the data failed to load.
+The `NgxDataLoaderComponent` lets you easily load any kind of async data, without having to worry about error handling, reloading and UI logic.
 
-While this seems simple, getting the logic right can be challenging, especially when error handling or data reloading is involved.
-
-The `NgxDataLoaderComponent` makes it easy. You only need to provide a `getDataFn` that returns a `Promise` or `Observable` of the data, and the `data`, `skeleton` and `error` templates. The component will handle all of the logic for you.
+You only need to provide a `getDataFn` that returns an `Observable` of the data, and an `ng-template` for each of the loading states.
 
 ## Features
 
 - Bring your own template for each loading state
-- Automatic template switching
-- Configurable auto retry
-- Easy manual retry/reload
+- Provides `cancel` and `reload` methods
 - Automatic cancellation of ongoing http requests on reload/destroy
+- Configure auto retry and timeouts
+- Supports server-side rendering through `initialData` input
+- Supports optimistic updates through `setData` method
 
 ## Demo
 
@@ -95,14 +95,15 @@ export class AppComponent {
 
 ## Properties
 
-| Name                                                           | Description                                                                                               |
-| -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| `@Input()`<br />`getDataFn: () => Observable<T> \| Promise<T>` | Function that returns a `Promise` or `Observable` of the data to be loaded. Called on init and on reload. |
-| `@Input()`<br />`retries: number`                              | Number of times to retry loading the data. Default: `0`                                                   |
-| `@Input()`<br />`retryDelay: number`                           | Delay in milliseconds between retries. Default: `1000`                                                    |
-| `@Input()`<br />`showStaleData: boolean`                       | Whether to show stale data while reloading. Default: `false`                                              |
-| `@Input()`<br />`skeletonDelay: number`                        | Delay in milliseconds before showing the skeleton. Default: `0`                                           |
-| `@Input()`<br />`timeout: number`                              | Number of milliseconds to wait for `getDataFn` to emit before throwing an error.                          |
+| Name                                             | Description                                                                                                                          |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `@Input()`<br />`getDataFn: () => Observable<T>` | Function that returns an `Observable` of the data to be loaded. Called on init and on reload.                                        |
+| `@Input()`<br />`initialData: T`                 | Optional. Data to be rendered on init. When set, `getDataFn` will not be invoked on init. The loading state will be set to `loaded`. |
+| `@Input()`<br />`retries: number`                | Optional. Number of times to retry loading the data. Default: `0`                                                                    |
+| `@Input()`<br />`retryDelay: number`             | Optional. Delay in milliseconds between retries. Default: `1000`                                                                     |
+| `@Input()`<br />`showStaleData: boolean`         | Optional. Whether to show stale data while reloading. Default: `false`                                                               |
+| `@Input()`<br />`skeletonDelay: number`          | Optional. Delay in milliseconds before showing the skeleton. Default: `0`                                                            |
+| `@Input()`<br />`timeout: number`                | Optional. Number of milliseconds to wait for `getDataFn` to emit before throwing an error.                                           |
 
 ## Events
 
@@ -116,9 +117,23 @@ export class AppComponent {
 
 ## Methods
 
-| Name     | Description                                                           |
-| -------- | --------------------------------------------------------------------- |
-| `reload` | Resets the loading state and calls the `getDataFn` that you provided. |
+| Name                               | Description                                                                      |
+| ---------------------------------- | -------------------------------------------------------------------------------- |
+| `reload: () => void`               | Resets the loading state and calls the `getDataFn` that you provided.            |
+| `cancel: () => void`               | Cancels the pending `getDataFn` and aborts any related http requests.            |
+| `setData: (data: T) => void`       | Updates the loading state as if the passed data were loaded through `getDataFn`. |
+| `setError: (error: Error) => void` | Updates the loading state as if the passed error were thrown by `getDataFn`.     |
+
+## Interfaces
+
+```typescript
+interface LoadingState<T> {
+  loading: boolean;
+  loaded: boolean;
+  error?: Error;
+  data?: T;
+}
+```
 
 ## License
 

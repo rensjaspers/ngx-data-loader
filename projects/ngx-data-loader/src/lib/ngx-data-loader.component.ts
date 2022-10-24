@@ -6,16 +6,27 @@ import {
   OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   TemplateRef,
 } from '@angular/core';
-import { concat, from, merge, Observable, of, ReplaySubject } from 'rxjs';
+import {
+  concat,
+  from,
+  merge,
+  Observable,
+  of,
+  ReplaySubject,
+  Subject,
+  throwError,
+} from 'rxjs';
 import {
   catchError,
-  distinctUntilChanged,
+  finalize,
   map,
   retry,
   scan,
   switchMap,
+  takeUntil,
   tap,
   timeout,
 } from 'rxjs/operators';
@@ -31,6 +42,7 @@ export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
   @ContentChild('errorTemplate') errorTemplate?: TemplateRef<any>;
   @ContentChild('skeletonTemplate') skeletonTemplate?: TemplateRef<any>;
   @Input() getDataFn!: () => Observable<T> | Promise<T>;
+  @Input() initialData?: T;
   @Input() retries = 0;
   @Input() retryDelay = 1000;
   @Input() showStaleData = false;
@@ -42,33 +54,46 @@ export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
   @Output() loadAttemptStarted = new EventEmitter<void>();
   @Output() loadingStateChange = new EventEmitter<LoadingState<T>>();
   loadingState$!: Observable<LoadingState<T>>;
-  private loadTrigger$ = new ReplaySubject<void>();
-  private readonly initialState: LoadingState<T> = {
-    loading: true,
-    loaded: false,
-    data: null,
-    error: null,
-  };
+  private loadSource = new ReplaySubject<void>();
+  private cancelSource = new Subject<void>();
+  private initialState!: LoadingState<T>;
 
   constructor() {}
 
   ngOnInit(): void {
+    this.initialState = this.getInitialState();
+
     this.loadingState$ = this.getLoadingStateChanges().pipe(
       scan((state, changes) => ({
         ...state,
         ...changes,
       })),
-      distinctUntilChanged((a, b) => this.stateHasChanged(a, b)),
       tap((state) => this.loadingStateChange.emit(state))
     );
   }
 
-  ngOnChanges(): void {
-    this.loadTrigger$.next();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['initialData']) {
+      console.log('Not triggering load because initialData changed');
+      return;
+    }
+    this.loadSource.next();
   }
 
   reload() {
-    this.loadTrigger$.next();
+    this.loadSource.next();
+  }
+
+  cancel() {
+    this.cancelSource.next();
+  }
+
+  setData(data: T) {
+    this.runCustomGetDataFn(() => of(data));
+  }
+
+  setError(error: Error) {
+    this.runCustomGetDataFn(() => throwError(() => error));
   }
 
   private getLoadingStateChanges() {
@@ -79,11 +104,11 @@ export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
   }
 
   private beforeLoad() {
-    return this.loadTrigger$.pipe(map(() => ({ loading: true, error: null })));
+    return this.loadSource.pipe(map(() => ({ loading: true, error: null })));
   }
 
   private afterLoad() {
-    return this.loadTrigger$.pipe(switchMap(() => this.getData()));
+    return this.loadSource.pipe(switchMap(() => this.getData()));
   }
 
   private getData() {
@@ -94,7 +119,8 @@ export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
       this.timeout ? timeout(this.timeout) : tap(),
       retry({ count: this.retries, delay: this.retryDelay }),
       catchError((error) => this.onError(error)),
-      tap(() => this.loadAttemptFinished.emit())
+      takeUntil(this.cancelSource),
+      finalize(() => this.loadAttemptFinished.emit())
     );
   }
 
@@ -103,12 +129,20 @@ export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
     return of({ error, data: null, loaded: false, loading: false });
   }
 
-  private stateHasChanged(a: LoadingState<T>, b: LoadingState<T>): boolean {
-    return (
-      a.data === b.data &&
-      a.loading === b.loading &&
-      a.error === b.error &&
-      a.loaded === b.loaded
-    );
+  private runCustomGetDataFn(customGetDataFn: () => Observable<any>) {
+    const originalGetDataFn = this.getDataFn;
+    this.getDataFn = customGetDataFn;
+    this.loadSource.next();
+    this.getDataFn = originalGetDataFn;
+  }
+
+  private getInitialState(): LoadingState<T> {
+    const hasInitialData = this.hasOwnProperty('initialData');
+    return {
+      data: this.initialData,
+      loaded: hasInitialData,
+      loading: false,
+      error: null,
+    };
   }
 }
