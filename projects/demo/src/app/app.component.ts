@@ -17,7 +17,7 @@ export class AppComponent {
 
   getData = () =>
     this.http.get<GetUsersResponse>('https://reqres.in/api/users').pipe(
-      map((response) => response.data as any),
+      map((response) => response.data),
       delay(1000)
     );
 

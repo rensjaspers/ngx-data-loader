@@ -129,7 +129,7 @@ export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
     return of({ error, data: null, loaded: false, loading: false });
   }
 
-  private runCustomGetDataFn(customGetDataFn: () => Observable<any>) {
+  private runCustomGetDataFn(customGetDataFn: () => Observable<T>) {
     const originalGetDataFn = this.getDataFn;
     this.getDataFn = customGetDataFn;
     this.loadSource.next();
