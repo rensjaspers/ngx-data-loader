@@ -74,7 +74,6 @@ export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['initialData']) {
-      console.log('Not triggering load because initialData changed');
       return;
     }
     this.loadSource.next();
