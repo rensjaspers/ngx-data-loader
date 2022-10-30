@@ -7,7 +7,7 @@ import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 })
 export class DataComponent implements OnInit {
   @Input() dataTemplate?: TemplateRef<unknown>;
-  @Input() data!: any;
+  @Input() data!: unknown;
   @Input() loading!: boolean;
   @Input() showStaleData!: boolean;
 

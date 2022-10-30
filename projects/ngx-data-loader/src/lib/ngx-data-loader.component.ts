@@ -123,7 +123,7 @@ export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
     );
   }
 
-  private onError(error: any) {
+  private onError(error: Error) {
     this.error.emit(error);
     return of({ error, data: null, loaded: false, loading: false });
   }
