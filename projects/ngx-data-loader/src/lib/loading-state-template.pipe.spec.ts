@@ -3,7 +3,7 @@ import { LoadingState } from './loading-state.interface';
 
 describe('LoadingStateTemplatePipe', () => {
   const pipe = new LoadingStateTemplatePipe();
-  const initialState: LoadingState<any> = {
+  const initialState: LoadingState<unknown> = {
     loading: true,
     loaded: false,
     error: null,

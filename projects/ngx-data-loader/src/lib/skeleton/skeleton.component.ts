@@ -7,7 +7,7 @@ import { delay, Observable, of } from 'rxjs';
   styleUrls: ['./skeleton.component.scss'],
 })
 export class SkeletonComponent implements OnInit {
-  @Input() skeletonTemplate?: TemplateRef<any>;
+  @Input() skeletonTemplate?: TemplateRef<unknown>;
   @Input() skeletonDelay = 0;
   showSkeleton$!: Observable<boolean>;
 

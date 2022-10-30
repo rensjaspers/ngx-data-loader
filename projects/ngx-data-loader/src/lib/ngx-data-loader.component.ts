@@ -38,9 +38,9 @@ import { LoadingState } from './loading-state.interface';
   styleUrls: ['./ngx-data-loader.component.scss'],
 })
 export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
-  @ContentChild('dataTemplate') dataTemplate?: TemplateRef<any>;
-  @ContentChild('errorTemplate') errorTemplate?: TemplateRef<any>;
-  @ContentChild('skeletonTemplate') skeletonTemplate?: TemplateRef<any>;
+  @ContentChild('dataTemplate') dataTemplate?: TemplateRef<unknown>;
+  @ContentChild('errorTemplate') errorTemplate?: TemplateRef<unknown>;
+  @ContentChild('skeletonTemplate') skeletonTemplate?: TemplateRef<unknown>;
   @Input() getDataFn!: () => Observable<T> | Promise<T>;
   @Input() initialData?: T;
   @Input() retries = 0;

@@ -87,11 +87,11 @@ export class AppComponent {
 
 ## Template slots
 
-| Name                                                                          | Description                                            | Local variables                                                                                                                                 |
-| ----------------------------------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@ContentChild('dataTemplate')`<br />`dataTemplate?: TemplateRef<any>`        | Template to be displayed when the data is loaded.      | `$implicit: T`: the resolved data.<br />`loading: boolean`: whether the data is reloading (only available if `showStaleData` is set to `true`). |
-| `@ContentChild('skeletonTemplate)`<br />`skeletonTemplate?: TemplateRef<any>` | Template to be displayed when the data is loading.     | _(none)_                                                                                                                                        |
-| `@ContentChild('errorTemplate')`<br />`errorTemplate?: TemplateRef<any>`      | Template to be displayed when the data failed to load. | `$implicit: Error<any>`: the error object.<br />`reloadFn: () => void`: can be called to trigger a retry.                                       |
+| Name                                                                              | Description                                            | Local variables                                                                                                                                 |
+| --------------------------------------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@ContentChild('dataTemplate')`<br />`dataTemplate?: TemplateRef<unknown>`        | Template to be displayed when the data is loaded.      | `$implicit: T`: the resolved data.<br />`loading: boolean`: whether the data is reloading (only available if `showStaleData` is set to `true`). |
+| `@ContentChild('skeletonTemplate)`<br />`skeletonTemplate?: TemplateRef<unknown>` | Template to be displayed when the data is loading.     | _(none)_                                                                                                                                        |
+| `@ContentChild('errorTemplate')`<br />`errorTemplate?: TemplateRef<unknown>`      | Template to be displayed when the data failed to load. | `$implicit: Error<unknown>`: the error object.<br />`reloadFn: () => void`: can be called to trigger a retry.                                   |
 
 ## Properties
 
