@@ -13,7 +13,7 @@ import {
   styleUrls: ['./error.component.scss'],
 })
 export class ErrorComponent implements OnInit {
-  @Input() errorTemplate?: TemplateRef<any>;
+  @Input() errorTemplate?: TemplateRef<unknown>;
   @Input() error?: Error | null;
   @Output() reload = new EventEmitter<void>();
 

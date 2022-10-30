@@ -7,7 +7,10 @@ type templateName = 'skeleton' | 'error' | 'data';
   name: 'loadingStateTemplate',
 })
 export class LoadingStateTemplatePipe implements PipeTransform {
-  transform(state: LoadingState<any>, showStaleData: boolean): templateName {
+  transform(
+    state: LoadingState<unknown>,
+    showStaleData: boolean
+  ): templateName {
     if (state.error) {
       return 'error';
     }
