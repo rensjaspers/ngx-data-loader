@@ -1,6 +1,6 @@
 # NgxDataLoader
 
-Lightweight Angular component that loads async data, handles errors and switches templates based on loading state.
+Lightweight Angular 14+ component for easy async data loading.
 
 [![Build status](https://img.shields.io/github/workflow/status/rensjaspers/ngx-data-loader/Tests)](https://github.com/rensjaspers/ngx-data-loader/actions/workflows/main.yml)
 [![NPM version](https://img.shields.io/npm/v/ngx-data-loader.svg)](https://www.npmjs.com/package/ngx-data-loader)
@@ -11,16 +11,16 @@ Lightweight Angular component that loads async data, handles errors and switches
 
 ## Description
 
-The `NgxDataLoaderComponent` lets you easily load any kind of async data, without having to worry about error handling, reloading and UI logic.
+The `NgxDataLoaderComponent` lets you load any kind of async data, without having to waste time on common stuff like error handling, cancel/reload strategies and template display logic.
 
-You only need to provide a `getDataFn` that returns an `Observable` of the data, and an `ng-template` for each of the loading states.
+You only need to provide a `getDataFn` that returns an `Observable` of the data. You can optionally provide an `ng-template` for each of the loading states.
 
 ## Features
 
-- Bring your own template for each loading state
-- Provides `cancel` and `reload` methods
-- Automatic cancellation of ongoing http requests on reload/destroy[^note]
-- Configure auto retry and timeouts
+- Bring your own template for each loading state (or not)
+- Provides `reload` and `cancel` methods
+- Automatic cancellation of ongoing http requests on cancel/reload/destroy[^note]
+- Configure auto retry and timeout
 - Supports server-side rendering through `initialData` input
 - Supports optimistic updates through `setData` method
 
@@ -28,7 +28,7 @@ You only need to provide a `getDataFn` that returns an `Observable` of the data,
 
 [View demo on StackBlitz](https://stackblitz.com/edit/ngx-data-loader-demo?file=src%2Fapp%2Fapp.component.html)
 
-## Getting started
+## Installation
 
 Install the package
 
@@ -51,18 +51,18 @@ import { NgxDataLoaderModule } from 'ngx-data-loader';
 export class AppModule {}
 ```
 
-Use the component
+## Usage
 
 ```html
 <!-- app.component.html -->
 <ngx-data-loader [getDataFn]="getTodo">
-  <!-- showing once data has finished loading-->
+  <!-- showing when data has loaded -->
   <ng-template #dataTemplate let-todo>
     Title: {{ todo.title }} <br />
     Completed: {{ todo.completed ? 'Yes' : 'No' }}
   </ng-template>
 
-  <!-- showing during initial loading phase -->
+  <!-- showing during loading phase -->
   <ng-template #skeletonTemplate> Loading... </ng-template>
 
   <!-- showing when error occurs -->
