@@ -37,7 +37,7 @@ import { LoadingState } from './loading-state.interface';
   templateUrl: './ngx-data-loader.component.html',
   styleUrls: ['./ngx-data-loader.component.scss'],
 })
-export class NgxDataLoaderComponent<T = any> implements OnInit, OnChanges {
+export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
   @ContentChild('dataTemplate') dataTemplate?: TemplateRef<unknown>;
   @ContentChild('errorTemplate') errorTemplate?: TemplateRef<unknown>;
   @ContentChild('skeletonTemplate') skeletonTemplate?: TemplateRef<unknown>;
