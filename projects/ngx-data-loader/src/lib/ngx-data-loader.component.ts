@@ -64,9 +64,9 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
     this.initialState = this.getInitialState();
 
     this.loadingState$ = this.getLoadingStateChanges().pipe(
-      scan((state, changes) => ({
+      scan((state, change) => ({
         ...state,
-        ...changes,
+        ...change,
       })),
       tap((state) => this.loadingStateChange.emit(state))
     );
@@ -76,7 +76,7 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
     if (changes['initialData']) {
       return;
     }
-    this.loadSource.next();
+    this.reload();
   }
 
   reload() {
@@ -131,7 +131,7 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
   private runCustomGetDataFn(customGetDataFn: () => Observable<T>) {
     const originalGetDataFn = this.getDataFn;
     this.getDataFn = customGetDataFn;
-    this.loadSource.next();
+    this.reload();
     this.getDataFn = originalGetDataFn;
   }
 
