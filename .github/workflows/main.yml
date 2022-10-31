@@ -18,3 +18,6 @@ jobs:
       - run: npm install
       - run: npm test -- --watch=false --code-coverage --browsers=ChromeHeadless
       - uses: codecov/codecov-action@v3
+        with:
+          directory: ./coverage/ngx-data-loader/
+          verbose: true
