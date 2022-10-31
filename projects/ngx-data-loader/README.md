@@ -11,13 +11,13 @@ Lightweight Angular 14+ component for easy async data loading.
 
 ## Description
 
-The `NgxDataLoaderComponent` lets you load any kind of async data, without having to waste time on common stuff like error handling, cancel/reload strategies and template display logic.
+The `NgxDataLoaderComponent` lets you load any kind of async data without having to waste time on common stuff like error handling, cancel/reload strategies and template display logic.
 
 You only need to provide a `getDataFn` that returns an `Observable` of the data. You can optionally provide an `ng-template` for each of the loading states.
 
 ## Features
 
-- Bring your own template for each loading state (or not)
+- Bring your own template for each loading stated
 - Provides `reload` and `cancel` methods
 - Automatic cancellation of ongoing http requests on cancel/reload/destroy[^note]
 - Configure auto retry and timeout
@@ -95,24 +95,24 @@ export class AppComponent {
 
 ## Properties
 
-| Name                                             | Description                                                                                                                          |
-| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `@Input()`<br />`getDataFn: () => Observable<T>` | Function that returns an `Observable` of the data to be loaded. Called on init and on reload.                                        |
-| `@Input()`<br />`initialData: T`                 | Optional. Data to be rendered on init. When set, `getDataFn` will not be invoked on init. The loading state will be set to `loaded`. |
-| `@Input()`<br />`retries: number`                | Optional. Number of times to retry loading the data. Default: `0`                                                                    |
-| `@Input()`<br />`retryDelay: number`             | Optional. Delay in milliseconds between retries. Default: `1000`                                                                     |
-| `@Input()`<br />`showStaleData: boolean`         | Optional. Whether to show stale data while reloading. Default: `false`                                                               |
-| `@Input()`<br />`skeletonDelay: number`          | Optional. Delay in milliseconds before showing the skeleton. Default: `0`                                                            |
-| `@Input()`<br />`timeout: number`                | Optional. Number of milliseconds to wait for `getDataFn` to emit before throwing an error.                                           |
+| Name                                              | Description                                                                                                                |
+| ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `@Input()`<br />`getDataFn!: () => Observable<T>` | Function that returns an `Observable` of the data to be loaded. Called on init and on reload.                              |
+| `@Input()`<br />`initialData?: T`                 | Data to be rendered on init. When set, `getDataFn` will not be invoked on init. The loading state will be set to `loaded`. |
+| `@Input()`<br />`retries: number`                 | Number of times to retry loading the data. Default: `0`                                                                    |
+| `@Input()`<br />`retryDelay: number`              | Delay in milliseconds between retries. Default: `1000`                                                                     |
+| `@Input()`<br />`showStaleData: boolean`          | Whether to show stale data while reloading. Default: `false`                                                               |
+| `@Input()`<br />`skeletonDelay: number`           | Delay in milliseconds before showing the skeleton. Default: `0`                                                            |
+| `@Input()`<br />`timeout?: number`                | Number of milliseconds to wait for `getDataFn` to emit before throwing an error.                                           |
 
 ## Events
 
 | Name                                                                 | Description                                                          |
 | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| `@Output()`<br />`dataLoaded: EventEmitter<T>`                       | Emitted when the data is loaded.                                     |
-| `@Output()`<br />`loadAttemptStarted: EventEmitter<void>`            | Emitted when the data loading is started.                            |
-| `@Output()`<br />`error: EventEmitter<Error>`                        | Emitted when the data failed to load.                                |
-| `@Output()`<br />`loadAttemptFinished: EventEmitter<void>`           | Emitted when the data has either loaded or failed to load.           |
+| `@Output()`<br />`dataLoaded: EventEmitter<T>`                       | Emits when the data is loaded.                                       |
+| `@Output()`<br />`loadAttemptStarted: EventEmitter<void>`            | Emits when the data loading is started.                              |
+| `@Output()`<br />`error: EventEmitter<Error>`                        | Emits when the data fails to load.                                   |
+| `@Output()`<br />`loadAttemptFinished: EventEmitter<void>`           | Emits when the data has either loaded or failed to load.             |
 | `@Output()`<br />`loadingStateChange: EventEmitter<LoadingState<T>>` | Emits entire loading state when any of the above events are emitted. |
 
 ## Methods
