@@ -18,7 +18,7 @@ You only need to provide a `getDataFn` that returns an `Observable` of the data.
 
 ## Features
 
-- Bring your own template for each loading stated
+- Bring your own template for each loading state
 - Provides `reload` and `cancel` methods
 - Automatic cancellation of ongoing http requests on cancel/reload/destroy[^note]
 - Configure auto retry and timeout
