@@ -12,7 +12,7 @@ Lightweight Angular 14+ component for easy async data loading.
 
 ## Description
 
-The `NgxDataLoaderComponent` lets you load any kind of async data without having to waste time on common stuff like error handling, cancel/reload strategies and template display logic.
+The `NgxDataLoaderComponent` lets you load any kind of async data without having to spend much time on common stuff like error handling, cancel/reload strategies and template display logic.
 
 You only need to provide a `getDataFn` that returns an `Observable` of the data. You can optionally provide an `ng-template` for each of the loading states.
 
