@@ -52,6 +52,7 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
    * @example
    * getDataFn = () => this.http.get('https://example.com/api/data')
    */
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @Input() getDataFn!: (args?: any) => Observable<T> | Promise<T>;
 
   /**
@@ -60,6 +61,7 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
    * @example
    * getDataFn = () => this.http.get('https://example.com/api/data')
    */
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   @Input() getDataFnArgs?: any;
 
   /**
