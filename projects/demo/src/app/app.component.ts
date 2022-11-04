@@ -1,7 +1,7 @@
-import { LoadingState } from './../../../ngx-data-loader/src/lib/loading-state.interface';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { delay, map } from 'rxjs/operators';
+import { LoadingState } from './../../../ngx-data-loader/src/lib/loading-state.interface';
 import { GetUsersResponse, User } from './get-users-response.interface';
 
 @Component({
