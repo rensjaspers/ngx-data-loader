@@ -71,7 +71,7 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
   @Input() initialData?: T;
 
   /**
-   * Number of milliseconds to debounce reload triggers.
+   * Number of milliseconds to debounce reloads.
    * @defaultValue `0`                                                                    |
    */
   @Input() debounceTime = 0;
