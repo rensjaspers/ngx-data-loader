@@ -144,6 +144,16 @@ describe('NgxDataLoaderComponent', () => {
       });
       expect(originalGetDataFnSpy).not.toHaveBeenCalled();
     });
+
+    it('should call getDataFn with new arguments when changed', () => {
+      originalGetDataFnSpy = jasmine.createSpy();
+      component.getDataFn = originalGetDataFnSpy.and.returnValue(of(testData));
+      component.reload();
+      expect(originalGetDataFnSpy).toHaveBeenCalledWith(undefined);
+      component.getDataFnArgs = 1;
+      component.ngOnChanges({});
+      expect(originalGetDataFnSpy).toHaveBeenCalledWith(1);
+    });
   });
 
   describe('setData', () => {

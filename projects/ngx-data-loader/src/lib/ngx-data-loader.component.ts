@@ -49,7 +49,15 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
    * @example
    * getDataFn = () => this.http.get('https://example.com/api/data')
    */
-  @Input() getDataFn!: () => Observable<T> | Promise<T>;
+  @Input() getDataFn!: (args?: any) => Observable<T> | Promise<T>;
+
+  /**
+   * Arguments to pass to `getDataFn`. Changes to this property will trigger a reload.
+   *
+   * @example
+   * getDataFn = () => this.http.get('https://example.com/api/data')
+   */
+  @Input() getDataFnArgs?: any;
 
   /**
    * Data to be rendered on init. When set, `getDataFn` will not be invoked on init.
@@ -127,6 +135,8 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
       })),
       tap((state) => this.loadingStateChange.emit(state))
     );
+
+    console.log(this.loadingState$);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -181,7 +191,7 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
 
   private getData() {
     this.loadAttemptStarted.emit();
-    return from(this.getDataFn()).pipe(
+    return from(this.getDataFn(this.getDataFnArgs)).pipe(
       map((data) => ({ data, loaded: true, loading: false })),
       tap((state) => this.dataLoaded.emit(state.data)),
       this.timeout ? timeout(this.timeout) : tap(),
