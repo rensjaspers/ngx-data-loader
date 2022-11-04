@@ -12,15 +12,18 @@ import {
 import {
   concat,
   from,
+  identity,
   merge,
   Observable,
   of,
   ReplaySubject,
   Subject,
   throwError,
+  timer,
 } from 'rxjs';
 import {
   catchError,
+  debounce,
   finalize,
   map,
   retry,
@@ -64,6 +67,12 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
    * The loading state will be set to `loaded`.
    */
   @Input() initialData?: T;
+
+  /**
+   * Number of milliseconds to debounce reload triggers.
+   * @defaultValue `0`                                                                    |
+   */
+  @Input() debounceTime = 0;
 
   /**
    * Number of times to retry loading the data.
@@ -119,7 +128,8 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
    */
   @Output() loadingStateChange = new EventEmitter<LoadingState<T>>();
   loadingState$!: Observable<LoadingState<T>>;
-  private loadSource = new ReplaySubject<void>();
+  private loadTriggerSource = new ReplaySubject<void>();
+  private loadTrigger$ = this.getLoadTrigger();
   private cancelSource = new Subject<void>();
   private initialState!: LoadingState<T>;
 
@@ -135,8 +145,6 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
       })),
       tap((state) => this.loadingStateChange.emit(state))
     );
-
-    console.log(this.loadingState$);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -150,7 +158,7 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
    *  Resets the loading state and calls `getDataFn`.
    */
   reload() {
-    this.loadSource.next();
+    this.loadTriggerSource.next();
   }
 
   /**
@@ -182,11 +190,11 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
   }
 
   private beforeLoad() {
-    return this.loadSource.pipe(map(() => ({ loading: true, error: null })));
+    return this.loadTrigger$.pipe(map(() => ({ loading: true, error: null })));
   }
 
   private afterLoad() {
-    return this.loadSource.pipe(switchMap(() => this.getData()));
+    return this.loadTrigger$.pipe(switchMap(() => this.getData()));
   }
 
   private getData() {
@@ -194,7 +202,7 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
     return from(this.getDataFn(this.getDataFnArgs)).pipe(
       map((data) => ({ data, loaded: true, loading: false })),
       tap((state) => this.dataLoaded.emit(state.data)),
-      this.timeout ? timeout(this.timeout) : tap(),
+      this.timeout ? timeout(this.timeout) : identity,
       retry({ count: this.retries, delay: this.retryDelay }),
       catchError((error) => this.onError(error)),
       takeUntil(this.cancelSource),
@@ -222,5 +230,13 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
       loading: false,
       error: null,
     };
+  }
+
+  private getLoadTrigger() {
+    return this.loadTriggerSource.pipe(
+      debounce((value) =>
+        this.debounceTime > 0 ? timer(this.debounceTime) : of(value)
+      )
+    );
   }
 }
