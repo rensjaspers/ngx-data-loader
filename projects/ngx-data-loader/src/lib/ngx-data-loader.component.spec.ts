@@ -155,24 +155,46 @@ describe('NgxDataLoaderComponent', () => {
       expect(getDataFnSpy).toHaveBeenCalledWith(1);
     });
 
-    it('should debounce getDataFn calls when debounceTime is set', fakeAsync(() => {
-      getDataFnSpy = jasmine.createSpy();
-      component.getDataFn = getDataFnSpy.and.returnValue(of(testData));
-      component.debounceTime = 100;
-      component.reload();
-      component.reload();
-      tick(50);
-      expect(getDataFnSpy).not.toHaveBeenCalled();
-      tick(50);
-      expect(getDataFnSpy).toHaveBeenCalledTimes(1);
-      flush();
-      getDataFnSpy.calls.reset();
-      component.debounceTime = 0;
-      component.reload();
-      component.reload();
-      tick();
-      expect(getDataFnSpy).toHaveBeenCalledTimes(2);
-    }));
+    describe('debounceTime', () => {
+      it('should debounce getDataFn calls when set', fakeAsync(() => {
+        getDataFnSpy = jasmine.createSpy();
+        component.getDataFn = getDataFnSpy.and.returnValue(of(testData));
+        component.debounceTime = 100;
+        component.reload();
+        component.reload();
+        tick(50);
+        expect(getDataFnSpy).not.toHaveBeenCalled();
+        tick(50);
+        expect(getDataFnSpy).toHaveBeenCalledTimes(1);
+        flush();
+        getDataFnSpy.calls.reset();
+        component.debounceTime = 0;
+        component.reload();
+        component.reload();
+        tick();
+        expect(getDataFnSpy).toHaveBeenCalledTimes(2);
+      }));
+
+      it('should not debounce displaying the loader', fakeAsync(() => {
+        component.getDataFn = () => of(testData);
+        component.debounceTime = 100;
+        component.reload();
+        tick(50);
+        fixture.detectChanges();
+        expect(getSkeletonEl()).toBeTruthy();
+        tick(50);
+        fixture.detectChanges();
+        expect(getSkeletonEl()).toBeNull();
+        component.reload();
+        tick(50);
+        fixture.detectChanges();
+        expect(getSkeletonEl()).toBeTruthy();
+        tick(50);
+        fixture.detectChanges();
+        expect(getSkeletonEl()).toBeNull();
+        flush();
+      }));
+    });
   });
 
   describe('setData', () => {
