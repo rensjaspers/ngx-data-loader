@@ -20,7 +20,7 @@ export class AppComponent {
 
   getUser = (userId: string) =>
     this.http
-      .get<GetUsersResponse>('https://reqres.in/api/users/' + userId || '')
+      .get<GetUsersResponse>('https://reqres.in/api/users/' + (userId || ''))
       .pipe(
         map((response) => response.data),
         delay(1000)
