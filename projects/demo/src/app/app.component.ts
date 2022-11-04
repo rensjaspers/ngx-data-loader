@@ -16,11 +16,11 @@ export class AppComponent {
   retries = 0;
   retryDelay = 1000;
   userId = '1';
-  debounceTime = 1000;
+  debounceTime = 0;
 
-  getUser = () =>
+  getUser = (userId: string) =>
     this.http
-      .get<GetUsersResponse>('https://reqres.in/api/users/' + this.userId || '')
+      .get<GetUsersResponse>('https://reqres.in/api/users/' + userId || '')
       .pipe(
         map((response) => response.data),
         delay(1000)
