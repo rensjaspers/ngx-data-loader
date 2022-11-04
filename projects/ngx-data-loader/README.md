@@ -99,7 +99,9 @@ export class AppComponent {
 | Name                                              | Description                                                                                                                |
 | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | `@Input()`<br />`getDataFn!: () => Observable<T>` | Function that returns an `Observable` of the data to be loaded. Called on init and on reload.                              |
+| `@Input()`<br />`getDataFnArgs?: any`             | Arguments to pass to `getDataFn`. Changes to this property will trigger a reload.                                          |
 | `@Input()`<br />`initialData?: T`                 | Data to be rendered on init. When set, `getDataFn` will not be invoked on init. The loading state will be set to `loaded`. |
+| `@Input()`<br />`debounceTime: number`            | Number of milliseconds to debounce reloads.                                                                                |
 | `@Input()`<br />`retries: number`                 | Number of times to retry loading the data. Default: `0`                                                                    |
 | `@Input()`<br />`retryDelay: number`              | Delay in milliseconds between retries. Default: `1000`                                                                     |
 | `@Input()`<br />`showStaleData: boolean`          | Whether to show stale data while reloading. Default: `false`                                                               |
