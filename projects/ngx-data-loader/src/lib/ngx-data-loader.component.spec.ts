@@ -15,7 +15,7 @@ import { SkeletonComponent } from './skeleton/skeleton.component';
 describe('NgxDataLoaderComponent', () => {
   let component: NgxDataLoaderComponent;
   let fixture: ComponentFixture<NgxDataLoaderComponent>;
-  let originalGetDataFnSpy: jasmine.Spy;
+  let getDataFnSpy: jasmine.Spy;
 
   const testData = { data: 'data' };
   const customValue = 'custom value';
@@ -48,11 +48,11 @@ describe('NgxDataLoaderComponent', () => {
     });
 
     it('should not call getDataFn before ngOnChanges', () => {
-      originalGetDataFnSpy = jasmine.createSpy();
-      component.getDataFn = originalGetDataFnSpy.and.returnValue(of(testData));
-      expect(originalGetDataFnSpy).not.toHaveBeenCalled();
+      getDataFnSpy = jasmine.createSpy();
+      component.getDataFn = getDataFnSpy.and.returnValue(of(testData));
+      expect(getDataFnSpy).not.toHaveBeenCalled();
       component.ngOnChanges({});
-      expect(originalGetDataFnSpy).toHaveBeenCalled();
+      expect(getDataFnSpy).toHaveBeenCalled();
     });
 
     it('should render only a skeleton component when loading first time', () => {
@@ -132,8 +132,8 @@ describe('NgxDataLoaderComponent', () => {
     }));
 
     it('should not call getDataFn after ngOnChanges when initialData input is set', () => {
-      originalGetDataFnSpy = jasmine.createSpy();
-      component.getDataFn = originalGetDataFnSpy.and.returnValue(of(testData));
+      getDataFnSpy = jasmine.createSpy();
+      component.getDataFn = getDataFnSpy.and.returnValue(of(testData));
       component.ngOnChanges({
         initialData: {
           previousValue: undefined,
@@ -142,20 +142,30 @@ describe('NgxDataLoaderComponent', () => {
           isFirstChange: () => true,
         },
       });
-      expect(originalGetDataFnSpy).not.toHaveBeenCalled();
+      expect(getDataFnSpy).not.toHaveBeenCalled();
+    });
+
+    it('should call getDataFn with new arguments when changed', () => {
+      getDataFnSpy = jasmine.createSpy();
+      component.getDataFn = getDataFnSpy.and.returnValue(of(testData));
+      component.reload();
+      expect(getDataFnSpy).toHaveBeenCalledWith(undefined);
+      component.getDataFnArgs = 1;
+      component.ngOnChanges({});
+      expect(getDataFnSpy).toHaveBeenCalledWith(1);
     });
   });
 
   describe('setData', () => {
     beforeEach(() => {
       spyOn(component.dataLoaded, 'emit');
-      originalGetDataFnSpy = jasmine.createSpy();
-      component.getDataFn = originalGetDataFnSpy.and.returnValue(of(testData));
+      getDataFnSpy = jasmine.createSpy();
+      component.getDataFn = getDataFnSpy.and.returnValue(of(testData));
       component.setData(customValue);
     });
 
     it('should prevent the original getDataFn from being called', () => {
-      expect(originalGetDataFnSpy).not.toHaveBeenCalled();
+      expect(getDataFnSpy).not.toHaveBeenCalled();
     });
 
     it('should load and emit custom data', () => {
@@ -164,7 +174,7 @@ describe('NgxDataLoaderComponent', () => {
 
     it('should restore the original getDataFn afterwards', () => {
       component.reload();
-      expect(originalGetDataFnSpy).toHaveBeenCalled();
+      expect(getDataFnSpy).toHaveBeenCalled();
     });
   });
 
@@ -172,13 +182,13 @@ describe('NgxDataLoaderComponent', () => {
     const customError = new Error('custom error');
     beforeEach(() => {
       spyOn(component.error, 'emit');
-      originalGetDataFnSpy = jasmine.createSpy();
-      component.getDataFn = originalGetDataFnSpy.and.returnValue(of(testData));
+      getDataFnSpy = jasmine.createSpy();
+      component.getDataFn = getDataFnSpy.and.returnValue(of(testData));
       component.setError(customError);
     });
 
     it('should prevent the original getDataFn from being called', () => {
-      expect(originalGetDataFnSpy).not.toHaveBeenCalled();
+      expect(getDataFnSpy).not.toHaveBeenCalled();
     });
 
     it('should load and emit custom error', () => {
@@ -187,7 +197,7 @@ describe('NgxDataLoaderComponent', () => {
 
     it('should restore the original getDataFn afterwards', () => {
       component.reload();
-      expect(originalGetDataFnSpy).toHaveBeenCalled();
+      expect(getDataFnSpy).toHaveBeenCalled();
     });
   });
 
