@@ -10,7 +10,9 @@
 
   <ngx-data-loader
     #dataLoader
-    [getDataFn]="getData"
+    [getDataFn]="getUser"
+    [getDataFnArgs]="userId"
+    [debounceTime]="debounceTime"
     [retries]="retries"
     [retryDelay]="retryDelay"
     [showStaleData]="showStaleData"
@@ -33,6 +35,16 @@
 </main>
 
 <div class="controls">
+  <div class="field">
+    <label for="args">getDataFnArgs</label>
+    <input type="text" [(ngModel)]="userId" id="args" />
+    <small>Arguments to getDataFn.</small>
+  </div>
+  <div class="field">
+    <label for="debounceTime">debounceTime</label>
+    <input type="number" [(ngModel)]="debounceTime" id="debounceTime" />
+    <small>Number of milliseconds to debounce reload triggers.</small>
+  </div>
   <div class="field">
     <label for="timeout">timeout</label>
     <input type="number" [(ngModel)]="timeout" id="timeout" />

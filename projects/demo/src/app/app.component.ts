@@ -15,12 +15,16 @@ export class AppComponent {
   skeletonDelay = 0;
   retries = 0;
   retryDelay = 1000;
+  userId = '1';
+  debounceTime = 1000;
 
-  getData = () =>
-    this.http.get<GetUsersResponse>('https://reqres.in/api/users').pipe(
-      map((response) => response.data),
-      delay(1000)
-    );
+  getUser = () =>
+    this.http
+      .get<GetUsersResponse>('https://reqres.in/api/users/' + this.userId || '')
+      .pipe(
+        map((response) => response.data),
+        delay(1000)
+      );
 
   constructor(private http: HttpClient) {}
 
