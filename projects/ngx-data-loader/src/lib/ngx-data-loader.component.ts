@@ -131,7 +131,8 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
   @Output() loadingStateChange = new EventEmitter<LoadingState<T>>();
   loadingState$!: Observable<LoadingState<T>>;
   private loadTriggerSource = new ReplaySubject<void>();
-  private loadTrigger$ = this.getLoadTrigger();
+  private loadTrigger$ = this.loadTriggerSource.asObservable();
+  private debouncedLoadTrigger$ = this.getDebouncedLoadTrigger();
   private cancelSource = new Subject<void>();
   private initialState!: LoadingState<T>;
 
@@ -196,7 +197,7 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
   }
 
   private afterLoad() {
-    return this.loadTrigger$.pipe(switchMap(() => this.getData()));
+    return this.debouncedLoadTrigger$.pipe(switchMap(() => this.getData()));
   }
 
   private getData() {
@@ -234,8 +235,8 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
     };
   }
 
-  private getLoadTrigger() {
-    return this.loadTriggerSource.pipe(
+  private getDebouncedLoadTrigger() {
+    return this.loadTrigger$.pipe(
       debounce((value) =>
         this.debounceTime > 0 ? timer(this.debounceTime) : of(value)
       )
