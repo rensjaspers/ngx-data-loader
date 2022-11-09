@@ -9,11 +9,11 @@ import { delay, Observable, of } from 'rxjs';
 export class LoadingComponent implements OnInit {
   @Input() loadingTemplate?: TemplateRef<unknown>;
   @Input() loadingTemplateDelay = 0;
-  showSkeleton$!: Observable<boolean>;
+  showTemplate$!: Observable<boolean>;
 
   constructor() {}
 
   ngOnInit(): void {
-    this.showSkeleton$ = of(true).pipe(delay(this.loadingTemplateDelay));
+    this.showTemplate$ = of(true).pipe(delay(this.loadingTemplateDelay));
   }
 }
