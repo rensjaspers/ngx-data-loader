@@ -175,14 +175,14 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
    * Updates the loading state as if the passed data were loaded through `loadFn`.
    */
   setData(data: T) {
-    this.runCustomloadFn(() => of(data));
+    this.runCustomLoadFn(() => of(data));
   }
 
   /**
    * Updates the loading state as if the passed error were thrown by `loadFn`.
    */
   setError(error: Error) {
-    this.runCustomloadFn(() => throwError(() => error));
+    this.runCustomLoadFn(() => throwError(() => error));
   }
 
   private getLoadingStateChanges() {
@@ -218,11 +218,11 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
     return of({ error, data: null, loaded: false, loading: false });
   }
 
-  private runCustomloadFn(customloadFn: () => Observable<T>) {
-    const originalloadFn = this.loadFn;
-    this.loadFn = customloadFn;
+  private runCustomLoadFn(customLoadFn: () => Observable<T>) {
+    const originalFn = this.loadFn;
+    this.loadFn = customLoadFn;
     this.reload();
-    this.loadFn = originalloadFn;
+    this.loadFn = originalFn;
   }
 
   private getInitialState(): LoadingState<T> {
