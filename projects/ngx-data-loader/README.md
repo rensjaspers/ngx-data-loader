@@ -12,7 +12,7 @@ Lightweight Angular 14+ component for easy async data loading.
 
 ## Description
 
-The `NgxDataLoaderComponent` lets you load any kind of async data without having to spend much time on common stuff like error handling, cancel/reload strategies and template display logic.
+The `NgxDataLoaderComponent` lets you load any kind of async data without having to spend time on common stuff like error handling, cancel/reload strategies and template display logic.
 
 You only need to provide a `getDataFn` that returns an `Observable` of the data. You can optionally provide an `ng-template` for each of the loading states.
 
@@ -104,7 +104,7 @@ export class AppComponent {
 | `@Input()`<br />`debounceTime: number`            | Number of milliseconds to debounce reloads.                                                                                |
 | `@Input()`<br />`retries: number`                 | Number of times to retry loading the data. Default: `0`                                                                    |
 | `@Input()`<br />`retryDelay: number`              | Delay in milliseconds between retries. Default: `1000`                                                                     |
-| `@Input()`<br />`showStaleData: boolean`          | Whether to show stale data while reloading. Default: `false`                                                               |
+| `@Input()`<br />`showStaleData: boolean`          | Whether to keep displaying previously loaded data while reloading. Default: `false`                                                               |
 | `@Input()`<br />`skeletonDelay: number`           | Delay in milliseconds before showing the skeleton. Default: `0`                                                            |
 | `@Input()`<br />`timeout?: number`                | Number of milliseconds to wait for `getDataFn` to emit before throwing an error.                                           |
 
