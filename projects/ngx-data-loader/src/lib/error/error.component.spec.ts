@@ -20,11 +20,11 @@ describe('ErrorComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('reloadFn', () => {
+  describe('retry', () => {
     it('should emit an error when called', () => {
       spyOn(component.reload, 'emit');
       expect(component.reload.emit).not.toHaveBeenCalled();
-      component.reloadFn();
+      component.retry();
       expect(component.reload.emit).toHaveBeenCalled();
     });
   });

@@ -1,6 +1,6 @@
 <ng-container
   *ngTemplateOutlet="
-    dataTemplate || defaultDataTemplate;
+    loadedTemplate || defaultDataTemplate;
     context: { $implicit: data, loading: loading }
   "
 ></ng-container>

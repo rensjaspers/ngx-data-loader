@@ -14,7 +14,7 @@ Lightweight Angular 14+ component for easy async data loading.
 
 The `NgxDataLoaderComponent` lets you load any kind of async data without having to spend time on common stuff like error handling, cancel/reload strategies and template display logic.
 
-You only need to provide a `getDataFn` that returns an `Observable` of the data. You can optionally provide an `ng-template` for each of the loading states.
+You only need to provide a `loadFn` that returns an `Observable` of the data. You can optionally provide an `ng-template` for each of the loading states.
 
 ## Features
 
@@ -56,18 +56,15 @@ export class AppModule {}
 
 ```html
 <!-- app.component.html -->
-<ngx-data-loader [getDataFn]="getTodo">
-  <!-- showing when data has loaded -->
-  <ng-template #dataTemplate let-todo>
+<ngx-data-loader [loadFn]="getTodo">
+  <ng-template #loading> Loading... </ng-template>
+
+  <ng-template #loaded let-todo>
     Title: {{ todo.title }} <br />
     Completed: {{ todo.completed ? 'Yes' : 'No' }}
   </ng-template>
 
-  <!-- showing during loading phase -->
-  <ng-template #skeletonTemplate> Loading... </ng-template>
-
-  <!-- showing when error occurs -->
-  <ng-template #errorTemplate let-error let-retry="reloadFn">
+  <ng-template #error let-error let-retry="retry">
     Oops, something went wrong! Details: {{ error.message }}
     <button (click)="retry()">Retry</button>
   </ng-template>
@@ -88,25 +85,25 @@ export class AppComponent {
 
 ## Template slots
 
-| Name                                                                              | Description                                            | Local variables                                                                                                                                 |
-| --------------------------------------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@ContentChild('dataTemplate')`<br />`dataTemplate?: TemplateRef<unknown>`        | Template to be displayed when the data is loaded.      | `$implicit: T`: the resolved data.<br />`loading: boolean`: whether the data is reloading (only available if `showStaleData` is set to `true`). |
-| `@ContentChild('skeletonTemplate)`<br />`skeletonTemplate?: TemplateRef<unknown>` | Template to be displayed when the data is loading.     | _(none)_                                                                                                                                        |
-| `@ContentChild('errorTemplate')`<br />`errorTemplate?: TemplateRef<unknown>`      | Template to be displayed when the data failed to load. | `$implicit: Error<unknown>`: the error object.<br />`reloadFn: () => void`: can be called to trigger a retry.                                   |
+| Name                                                                            | Description                                            | Local variables                                                                                                                                 |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@ContentChild('loaded')`<br />`loadedTemplate?: TemplateRef<unknown>`          | Template to be displayed when the data is loaded.      | `$implicit: T`: the resolved data.<br />`loading: boolean`: whether the data is reloading (only available if `showStaleData` is set to `true`). |
+| `@ContentChild('loadingTemplate)`<br />`loadingTemplate?: TemplateRef<unknown>` | Template to be displayed when the data is loading.     | _(none)_                                                                                                                                        |
+| `@ContentChild('error')`<br />`errorTemplate?: TemplateRef<unknown>`            | Template to be displayed when the data failed to load. | `$implicit: Error<unknown>`: the error object.<br />`retry: () => void`: can be called to trigger a retry.                                      |
 
 ## Properties
 
-| Name                                              | Description                                                                                                                |
-| ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `@Input()`<br />`getDataFn!: () => Observable<T>` | Function that returns an `Observable` of the data to be loaded. Called on init and on reload.                              |
-| `@Input()`<br />`getDataFnArgs?: any`             | Arguments to pass to `getDataFn`. Changes to this property will trigger a reload.                                          |
-| `@Input()`<br />`initialData?: T`                 | Data to be rendered on init. When set, `getDataFn` will not be invoked on init. The loading state will be set to `loaded`. |
-| `@Input()`<br />`debounceTime: number`            | Number of milliseconds to debounce reloads.                                                                                |
-| `@Input()`<br />`retries: number`                 | Number of times to retry loading the data. Default: `0`                                                                    |
-| `@Input()`<br />`retryDelay: number`              | Delay in milliseconds between retries. Default: `1000`                                                                     |
-| `@Input()`<br />`showStaleData: boolean`          | Whether to keep displaying previously loaded data while reloading. Default: `false`                                                               |
-| `@Input()`<br />`skeletonDelay: number`           | Delay in milliseconds before showing the skeleton. Default: `0`                                                            |
-| `@Input()`<br />`timeout?: number`                | Number of milliseconds to wait for `getDataFn` to emit before throwing an error.                                           |
+| Name                                           | Description                                                                                                             |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `@Input()`<br />`loadFn!: () => Observable<T>` | Function that returns an `Observable` of the data to be loaded. Called on init and on reload.                           |
+| `@Input()`<br />`loadFnArgs?: any`             | Arguments to pass to `loadFn`. Changes to this property will trigger a reload.                                          |
+| `@Input()`<br />`initialData?: T`              | Data to be rendered on init. When set, `loadFn` will not be invoked on init. The loading state will be set to `loaded`. |
+| `@Input()`<br />`debounceTime: number`         | Number of milliseconds to debounce reloads.                                                                             |
+| `@Input()`<br />`retries: number`              | Number of times to retry loading the data. Default: `0`                                                                 |
+| `@Input()`<br />`retryDelay: number`           | Delay in milliseconds between retries. Default: `1000`                                                                  |
+| `@Input()`<br />`showStaleData: boolean`       | Whether to keep displaying previously loaded data while reloading. Default: `false`                                     |
+| `@Input()`<br />`loadingTemplateDelay: number` | Delay in milliseconds before showing the loading template. Default: `0`                                                 |
+| `@Input()`<br />`timeout?: number`             | Number of milliseconds to wait for `loadFn` to emit before throwing an error.                                           |
 
 ## Events
 
@@ -120,12 +117,12 @@ export class AppComponent {
 
 ## Methods
 
-| Name                               | Description                                                                      |
-| ---------------------------------- | -------------------------------------------------------------------------------- |
-| `reload: () => void`               | Resets the loading state and calls the `getDataFn` that you provided.            |
-| `cancel: () => void`               | Cancels the pending `getDataFn` and aborts any related http requests[^note].     |
-| `setData: (data: T) => void`       | Updates the loading state as if the passed data were loaded through `getDataFn`. |
-| `setError: (error: Error) => void` | Updates the loading state as if the passed error were thrown by `getDataFn`.     |
+| Name                               | Description                                                                   |
+| ---------------------------------- | ----------------------------------------------------------------------------- |
+| `reload: () => void`               | Resets the loading state and calls the `loadFn` that you provided.            |
+| `cancel: () => void`               | Cancels the pending `loadFn` and aborts any related http requests[^note].     |
+| `setData: (data: T) => void`       | Updates the loading state as if the passed data were loaded through `loadFn`. |
+| `setError: (error: Error) => void` | Updates the loading state as if the passed error were thrown by `loadFn`.     |
 
 [^note]: You must use Angular's `HttpClient` for http request cancellation to work.
 

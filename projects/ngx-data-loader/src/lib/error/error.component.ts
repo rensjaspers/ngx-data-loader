@@ -17,7 +17,7 @@ export class ErrorComponent implements OnInit {
   @Input() error?: Error | null;
   @Output() reload = new EventEmitter<void>();
 
-  reloadFn = () => this.reload.emit();
+  retry = () => this.reload.emit();
 
   constructor() {}
 

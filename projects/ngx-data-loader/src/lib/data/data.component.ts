@@ -6,7 +6,7 @@ import { Component, Input, OnInit, TemplateRef } from '@angular/core';
   styleUrls: ['./data.component.scss'],
 })
 export class DataComponent implements OnInit {
-  @Input() dataTemplate?: TemplateRef<unknown>;
+  @Input() loadedTemplate?: TemplateRef<unknown>;
   @Input() data!: unknown;
   @Input() loading!: boolean;
   @Input() showStaleData!: boolean;

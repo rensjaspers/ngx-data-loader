@@ -11,14 +11,14 @@
       *ngSwitchCase="'data'"
       [data]="state.data"
       [loading]="state.loading"
-      [dataTemplate]="dataTemplate"
+      [loadedTemplate]="loadedTemplate"
       [showStaleData]="showStaleData"
     ></ngx-data-loader-data>
 
-    <ngx-data-loader-skeleton
-      *ngSwitchCase="'skeleton'"
-      [skeletonDelay]="skeletonDelay"
-      [skeletonTemplate]="skeletonTemplate"
-    ></ngx-data-loader-skeleton>
+    <ngx-data-loader-loading
+      *ngSwitchCase="'loading'"
+      [loadingTemplateDelay]="loadingTemplateDelay"
+      [loadingTemplate]="loadingTemplate"
+    ></ngx-data-loader-loading>
   </ng-container>
 </ng-container>

@@ -1,7 +1,7 @@
 <ng-container
   *ngTemplateOutlet="
     errorTemplate || defaultErrorTemplate;
-    context: { $implicit: error, reloadFn: reloadFn }
+    context: { $implicit: error, retry: retry }
   "
 ></ng-container>
 

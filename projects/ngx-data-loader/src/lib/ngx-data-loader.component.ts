@@ -41,31 +41,31 @@ import { LoadingState } from './loading-state.interface';
   styleUrls: ['./ngx-data-loader.component.scss'],
 })
 export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
-  @ContentChild('dataTemplate') dataTemplate?: TemplateRef<unknown>;
-  @ContentChild('errorTemplate') errorTemplate?: TemplateRef<unknown>;
-  @ContentChild('skeletonTemplate') skeletonTemplate?: TemplateRef<unknown>;
+  @ContentChild('loaded') loadedTemplate?: TemplateRef<unknown>;
+  @ContentChild('error') errorTemplate?: TemplateRef<unknown>;
+  @ContentChild('loading') loadingTemplate?: TemplateRef<unknown>;
 
   /**
    * Function that returns an `Observable` of the data to be loaded.
    * Called on init and on reload.
    *
    * @example
-   * getDataFn = () => this.http.get('https://example.com/api/data')
+   * loadFn = () => this.http.get('https://example.com/api/data')
    */
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  @Input() getDataFn!: (args?: any) => Observable<T> | Promise<T>;
+  @Input() loadFn!: (args?: any) => Observable<T> | Promise<T>;
 
   /**
-   * Arguments to pass to `getDataFn`. Changes to this property will trigger a reload.
+   * Arguments to pass to `loadFn`. Changes to this property will trigger a reload.
    *
    * @example
-   * getDataFn = () => this.http.get('https://example.com/api/data')
+   * loadFn = () => this.http.get('https://example.com/api/data')
    */
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  @Input() getDataFnArgs?: any;
+  @Input() loadFnArgs?: any;
 
   /**
-   * Data to be rendered on init. When set, `getDataFn` will not be invoked on init.
+   * Data to be rendered on init. When set, `loadFn` will not be invoked on init.
    * The loading state will be set to `loaded`.
    */
   @Input() initialData?: T;
@@ -89,19 +89,19 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
   @Input() retryDelay = 1000;
 
   /**
-   * Whether to show stale data while reloading.
+   * Whether to keep displaying previously loaded data while reloading.
    * @defaultValue `false`
    */
   @Input() showStaleData = false;
 
   /**
-   * Delay in milliseconds before showing the skeleton.
+   * Delay in milliseconds before showing the loading template.
    * @defaultValue `0`
    */
-  @Input() skeletonDelay = 0;
+  @Input() loadingTemplateDelay = 0;
 
   /**
-   * Number of milliseconds to wait for `getDataFn` to emit before throwing an error.
+   * Number of milliseconds to wait for `loadFn` to emit before throwing an error.
    */
   @Input() timeout?: number;
 
@@ -158,31 +158,31 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
   }
 
   /**
-   *  Resets the loading state and calls `getDataFn`.
+   *  Resets the loading state and calls `loadFn`.
    */
   reload() {
     this.loadTriggerSource.next();
   }
 
   /**
-   * Cancels `getDataFn`. Loading state will remain unchanged.
+   * Cancels `loadFn`. Loading state will remain unchanged.
    */
   cancel() {
     this.cancelSource.next();
   }
 
   /**
-   * Updates the loading state as if the passed data were loaded through `getDataFn`.
+   * Updates the loading state as if the passed data were loaded through `loadFn`.
    */
   setData(data: T) {
-    this.runCustomGetDataFn(() => of(data));
+    this.runCustomloadFn(() => of(data));
   }
 
   /**
-   * Updates the loading state as if the passed error were thrown by `getDataFn`.
+   * Updates the loading state as if the passed error were thrown by `loadFn`.
    */
   setError(error: Error) {
-    this.runCustomGetDataFn(() => throwError(() => error));
+    this.runCustomloadFn(() => throwError(() => error));
   }
 
   private getLoadingStateChanges() {
@@ -202,7 +202,7 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
 
   private getData() {
     this.loadAttemptStarted.emit();
-    return from(this.getDataFn(this.getDataFnArgs)).pipe(
+    return from(this.loadFn(this.loadFnArgs)).pipe(
       map((data) => ({ data, loaded: true, loading: false })),
       tap((state) => this.dataLoaded.emit(state.data)),
       this.timeout ? timeout(this.timeout) : identity,
@@ -218,11 +218,11 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
     return of({ error, data: null, loaded: false, loading: false });
   }
 
-  private runCustomGetDataFn(customGetDataFn: () => Observable<T>) {
-    const originalGetDataFn = this.getDataFn;
-    this.getDataFn = customGetDataFn;
+  private runCustomloadFn(customloadFn: () => Observable<T>) {
+    const originalloadFn = this.loadFn;
+    this.loadFn = customloadFn;
     this.reload();
-    this.getDataFn = originalGetDataFn;
+    this.loadFn = originalloadFn;
   }
 
   private getInitialState(): LoadingState<T> {
