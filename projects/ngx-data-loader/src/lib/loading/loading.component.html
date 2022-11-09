@@ -1,9 +1,9 @@
 <ng-container *ngIf="showSkeleton$ | async">
   <ng-container
-    *ngTemplateOutlet="skeletonTemplate || defaultSkeletonTemplate"
+    *ngTemplateOutlet="loadingTemplate || defaultloadingTemplate"
   ></ng-container>
 </ng-container>
 
-<ng-template #defaultSkeletonTemplate>
+<ng-template #defaultloadingTemplate>
   <!-- no initial loading template provided -->
 </ng-template>

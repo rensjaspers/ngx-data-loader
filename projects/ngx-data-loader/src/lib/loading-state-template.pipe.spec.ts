@@ -19,15 +19,15 @@ describe('LoadingStateTemplatePipe', () => {
     expect(pipe.transform(errored, true)).toBe('error');
   });
 
-  it('should return skeleton while loading for the first time', () => {
+  it('should return loading while loading for the first time', () => {
     const firstTimeLoading = { ...initialState, loaded: false, loading: true };
-    expect(pipe.transform(firstTimeLoading, true)).toBe('skeleton');
+    expect(pipe.transform(firstTimeLoading, true)).toBe('loading');
   });
 
-  it('should return skeleton if reloading and not showing stale data', () => {
+  it('should return loading if reloading and not showing stale data', () => {
     const reloading = { ...initialState, loaded: true, loading: true };
     const showStaleData = false;
-    expect(pipe.transform(reloading, showStaleData)).toBe('skeleton');
+    expect(pipe.transform(reloading, showStaleData)).toBe('loading');
   });
 
   it('should return data if reloading and showing stale data', () => {

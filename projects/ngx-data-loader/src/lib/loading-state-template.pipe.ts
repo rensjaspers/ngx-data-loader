@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { LoadingState } from './loading-state.interface';
 
-type templateName = 'skeleton' | 'error' | 'data';
+type templateName = 'loading' | 'error' | 'data';
 
 @Pipe({
   name: 'loadingStateTemplate',
@@ -22,6 +22,6 @@ export class LoadingStateTemplatePipe implements PipeTransform {
         return 'data';
       }
     }
-    return 'skeleton';
+    return 'loading';
   }
 }
