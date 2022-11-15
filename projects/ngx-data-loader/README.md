@@ -88,7 +88,7 @@ export class AppComponent {
 | Name                                                                            | Description                                            | Local variables                                                                                                                                 |
 | ------------------------------------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 | `@ContentChild('loaded')`<br />`loadedTemplate?: TemplateRef<unknown>`          | Template to be displayed when the data is loaded.      | `$implicit: T`: the resolved data.<br />`loading: boolean`: whether the data is reloading (only available if `showStaleData` is set to `true`). |
-| `@ContentChild('loadingTemplate)`<br />`loadingTemplate?: TemplateRef<unknown>` | Template to be displayed when the data is loading.     | _(none)_                                                                                                                                        |
+| `@ContentChild('loading')`<br />`loadingTemplate?: TemplateRef<unknown>` | Template to be displayed when the data is loading.     | _(none)_                                                                                                                                        |
 | `@ContentChild('error')`<br />`errorTemplate?: TemplateRef<unknown>`            | Template to be displayed when the data failed to load. | `$implicit: Error<unknown>`: the error object.<br />`retry: () => void`: can be called to trigger a retry.                                      |
 
 ## Properties
