@@ -85,7 +85,7 @@ export class AppComponent {
 
 ## Template slots
 
-| Name                                                                            | Description                                            | Local variables                                                                                                                                 |
+| Name                                                                            | Description                                            | Template outlet context                                                                                                                                 |
 | ------------------------------------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 | `@ContentChild('loaded')`<br />`loadedTemplate?: TemplateRef<unknown>`          | Template to be displayed when the data is loaded.      | `$implicit: T`: the resolved data.<br />`loading: boolean`: whether the data is reloading (only available if `showStaleData` is set to `true`). |
 | `@ContentChild('loading')`<br />`loadingTemplate?: TemplateRef<unknown>` | Template to be displayed when the data is loading.     | _(none)_                                                                                                                                        |
