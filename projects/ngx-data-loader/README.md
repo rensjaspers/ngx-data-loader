@@ -85,11 +85,11 @@ export class AppComponent {
 
 ## Template slots
 
-| Name                                                                            | Description                                            | Template outlet context                                                                                                                                 |
-| ------------------------------------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@ContentChild('loaded')`<br />`loadedTemplate?: TemplateRef<unknown>`          | Template to be displayed when the data is loaded.      | `$implicit: T`: the resolved data.<br />`loading: boolean`: whether the data is reloading (only available if `showStaleData` is set to `true`). |
+| Name                                                                     | Description                                            | Template outlet context                                                                                                                         |
+| ------------------------------------------------------------------------ | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@ContentChild('loaded')`<br />`loadedTemplate?: TemplateRef<unknown>`   | Template to be displayed when the data has loaded.     | `$implicit: T`: the resolved data.<br />`loading: boolean`: whether the data is reloading (only available if `showStaleData` is set to `true`). |
 | `@ContentChild('loading')`<br />`loadingTemplate?: TemplateRef<unknown>` | Template to be displayed when the data is loading.     | _(none)_                                                                                                                                        |
-| `@ContentChild('error')`<br />`errorTemplate?: TemplateRef<unknown>`            | Template to be displayed when the data failed to load. | `$implicit: Error<unknown>`: the error object.<br />`retry: () => void`: can be called to trigger a retry.                                      |
+| `@ContentChild('error')`<br />`errorTemplate?: TemplateRef<unknown>`     | Template to be displayed when the data failed to load. | `$implicit: Error<unknown>`: the error object.<br />`retry: () => void`: can be called to trigger a retry.                                      |
 
 ## Properties
 
