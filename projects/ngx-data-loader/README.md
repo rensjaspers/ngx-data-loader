@@ -1,6 +1,6 @@
 # NgxDataLoader
 
-Lightweight Angular 14+ component for easy async data loading.
+Lightweight Angular 15+ component for easy async data loading.
 
 [![Build status](https://img.shields.io/github/workflow/status/rensjaspers/ngx-data-loader/CI)](https://github.com/rensjaspers/ngx-data-loader/actions/workflows/main.yml)
 [![NPM version](https://img.shields.io/npm/v/ngx-data-loader.svg)](https://www.npmjs.com/package/ngx-data-loader)
