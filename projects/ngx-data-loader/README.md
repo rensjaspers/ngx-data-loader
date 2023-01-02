@@ -1,8 +1,8 @@
 # NgxDataLoader
 
-Lightweight Angular 15+ component for easy async data loading.
+Simplify async data loading in Angular with NgxDataLoaderComponent.
 
-[![Build status](https://img.shields.io/github/workflow/status/rensjaspers/ngx-data-loader/CI)](https://github.com/rensjaspers/ngx-data-loader/actions/workflows/main.yml)
+[![Build status](https://img.shields.io/github/actions/workflow/status/rensjaspers/ngx-data-loader/main.yml?branch=main)](https://github.com/rensjaspers/ngx-data-loader/actions/workflows/main.yml)
 [![NPM version](https://img.shields.io/npm/v/ngx-data-loader.svg)](https://www.npmjs.com/package/ngx-data-loader)
 [![NPM downloads](https://img.shields.io/npm/dm/ngx-data-loader.svg)](https://www.npmjs.com/package/ngx-data-loader)
 [![MIT license](https://img.shields.io/github/license/rensjaspers/ngx-data-loader)](https://github.com/rensjaspers/ngx-data-loader/blob/main/LICENSE)
@@ -12,9 +12,11 @@ Lightweight Angular 15+ component for easy async data loading.
 
 ## Description
 
-The `NgxDataLoaderComponent` lets you load any kind of async data without having to spend time on common stuff like error handling, cancel/reload strategies and template display logic.
+The `NgxDataLoaderComponent` is an Angular component for easy async data loading. It handles error handling, cancel/reload strategies, and template display logic.
 
-You only need to provide a `loadFn` that returns an `Observable` of the data. You optionally provide an `ng-template` for each loading phase.
+To use it, provide a `loadFn` that returns an `Observable` of the data, and optional templates for each loading phase.
+
+The component also offers features such as auto retry and timeout configuration, server-side rendering with `initialData`, and optimistic updates with `setData`.
 
 ## Features
 
