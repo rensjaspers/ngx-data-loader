@@ -136,8 +136,6 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
   private cancelSource = new Subject<void>();
   private initialState!: LoadingState<T>;
 
-  constructor() {}
-
   ngOnInit(): void {
     this.initialState = this.getInitialState();
 
@@ -226,7 +224,10 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
   }
 
   private getInitialState(): LoadingState<T> {
-    const hasInitialData = this.hasOwnProperty('initialData');
+    const hasInitialData = Object.prototype.hasOwnProperty.call(
+      this,
+      'initialData'
+    );
     return {
       data: this.initialData,
       loaded: hasInitialData,
