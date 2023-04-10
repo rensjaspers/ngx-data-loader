@@ -56,7 +56,7 @@ describe('NgxDataLoaderComponent', () => {
     });
 
     it('should render only a loading component when loading first time', () => {
-      component.loadFn = () => new Promise(() => {});
+      component.loadFn = () => new Promise(() => ({}));
       component.reload();
       expect(getSkeletonEl()).toBeTruthy();
       expect(getDataEl()).toBeNull();
@@ -88,7 +88,7 @@ describe('NgxDataLoaderComponent', () => {
       component.showStaleData = true;
       component.reload();
       tick();
-      component.loadFn = () => new Promise(() => {});
+      component.loadFn = () => new Promise(() => ({}));
       component.reload();
       tick();
       fixture.detectChanges();
@@ -102,7 +102,7 @@ describe('NgxDataLoaderComponent', () => {
       component.showStaleData = false;
       component.reload();
       tick();
-      component.loadFn = () => new Promise(() => {});
+      component.loadFn = () => new Promise(() => ({}));
       component.reload();
       tick();
       fixture.detectChanges();

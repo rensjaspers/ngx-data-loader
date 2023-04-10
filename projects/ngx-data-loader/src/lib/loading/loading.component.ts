@@ -11,8 +11,6 @@ export class LoadingComponent implements OnInit {
   @Input() loadingTemplateDelay = 0;
   showTemplate$!: Observable<boolean>;
 
-  constructor() {}
-
   ngOnInit(): void {
     this.showTemplate$ = of(true).pipe(delay(this.loadingTemplateDelay));
   }
