@@ -222,7 +222,7 @@ describe('NgxDataLoaderComponent', () => {
   describe('setError', () => {
     const customError = new Error('custom error');
     beforeEach(() => {
-      spyOn(component.error, 'emit');
+      spyOn(component.loadAttemptFailed, 'emit');
       loadFnSpy = jasmine.createSpy();
       component.loadFn = loadFnSpy.and.returnValue(of(testData));
       component.setError(customError);
@@ -233,7 +233,9 @@ describe('NgxDataLoaderComponent', () => {
     });
 
     it('should load and emit custom error', () => {
-      expect(component.error.emit).toHaveBeenCalledWith(customError);
+      expect(component.loadAttemptFailed.emit).toHaveBeenCalledWith(
+        customError
+      );
     });
 
     it('should restore the original loadFn afterwards', () => {

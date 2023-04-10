@@ -113,7 +113,7 @@ export class AppComponent {
 | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
 | `@Output()`<br />`dataLoaded: EventEmitter<T>`                       | Emits when the data is loaded.                                       |
 | `@Output()`<br />`loadAttemptStarted: EventEmitter<void>`            | Emits when the data loading is started.                              |
-| `@Output()`<br />`error: EventEmitter<Error>`                        | Emits when the data fails to load.                                   |
+| `@Output()`<br />`loadAttemptFailed: EventEmitter<Error>`            | Emits when the data fails to load.                                   |
 | `@Output()`<br />`loadAttemptFinished: EventEmitter<void>`           | Emits when the data has either loaded or failed to load.             |
 | `@Output()`<br />`loadingStateChange: EventEmitter<LoadingState<T>>` | Emits entire loading state when any of the above events are emitted. |
 
