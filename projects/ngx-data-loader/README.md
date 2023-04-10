@@ -12,7 +12,7 @@ Simplify async data loading in Angular with NgxDataLoaderComponent.
 
 ## Description
 
-The `NgxDataLoaderComponent` is an Angular component for easy async data loading. It handles error handling, cancel/reload strategies, and template display logic.
+`NgxDataLoaderComponent` is a powerful tool for simplifying asynchronous data loading in Angular. By abstracting away complex tasks such as error handling, cancel/reload strategies, and template display logic, it enables developers to focus on what matters most: building robust applications that deliver seamless user experiences.
 
 To use it, provide a `loadFn` that returns an `Observable` of the data, and optional templates for each loading phase.
 
@@ -20,7 +20,7 @@ The component also offers features such as auto retry and timeout configuration,
 
 ## Features
 
-- Bring your own template for each loading phase
+- Declarative syntax that handles display and loading logic behind the scenes
 - Provides `reload` and `cancel` methods
 - Automatic cancellation of ongoing http requests on cancel/reload/destroy[^note]
 - Configure auto retry and timeout
