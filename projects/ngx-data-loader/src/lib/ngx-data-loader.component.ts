@@ -113,7 +113,7 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
   /**
    * Emits the error when the data fails to load.
    */
-  @Output() error = new EventEmitter<Error>();
+  @Output() loadAttemptFailed = new EventEmitter<Error>();
 
   /**
    * Emits when the data loading completes (either successfully or unsuccessfully).
@@ -214,7 +214,7 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
   }
 
   private onError(error: Error) {
-    this.error.emit(error);
+    this.loadAttemptFailed.emit(error);
     return of({ error, data: null, loaded: false, loading: false });
   }
 
