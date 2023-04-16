@@ -12,20 +12,19 @@ Simplify async data loading in Angular with NgxDataLoaderComponent.
 
 ## Description
 
-`NgxDataLoaderComponent` is a powerful tool for simplifying asynchronous data loading in Angular. By abstracting away complex tasks such as error handling, cancel/reload strategies, and template display logic, it enables developers to focus on what matters most: building robust applications that deliver seamless user experiences.
+`NgxDataLoaderComponent` simplifies asynchronous data loading in Angular by abstracting away tedious tasks such as error handling, cancel/reload strategies, and template display logic. This helps you focus on the core functionality of your application.
 
-To use it, provide a `loadFn` that returns an `Observable` of the data, and optional templates for each loading phase.
+A key feature of `NgxDataLoaderComponent` is its ability to handle dynamic arguments through the use of `loadFnArgs`. This feature enables you to pass in dynamic arguments to `loadFn`, and each time the value changes, `loadFn` is triggered with the new arguments. This makes it easy to load data based on route parameters or the value of an input field.
 
-The component also offers features such as auto retry and timeout configuration, server-side rendering with `initialData`, and optimistic updates with `setData`.
+To use the component, provide a `loadFn` that returns an `Observable` of the data, and optional templates for each loading phase.
 
 ## Features
 
 - Declarative syntax that handles display and loading logic behind the scenes
+- Automatic reload on input changes
 - Provides `reload` and `cancel` methods
 - Automatic cancellation of ongoing http requests on cancel/reload/destroy[^note]
-- Configure auto retry and timeout
-- Supports server-side rendering through `initialData` input
-- Supports optimistic updates through `setData` method
+- Configurable retry and timeout
 
 ## Demo
 
@@ -56,10 +55,42 @@ export class AppModule {}
 
 ## Usage
 
+### Basic example:
+
 ```html
 <!-- app.component.html -->
 <ngx-data-loader [loadFn]="getTodo">
-  <ng-template #loading> Loading... </ng-template>
+  <ng-template #loading> Loading todos... </ng-template>
+
+  <ng-template #error> Failed to load todos. </ng-template>
+
+  <ng-template #loaded let-todos>
+    <div *ngFor="let todo of todos">
+      Title: {{ todo.title }} <br />
+      Completed: {{ todo.completed ? 'Yes' : 'No' }}
+    </div>
+  </ng-template>
+</ngx-data-loader>
+```
+
+```typescript
+/* app.component.ts */
+@Component({
+  ...
+})
+export class AppComponent {
+  getTodo = () => this.http.get('https://jsonplaceholder.typicode.com/todos');
+
+  constructor(private http: HttpClient) {}
+}
+```
+
+### Loading data based on route parameters:
+
+```html
+<!-- app.component.html -->
+<ngx-data-loader [loadFn]="getTodo" [loadFnArgs]="route.params | async">
+  <ng-template #loading> Loading todo... </ng-template>
 
   <ng-template #loaded let-todo>
     Title: {{ todo.title }} <br />
@@ -79,9 +110,9 @@ export class AppModule {}
   ...
 })
 export class AppComponent {
-  getTodo = () => this.http.get('https://jsonplaceholder.typicode.com/todos/1');
+  getTodo = ({id: string}) => this.http.get(`https://jsonplaceholder.typicode.com/todos/${id}`);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, public route: ActivatedRoute) {}
 }
 ```
 
@@ -126,7 +157,7 @@ export class AppComponent {
 | `setData: (data: T) => void`       | Updates the loading state as if the passed data were loaded through `loadFn`. |
 | `setError: (error: Error) => void` | Updates the loading state as if the passed error were thrown by `loadFn`.     |
 
-[^note]: You must use Angular's `HttpClient` for http request cancellation to work.
+[^note]: Automatic cancellation of http requests requires support from the underlying http library. It works out of the box with Angular's HttpClient, but may require additional configuration if using a different library
 
 ## Interfaces
 
