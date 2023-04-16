@@ -92,14 +92,11 @@ export class AppComponent {
 <ngx-data-loader [loadFn]="getTodo" [loadFnArgs]="route.params | async">
   <ng-template #loading> Loading todo... </ng-template>
 
+  <ng-template #error> Failed to load todo. </ng-template>
+
   <ng-template #loaded let-todo>
     Title: {{ todo.title }} <br />
     Completed: {{ todo.completed ? 'Yes' : 'No' }}
-  </ng-template>
-
-  <ng-template #error let-error let-retry="retry">
-    Oops, something went wrong! Details: {{ error.message }}
-    <button (click)="retry()">Retry</button>
   </ng-template>
 </ngx-data-loader>
 ```

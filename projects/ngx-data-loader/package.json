@@ -1,6 +1,6 @@
 {
   "name": "ngx-data-loader",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "peerDependencies": {
     "@angular/common": ">=15.0.0",
     "@angular/core": ">=15.0.0",
