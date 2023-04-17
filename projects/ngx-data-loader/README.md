@@ -12,7 +12,7 @@ Simplify async data loading in Angular with NgxDataLoaderComponent.
 
 ## Description
 
-`NgxDataLoaderComponent` simplifies asynchronous data loading in Angular by abstracting away tedious tasks such as error handling, cancel/reload strategies, and template display logic. This helps you focus on the core functionality of your application.
+`NgxDataLoaderComponent` simplifies asynchronous data loading in Angular by abstracting away tasks such as error handling, cancel/reload strategies, and template display logic. This helps you focus on the core functionality of your application.
 
 A key feature of `NgxDataLoaderComponent` is its ability to handle dynamic arguments through the use of `loadFnArgs`. This feature enables you to pass in dynamic arguments to `loadFn`, and each time the value changes, `loadFn` is triggered with the new arguments. This makes it easy to load data based on route parameters or the value of an input field.
 
@@ -61,9 +61,7 @@ export class AppModule {}
 <!-- app.component.html -->
 <ngx-data-loader [loadFn]="getTodos">
   <ng-template #loading> Loading todos... </ng-template>
-
   <ng-template #error> Failed to load todos. </ng-template>
-
   <ng-template #loaded let-todos>
     <div *ngFor="let todo of todos">
       Title: {{ todo.title }} <br />
@@ -91,9 +89,7 @@ export class AppComponent {
 <!-- app.component.html -->
 <ngx-data-loader [loadFn]="getTodo" [loadFnArgs]="route.params | async">
   <ng-template #loading> Loading todo... </ng-template>
-
   <ng-template #error> Failed to load todo. </ng-template>
-
   <ng-template #loaded let-todo>
     Title: {{ todo.title }} <br />
     Completed: {{ todo.completed ? 'Yes' : 'No' }}
@@ -110,6 +106,49 @@ export class AppComponent {
   getTodo = ({id: string}) => this.http.get(`https://jsonplaceholder.typicode.com/todos/${id}`);
 
   constructor(private http: HttpClient, public route: ActivatedRoute) {}
+}
+```
+
+### Loading data based on search input:
+
+[Open on StackBlitz](https://stackblitz.com/edit/angular-8zg236?file=src/main.ts)
+
+[View advanced demo on StackBlitz](https://stackblitz.com/edit/angular-qfl9sp?file=src%2Fmain.ts)
+
+```html
+<!-- app.component.html -->
+<h1>Search</h1>
+<input ngModel #searchbox placeholder="Search" />
+<ngx-data-loader
+  *ngIf="searchbox.value as keywords"
+  [loadFn]="searchProducts"
+  [loadFnArgs]="keywords"
+  [debounceTime]="300"
+>
+  <ng-template #loading> Searching... </ng-template>
+  <ng-template #error> Error </ng-template>
+  <ng-template #loaded let-results>
+    <h2>{{results.total}} search results for "{{ keywords }}"</h2>
+    <div *ngFor="let product of results.products">
+      <h3>{{product.title}}</h3>
+      <p>{{product.description}}</p>
+    </div>
+  </ng-template>
+</ngx-data-loader>
+```
+
+```typescript
+/* app.component.ts */
+@Component({
+  ...
+})
+export class AppComponent {
+  searchProducts = (keywords: string) =>
+    this.http.get('https://dummyjson.com/products/search', {
+      params: { q: keywords },
+    });
+
+  constructor(private http: HttpClient) {}
 }
 ```
 
