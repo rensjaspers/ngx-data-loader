@@ -12,7 +12,7 @@ Simplify async data loading in Angular with NgxDataLoaderComponent.
 
 ## Description
 
-`NgxDataLoaderComponent` simplifies asynchronous data loading in Angular by abstracting away tasks such as error handling, cancel/reload strategies, and template display logic. This helps you focus on the core functionality of your application.
+`NgxDataLoaderComponent` simplifies asynchronous data loading in Angular by abstracting away complex tasks such as error handling, cancel/reload strategies, and template display logic. This helps you focus on the core functionality of your application.
 
 A key feature of `NgxDataLoaderComponent` is its ability to handle dynamic arguments through the use of `loadFnArgs`. This feature enables you to pass in dynamic arguments to `loadFn`, and each time the value changes, `loadFn` is triggered with the new arguments. This makes it easy to load data based on route parameters or the value of an input field.
 
