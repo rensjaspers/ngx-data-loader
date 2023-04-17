@@ -59,7 +59,7 @@ export class AppModule {}
 
 ```html
 <!-- app.component.html -->
-<ngx-data-loader [loadFn]="getTodo">
+<ngx-data-loader [loadFn]="getTodos">
   <ng-template #loading> Loading todos... </ng-template>
 
   <ng-template #error> Failed to load todos. </ng-template>
@@ -79,7 +79,7 @@ export class AppModule {}
   ...
 })
 export class AppComponent {
-  getTodo = () => this.http.get('https://jsonplaceholder.typicode.com/todos');
+  getTodos = () => this.http.get('https://jsonplaceholder.typicode.com/todos');
 
   constructor(private http: HttpClient) {}
 }
