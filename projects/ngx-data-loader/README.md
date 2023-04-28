@@ -12,15 +12,20 @@ Simplify async data loading in Angular with NgxDataLoaderComponent.
 
 ## Description
 
-`NgxDataLoaderComponent` simplifies asynchronous data loading in Angular by abstracting away complex tasks such as error handling, cancel/reload strategies, and template display logic.
+`NgxDataLoaderComponent` streamlines asynchronous data loading in Angular by abstracting away tasks such as error handling, cancel/reload strategies,
+Observable (un)subscriptions, and template display logic.
 
-A key feature of `NgxDataLoaderComponent` is its ability to handle dynamic arguments through the use of `loadFnArgs`. This feature enables you to pass in dynamic arguments to `loadFn`, and each time the value changes, `loadFn` is triggered with the new arguments. This makes it easy to load data based on route parameters or the value of an input field.
+To use the component, provide a `loadFn` that returns an `Observable` of the data, along with optional templates for each loading phase.
+The component automatically handles the display logic and loading state, and unsubscribes from the `Observable` on component destroy.
 
-To use the component, provide a `loadFn` that returns an `Observable` of the data, and optional templates for each loading phase.
+A noteworthy feature of `NgxDataLoaderComponent` is its ability to process dynamic arguments via `loadFnArgs`. This feature permits
+dynamic arguments to be passed into `loadFn`, and whenever the `loadFnArgs` input value changes, `loadFn` is executed with the new arguments.
+This simplifies data loading based on route parameters or input field values.
 
 ## Features
 
 - Declarative syntax that handles display and loading logic behind the scenes
+- Automatic unsubscribing from Observables on component destroy
 - Automatic reload on input changes
 - Provides `reload` and `cancel` methods
 - Automatic cancellation of ongoing http requests on cancel/reload/destroy[^note]
@@ -119,12 +124,7 @@ export class AppComponent {
 <!-- app.component.html -->
 <h1>Search</h1>
 <input ngModel #searchbox placeholder="Search" />
-<ngx-data-loader
-  *ngIf="searchbox.value as keywords"
-  [loadFn]="searchProducts"
-  [loadFnArgs]="keywords"
-  [debounceTime]="300"
->
+<ngx-data-loader *ngIf="searchbox.value as keywords" [loadFn]="searchProducts" [loadFnArgs]="keywords" [debounceTime]="300">
   <ng-template #loading> Searching... </ng-template>
   <ng-template #error> Error </ng-template>
   <ng-template #loaded let-results>
