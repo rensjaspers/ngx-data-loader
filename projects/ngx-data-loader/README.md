@@ -16,7 +16,7 @@ Simplify async data loading in Angular with NgxDataLoaderComponent.
 Observable (un)subscriptions, and template display logic.
 
 To use the component, provide a `loadFn` that returns an `Observable` of the data, along with optional templates for each loading phase.
-The component automatically handles the display logic and loading state, and unsubscribes from the `Observable` on component destroy.
+The component will then automatically handle the loading logic and display the appropriate template.
 
 A noteworthy feature of `NgxDataLoaderComponent` is its ability to process dynamic arguments via `loadFnArgs`. This feature permits
 dynamic arguments to be passed into `loadFn`, and whenever the `loadFnArgs` input value changes, `loadFn` is executed with the new arguments.
@@ -25,7 +25,6 @@ This simplifies data loading based on route parameters or input field values.
 ## Features
 
 - Declarative syntax that handles display and loading logic behind the scenes
-- Automatic unsubscribing from Observables on component destroy
 - Automatic reload on input changes
 - Provides `reload` and `cancel` methods
 - Automatic cancellation of ongoing http requests on cancel/reload/destroy[^note]
@@ -205,6 +204,36 @@ interface LoadingState<T> {
   data?: T;
 }
 ```
+
+## FAQ
+
+### How to get type safety for the data loaded by `NgxDataLoaderComponent`?
+
+Angular currently does not support type inference for template variables. This means that the type of the data loaded by `NgxDataLoader` cannot be inferred from the template. A good workaround is to use a presentational component inside the `#loaded` template that takes the loaded data as a typed input.
+
+For example:
+
+```html
+<!-- app.component.html -->
+<ngx-data-loader [loadFn]="getTodos">
+  ...
+  <ng-template #loaded let-todos>
+    <app-todo-list [todos]="todos"></app-todo-list>
+  </ng-template>
+</ngx-data-loader>
+```
+
+```typescript
+// todo-list.component.ts
+@Component({
+  ...
+})
+export class TodoListComponent {
+  @Input() todos: Todo[];
+}
+```
+
+By doing this, you can ensure type safety in your presentational component's template while still taking advantage of the convenience provided by ngx-data-loader.
 
 ## License
 
