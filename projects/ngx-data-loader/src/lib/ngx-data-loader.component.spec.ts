@@ -1,6 +1,6 @@
-import { LoadingStateTemplatePipe } from './loading-state-template.pipe';
 import {
   ComponentFixture,
+  discardPeriodicTasks,
   fakeAsync,
   flush,
   TestBed,
@@ -9,8 +9,9 @@ import {
 import { of, throwError, timer } from 'rxjs';
 import { DataComponent } from './data/data.component';
 import { ErrorComponent } from './error/error.component';
-import { NgxDataLoaderComponent } from './ngx-data-loader.component';
+import { LoadingStateTemplatePipe } from './loading-state-template.pipe';
 import { LoadingComponent } from './loading/loading.component';
+import { NgxDataLoaderComponent } from './ngx-data-loader.component';
 
 describe('NgxDataLoaderComponent', () => {
   let component: NgxDataLoaderComponent;
@@ -56,7 +57,7 @@ describe('NgxDataLoaderComponent', () => {
     });
 
     it('should render only a loading component when loading first time', () => {
-      component.loadFn = () => new Promise(() => ({}));
+      component.loadFn = () => of({});
       component.reload();
       expect(getSkeletonEl()).toBeTruthy();
       expect(getDataEl()).toBeNull();
@@ -88,7 +89,7 @@ describe('NgxDataLoaderComponent', () => {
       component.showStaleData = true;
       component.reload();
       tick();
-      component.loadFn = () => new Promise(() => ({}));
+      component.loadFn = () => of({});
       component.reload();
       tick();
       fixture.detectChanges();
@@ -102,13 +103,15 @@ describe('NgxDataLoaderComponent', () => {
       component.showStaleData = false;
       component.reload();
       tick();
-      component.loadFn = () => new Promise(() => ({}));
+      component.loadFn = () => timer(10);
       component.reload();
       tick();
       fixture.detectChanges();
       expect(getDataEl()).toBeNull();
       expect(getSkeletonEl()).toBeTruthy();
       expect(getErrorEl()).toBeNull();
+      flush();
+      discardPeriodicTasks();
     }));
 
     it('should render an error when loading does not complete before the timeout', fakeAsync(() => {

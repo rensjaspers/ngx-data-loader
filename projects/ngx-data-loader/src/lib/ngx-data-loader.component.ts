@@ -53,7 +53,7 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
    * loadFn = () => this.http.get('https://example.com/api/data')
    */
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  @Input() loadFn!: (args?: any) => Observable<T> | Promise<T>;
+  @Input() loadFn!: (args?: any) => Observable<T>;
 
   /**
    * Arguments to pass to `loadFn`. Changes to this property will trigger a reload.
@@ -200,7 +200,7 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
 
   private getData() {
     this.loadAttemptStarted.emit();
-    return from(this.loadFn(this.loadFnArgs)).pipe(
+    return this.loadFn(this.loadFnArgs).pipe(
       map((data) => ({ data, loaded: true, loading: false })),
       tap((state) => this.dataLoaded.emit(state.data)),
       this.timeout ? timeout(this.timeout) : identity,
