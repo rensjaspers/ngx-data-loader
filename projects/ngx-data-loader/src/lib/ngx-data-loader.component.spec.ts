@@ -7,7 +7,7 @@ import {
   tick,
 } from '@angular/core/testing';
 import { of, throwError, timer } from 'rxjs';
-import { DataComponent } from './data/data.component';
+import { LoadedComponent } from './loaded/loaded.component';
 import { ErrorComponent } from './error/error.component';
 import { LoadingStateTemplatePipe } from './loading-state-template.pipe';
 import { LoadingComponent } from './loading/loading.component';
@@ -23,7 +23,7 @@ describe('NgxDataLoaderComponent', () => {
   const getSkeletonEl = () =>
     fixture.nativeElement.querySelector('ngx-data-loader-loading');
   const getDataEl = () =>
-    fixture.nativeElement.querySelector('ngx-data-loader-data');
+    fixture.nativeElement.querySelector('ngx-data-loader-loaded');
   const getErrorEl = () =>
     fixture.nativeElement.querySelector('ngx-data-loader-error');
 
@@ -31,7 +31,7 @@ describe('NgxDataLoaderComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         NgxDataLoaderComponent,
-        DataComponent,
+        LoadedComponent,
         LoadingComponent,
         ErrorComponent,
         LoadingStateTemplatePipe,
