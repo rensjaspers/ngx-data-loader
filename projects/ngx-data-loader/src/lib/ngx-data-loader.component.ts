@@ -10,13 +10,12 @@ import {
   TemplateRef,
 } from '@angular/core';
 import {
+  Observable,
+  Subject,
   concat,
   identity,
   merge,
-  Observable,
   of,
-  ReplaySubject,
-  Subject,
   throwError,
   timer,
 } from 'rxjs';
