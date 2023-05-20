@@ -131,18 +131,10 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
   loadingState$!: Observable<LoadingState<T>>;
   private loadTriggerSource = new ReplaySubject<void>();
   private loadTrigger$ = this.loadTriggerSource.asObservable();
-  private debouncedLoadTrigger$ = this.getDebouncedLoadTrigger();
   private cancelSource = new Subject<void>();
-  private initialState!: LoadingState<T>;
 
   ngOnInit(): void {
-    this.initialState = this.getInitialState();
-
-    this.loadingState$ = this.getLoadingStateChanges().pipe(
-      scan((state, change) => ({
-        ...state,
-        ...change,
-      })),
+    this.loadingState$ = this.getLoadingState().pipe(
       tap((state) => this.loadingStateChange.emit(state))
     );
   }
@@ -182,22 +174,32 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
     this.runCustomLoadFn(() => throwError(() => error));
   }
 
-  private getLoadingStateChanges() {
-    return concat(
-      of(this.initialState),
-      merge(this.beforeLoad(), this.afterLoad())
+  private getLoadingState() {
+    const initialState = this.getInitialState();
+    const loadingUpdate$ = this.getLoadings();
+    const resultUpdate$ = this.getResults();
+    return concat(of(initialState), merge(loadingUpdate$, resultUpdate$)).pipe(
+      scan(
+        (state, update) => ({
+          ...state,
+          ...update,
+        }),
+        initialState
+      )
     ) as Observable<LoadingState<T>>;
   }
 
-  private beforeLoad() {
+  private getLoadings() {
     return this.loadTrigger$.pipe(map(() => ({ loading: true, error: null })));
   }
 
-  private afterLoad() {
-    return this.debouncedLoadTrigger$.pipe(switchMap(() => this.getData()));
+  private getResults() {
+    return this.getDebouncedLoadTrigger().pipe(
+      switchMap(() => this.getLoadResult())
+    );
   }
 
-  private getData() {
+  private getLoadResult() {
     this.loadAttemptStarted.emit();
     return this.loadFn(this.loadFnArgs).pipe(
       map((data) => ({ data, loaded: true, loading: false })),

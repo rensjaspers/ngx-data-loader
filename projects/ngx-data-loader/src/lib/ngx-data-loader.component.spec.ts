@@ -20,7 +20,7 @@ describe('NgxDataLoaderComponent', () => {
 
   const testData = { data: 'data' };
   const customValue = 'custom value';
-  const getSkeletonEl = () =>
+  const getLoadingEl = () =>
     fixture.nativeElement.querySelector('ngx-data-loader-loading');
   const getDataEl = () =>
     fixture.nativeElement.querySelector('ngx-data-loader-loaded');
@@ -59,7 +59,7 @@ describe('NgxDataLoaderComponent', () => {
     it('should render only a loading component when loading first time', () => {
       component.loadFn = () => of({});
       component.reload();
-      expect(getSkeletonEl()).toBeTruthy();
+      expect(getLoadingEl()).toBeTruthy();
       expect(getDataEl()).toBeNull();
       expect(getErrorEl()).toBeNull();
     });
@@ -69,7 +69,7 @@ describe('NgxDataLoaderComponent', () => {
       component.reload();
       tick();
       fixture.detectChanges();
-      expect(getSkeletonEl()).toBeNull();
+      expect(getLoadingEl()).toBeNull();
       expect(getDataEl()).toBeTruthy();
       expect(getErrorEl()).toBeNull();
     }));
@@ -81,7 +81,7 @@ describe('NgxDataLoaderComponent', () => {
       fixture.detectChanges();
       expect(getErrorEl()).toBeTruthy();
       expect(getDataEl()).toBeNull();
-      expect(getSkeletonEl()).toBeNull();
+      expect(getLoadingEl()).toBeNull();
     }));
 
     it('should render only the data template when reloading in stale data display mode', fakeAsync(() => {
@@ -94,7 +94,7 @@ describe('NgxDataLoaderComponent', () => {
       tick();
       fixture.detectChanges();
       expect(getDataEl()).toBeTruthy();
-      expect(getSkeletonEl()).toBeNull();
+      expect(getLoadingEl()).toBeNull();
       expect(getErrorEl()).toBeNull();
     }));
 
@@ -108,9 +108,8 @@ describe('NgxDataLoaderComponent', () => {
       tick();
       fixture.detectChanges();
       expect(getDataEl()).toBeNull();
-      expect(getSkeletonEl()).toBeTruthy();
+      expect(getLoadingEl()).toBeTruthy();
       expect(getErrorEl()).toBeNull();
-      flush();
       discardPeriodicTasks();
     }));
 
@@ -121,7 +120,6 @@ describe('NgxDataLoaderComponent', () => {
       tick(20);
       fixture.detectChanges();
       expect(getErrorEl()).toBeTruthy();
-      flush();
     }));
 
     it('should not render an error when loading completes before the timeout', fakeAsync(() => {
@@ -131,7 +129,6 @@ describe('NgxDataLoaderComponent', () => {
       tick(150);
       fixture.detectChanges();
       expect(getErrorEl()).toBeNull();
-      flush();
     }));
 
     it('should not call loadFn after ngOnChanges when initialData input is set', () => {
@@ -169,7 +166,6 @@ describe('NgxDataLoaderComponent', () => {
         expect(loadFnSpy).not.toHaveBeenCalled();
         tick(50);
         expect(loadFnSpy).toHaveBeenCalledTimes(1);
-        flush();
         loadFnSpy.calls.reset();
         component.debounceTime = 0;
         component.reload();
@@ -184,18 +180,17 @@ describe('NgxDataLoaderComponent', () => {
         component.reload();
         tick(50);
         fixture.detectChanges();
-        expect(getSkeletonEl()).toBeTruthy();
+        expect(getLoadingEl()).toBeTruthy();
         tick(50);
         fixture.detectChanges();
-        expect(getSkeletonEl()).toBeNull();
+        expect(getLoadingEl()).toBeNull();
         component.reload();
         tick(50);
         fixture.detectChanges();
-        expect(getSkeletonEl()).toBeTruthy();
+        expect(getLoadingEl()).toBeTruthy();
         tick(50);
         fixture.detectChanges();
-        expect(getSkeletonEl()).toBeNull();
-        flush();
+        expect(getLoadingEl()).toBeNull();
       }));
     });
   });
@@ -255,7 +250,7 @@ describe('NgxDataLoaderComponent', () => {
       tick(200);
       fixture.detectChanges();
       expect(getDataEl()).toBeNull();
-      expect(getSkeletonEl()).toBeTruthy();
+      expect(getLoadingEl()).toBeTruthy();
       expect(getErrorEl()).toBeNull();
     }));
   });
