@@ -11,21 +11,20 @@ import {
 } from '@angular/core';
 import {
   Observable,
+  ReplaySubject,
   Subject,
-  concat,
   identity,
   merge,
   of,
-  throwError,
   timer,
 } from 'rxjs';
 import {
   catchError,
-  debounce,
   finalize,
   map,
   retry,
   scan,
+  startWith,
   switchMap,
   takeUntil,
   tap,
@@ -128,8 +127,12 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
    */
   @Output() loadingStateChange = new EventEmitter<LoadingState<T>>();
   loadingState$!: Observable<LoadingState<T>>;
-  private loadTriggerSource = new Subject<void>();
+  private loadTriggerSource = new ReplaySubject<void>(1);
+  private loadTrigger$ = this.loadTriggerSource.asObservable();
   private cancelSource = new Subject<void>();
+  private stateOverrideSource = new Subject<LoadingState<T>>();
+
+  private stop$ = merge(this.cancelSource, this.stateOverrideSource);
 
   ngOnInit(): void {
     this.loadingState$ = this.getLoadingState().pipe(
@@ -162,21 +165,32 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
    * Updates the loading state as if the passed data were loaded through `loadFn`.
    */
   setData(data: T) {
-    this.runCustomLoadFn(() => of(data));
+    this.stateOverrideSource.next({
+      data,
+      loaded: true,
+      loading: false,
+      error: null,
+    });
   }
 
   /**
    * Updates the loading state as if the passed error were thrown by `loadFn`.
    */
   setError(error: Error) {
-    this.runCustomLoadFn(() => throwError(() => error));
+    this.stateOverrideSource.next({
+      data: null,
+      loaded: false,
+      loading: false,
+      error,
+    });
   }
 
   private getLoadingState() {
     const initialState = this.getInitialState();
     const loadingUpdate$ = this.getLoadings();
     const resultUpdate$ = this.getResults();
-    return concat(of(initialState), merge(loadingUpdate$, resultUpdate$)).pipe(
+    return merge(loadingUpdate$, resultUpdate$, this.stateOverrideSource).pipe(
+      startWith(initialState),
       scan(
         (state, update) => ({
           ...state,
@@ -184,13 +198,11 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
         }),
         initialState
       )
-    ) as Observable<LoadingState<T>>;
+    );
   }
 
   private getLoadings() {
-    return this.loadTriggerSource.pipe(
-      map(() => ({ loading: true, error: null }))
-    );
+    return this.loadTrigger$.pipe(map(() => ({ loading: true, error: null })));
   }
 
   private getResults() {
@@ -207,7 +219,7 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
       this.timeout ? timeout(this.timeout) : identity,
       retry({ count: this.retries, delay: this.retryDelay }),
       catchError((error) => this.onError(error)),
-      takeUntil(this.cancelSource),
+      takeUntil(this.stop$),
       finalize(() => this.loadAttemptFinished.emit())
     );
   }
@@ -215,13 +227,6 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
   private onError(error: Error) {
     this.loadAttemptFailed.emit(error);
     return of({ error, data: null, loaded: false, loading: false });
-  }
-
-  private runCustomLoadFn(customLoadFn: () => Observable<T>) {
-    const originalFn = this.loadFn;
-    this.loadFn = customLoadFn;
-    this.reload();
-    this.loadFn = originalFn;
   }
 
   private getInitialState(): LoadingState<T> {
@@ -238,9 +243,11 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
   }
 
   private getDebouncedLoadTrigger() {
-    return this.loadTriggerSource.pipe(
-      debounce((value) =>
-        this.debounceTime > 0 ? timer(this.debounceTime) : of(value)
+    return this.loadTrigger$.pipe(
+      switchMap(() =>
+        this.debounceTime > 0
+          ? timer(this.debounceTime).pipe(takeUntil(this.stop$))
+          : of(null)
       )
     );
   }
