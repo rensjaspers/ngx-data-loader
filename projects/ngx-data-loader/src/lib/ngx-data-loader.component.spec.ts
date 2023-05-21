@@ -112,24 +112,6 @@ describe('NgxDataLoaderComponent', () => {
       discardPeriodicTasks();
     }));
 
-    it('should render an error when loading does not complete before the timeout', fakeAsync(() => {
-      component.loadFn = () => timer(100);
-      component.timeout = 10;
-      component.reload();
-      tick(20);
-      fixture.detectChanges();
-      expect(getErrorEl()).toBeTruthy();
-    }));
-
-    it('should not render an error when loading completes before the timeout', fakeAsync(() => {
-      component.loadFn = () => timer(100);
-      component.timeout = 200;
-      component.reload();
-      tick(150);
-      fixture.detectChanges();
-      expect(getErrorEl()).toBeNull();
-    }));
-
     it('should not call loadFn after ngOnChanges when initialData input is set', () => {
       loadFnSpy = jasmine.createSpy();
       component.loadFn = loadFnSpy.and.returnValue(of(testData));

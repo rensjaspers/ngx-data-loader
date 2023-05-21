@@ -13,11 +13,8 @@
     [loadFn]="getUser"
     [loadFnArgs]="userId"
     [debounceTime]="debounceTime"
-    [retries]="retries"
-    [retryDelay]="retryDelay"
     [showStaleData]="showStaleData"
     [loadingTemplateDelay]="loadingTemplateDelay"
-    [timeout]="timeout"
     (loadingStateChange)="logChange($event)"
   >
     <ng-template #loaded let-data let-loading="loading">
@@ -45,11 +42,7 @@
     <input type="number" [(ngModel)]="debounceTime" id="debounceTime" />
     <small>Number of milliseconds to debounce reload triggers.</small>
   </div>
-  <div class="field">
-    <label for="timeout">timeout</label>
-    <input type="number" [(ngModel)]="timeout" id="timeout" />
-    <small>In milliseconds. </small>
-  </div>
+
   <div class="field">
     <label for="loadingTemplateDelay">loadingTemplateDelay</label>
     <input
@@ -62,22 +55,7 @@
       Default: <code>0</code></small
     >
   </div>
-  <div class="field">
-    <label for="retries">retries</label>
-    <input type="number" [(ngModel)]="retries" id="retries" />
-    <small
-      >How many retries of loadFn before showing error template. Default:
-      <code>0</code></small
-    >
-  </div>
-  <div class="field">
-    <label for="retryDelay">retryDelay</label>
-    <input type="number" [(ngModel)]="retryDelay" id="retryDelay" />
-    <small
-      >How many milliseconds to wait before each retry. Default:
-      <code>1000</code></small
-    >
-  </div>
+
   <div class="field">
     <div class="checkbox">
       <label for="showStaleData">showStaleData</label>

@@ -11,10 +11,7 @@ import { GetUsersResponse, User } from './get-users-response.interface';
 })
 export class AppComponent {
   showStaleData = false;
-  timeout = 30000;
   loadingTemplateDelay = 0;
-  retries = 0;
-  retryDelay = 1000;
   userId = '1';
   debounceTime = 500;
 
