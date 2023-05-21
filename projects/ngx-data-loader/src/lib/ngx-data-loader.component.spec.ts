@@ -5,7 +5,7 @@ import {
   TestBed,
   tick,
 } from '@angular/core/testing';
-import { of, throwError, timer } from 'rxjs';
+import { map, of, throwError, timer } from 'rxjs';
 import { ErrorComponent } from './error/error.component';
 import { LoadedComponent } from './loaded/loaded.component';
 import { LoadingStateTemplatePipe } from './loading-state-template.pipe';
@@ -195,50 +195,61 @@ describe('NgxDataLoaderComponent', () => {
   });
 
   describe('setData', () => {
-    beforeEach(() => {
-      spyOn(component.dataLoaded, 'emit');
-      loadFnSpy = jasmine.createSpy();
-      component.loadFn = loadFnSpy.and.returnValue(of(testData));
+    it('should render the custom data', fakeAsync(() => {
       component.setData(customValue);
-    });
+      tick();
+      fixture.detectChanges();
+      expect(getLoadingEl()).toBeNull();
+      expect(getDataEl()).toBeTruthy();
+      expect(getErrorEl()).toBeNull();
+    }));
 
-    it('should prevent the original loadFn from being called', () => {
-      expect(loadFnSpy).not.toHaveBeenCalled();
-    });
+    it('should render the custom data when debounceTime is set', fakeAsync(() => {
+      component.loadFn = () => timer(1000).pipe(map(() => testData));
+      component.debounceTime = 100;
+      fixture.detectChanges();
+      expect(getLoadingEl()).toBeTruthy();
+      expect(getDataEl()).toBeNull();
+      component.setData(customValue);
+      tick(50);
+      fixture.detectChanges();
+      expect(getLoadingEl()).toBeNull();
+      expect(getDataEl()).toBeTruthy();
+    }));
 
-    it('should load and emit custom data', () => {
-      expect(component.dataLoaded.emit).toHaveBeenCalledWith(customValue);
-    });
-
-    it('should restore the original loadFn afterwards', () => {
+    it('should pause loading on override and resume on reload', fakeAsync(() => {
+      component.loadFn = () => timer(1000).pipe(map(() => testData));
+      component.debounceTime = 100;
+      fixture.detectChanges();
+      expect(getLoadingEl()).toBeTruthy();
+      expect(getDataEl()).toBeNull();
+      component.setData(customValue);
+      tick(50);
+      fixture.detectChanges();
+      expect(getLoadingEl()).toBeNull();
+      expect(getDataEl()).toBeTruthy();
+      tick(20000);
+      fixture.detectChanges();
+      expect(getLoadingEl()).toBeNull();
+      expect(getDataEl()).toBeTruthy();
       component.reload();
-      expect(loadFnSpy).toHaveBeenCalled();
-    });
+      tick(1100);
+      fixture.detectChanges();
+      expect(getLoadingEl()).toBeNull();
+      expect(getDataEl()).toBeTruthy();
+    }));
   });
 
   describe('setError', () => {
-    const customError = new Error('custom error');
-    beforeEach(() => {
-      spyOn(component.loadAttemptFailed, 'emit');
-      loadFnSpy = jasmine.createSpy();
-      component.loadFn = loadFnSpy.and.returnValue(of(testData));
+    it('render the custom error', fakeAsync(() => {
+      const customError = new Error('custom error');
       component.setError(customError);
-    });
-
-    it('should prevent the original loadFn from being called', () => {
-      expect(loadFnSpy).not.toHaveBeenCalled();
-    });
-
-    it('should load and emit custom error', () => {
-      expect(component.loadAttemptFailed.emit).toHaveBeenCalledWith(
-        customError
-      );
-    });
-
-    it('should restore the original loadFn afterwards', () => {
-      component.reload();
-      expect(loadFnSpy).toHaveBeenCalled();
-    });
+      tick();
+      fixture.detectChanges();
+      expect(getLoadingEl()).toBeNull();
+      expect(getDataEl()).toBeNull();
+      expect(getErrorEl()).toBeTruthy();
+    }));
   });
 
   describe('cancel', () => {
@@ -251,6 +262,7 @@ describe('NgxDataLoaderComponent', () => {
       expect(getDataEl()).toBeNull();
       expect(getLoadingEl()).toBeTruthy();
       expect(getErrorEl()).toBeNull();
+      discardPeriodicTasks();
     }));
   });
 });
