@@ -160,8 +160,8 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
 
   private getLoadingState() {
     const initialState = this.getInitialState();
-    const loadingUpdate$ = this.getLoadings();
-    const resultUpdate$ = this.getResults();
+    const loadingUpdate$ = this.getLoadingStateUpdates();
+    const resultUpdate$ = this.getResultStateUpdates();
     return merge(loadingUpdate$, resultUpdate$, this.stateOverrideSource).pipe(
       startWith(initialState),
       scan(
@@ -174,11 +174,11 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
     );
   }
 
-  private getLoadings() {
+  private getLoadingStateUpdates() {
     return this.loadTrigger$.pipe(map(() => ({ loading: true, error: null })));
   }
 
-  private getResults() {
+  private getResultStateUpdates() {
     return this.getDebouncedLoadTrigger().pipe(
       switchMap(() => this.getLoadResult())
     );
