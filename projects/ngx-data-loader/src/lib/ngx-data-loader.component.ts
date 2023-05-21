@@ -9,26 +9,16 @@ import {
   SimpleChanges,
   TemplateRef,
 } from '@angular/core';
-import {
-  Observable,
-  ReplaySubject,
-  Subject,
-  identity,
-  merge,
-  of,
-  timer,
-} from 'rxjs';
+import { Observable, ReplaySubject, Subject, merge, of, timer } from 'rxjs';
 import {
   catchError,
   finalize,
   map,
-  retry,
   scan,
   startWith,
   switchMap,
   takeUntil,
   tap,
-  timeout,
 } from 'rxjs/operators';
 import { LoadingState } from './loading-state.interface';
 
@@ -74,18 +64,6 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
   @Input() debounceTime = 0;
 
   /**
-   * Number of times to retry loading the data.
-   * @defaultValue `0`                                                                    |
-   */
-  @Input() retries = 0;
-
-  /**
-   * Delay in milliseconds between retries.
-   * @defaultValue `1000`
-   */
-  @Input() retryDelay = 1000;
-
-  /**
    * Whether to keep displaying previously loaded data while reloading.
    * @defaultValue `false`
    */
@@ -96,11 +74,6 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
    * @defaultValue `0`
    */
   @Input() loadingTemplateDelay = 0;
-
-  /**
-   * Number of milliseconds to wait for `loadFn` to emit before throwing an error.
-   */
-  @Input() timeout?: number;
 
   /**
    * Emits the data when loaded.
@@ -216,8 +189,6 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
     return this.loadFn(this.loadFnArgs).pipe(
       map((data) => ({ data, loaded: true, loading: false })),
       tap((state) => this.dataLoaded.emit(state.data)),
-      this.timeout ? timeout(this.timeout) : identity,
-      retry({ count: this.retries, delay: this.retryDelay }),
       catchError((error) => this.onError(error)),
       takeUntil(this.stop$),
       finalize(() => this.loadAttemptFinished.emit())
