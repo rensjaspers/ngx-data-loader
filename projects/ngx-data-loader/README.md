@@ -28,7 +28,6 @@ This simplifies data loading based on route parameters or input field values.
 - Automatic reload on input changes
 - Provides `reload` and `cancel` methods
 - Automatic cancellation of ongoing http requests on cancel/reload/destroy[^note]
-- Configurable retry and timeout
 
 ## Demo
 
@@ -167,11 +166,8 @@ export class AppComponent {
 | `@Input()`<br />`loadFnArgs?: any`             | Arguments to pass to `loadFn`. Changes to this property will trigger a reload.                                          |
 | `@Input()`<br />`initialData?: T`              | Data to be rendered on init. When set, `loadFn` will not be invoked on init. The loading state will be set to `loaded`. |
 | `@Input()`<br />`debounceTime: number`         | Number of milliseconds to debounce reloads.                                                                             |
-| `@Input()`<br />`retries: number`              | Number of times to retry loading the data. Default: `0`                                                                 |
-| `@Input()`<br />`retryDelay: number`           | Delay in milliseconds between retries. Default: `1000`                                                                  |
 | `@Input()`<br />`showStaleData: boolean`       | Whether to keep displaying previously loaded data while reloading. Default: `false`                                     |
 | `@Input()`<br />`loadingTemplateDelay: number` | Delay in milliseconds before showing the loading template. Default: `0`                                                 |
-| `@Input()`<br />`timeout?: number`             | Number of milliseconds to wait for `loadFn` to emit before throwing an error.                                           |
 
 ## Events
 
