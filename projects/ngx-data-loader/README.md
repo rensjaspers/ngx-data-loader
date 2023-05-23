@@ -64,7 +64,7 @@ export class AppModule {}
 <!-- app.component.html -->
 <ngx-data-loader [loadFn]="getTodos">
   <ng-template #loading> Loading todos... </ng-template>
-  <ng-template #error> Failed to load todos. </ng-template>
+  <ng-template #error let-error> Failed to load todos. {{error.message}} </ng-template>
   <ng-template #loaded let-todos>
     <div *ngFor="let todo of todos">
       Title: {{ todo.title }} <br />
