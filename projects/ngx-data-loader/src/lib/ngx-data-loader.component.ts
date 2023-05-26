@@ -90,7 +90,12 @@ export class NgxDataLoaderComponent<T = unknown> implements OnChanges {
    * Emits the loading state when it changes.
    */
   @Output() loadingStateChange = new EventEmitter<LoadingState<T>>();
-  dataLoader!: DataLoader<T>;
+
+  private dataLoader!: DataLoader<T>;
+
+  get loadingState$() {
+    return this.dataLoader.loadingState$;
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.createOrUpdateLoader();
