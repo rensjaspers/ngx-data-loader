@@ -23,6 +23,7 @@ export class DataLoader<T = unknown> {
   private stop$ = merge(this.cancelSource, this.stateOverrideSource);
 
   constructor(
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     public loadFn: (...args: any[]) => Observable<T>,
     public config: DataLoaderConfig<T> = {}
   ) {

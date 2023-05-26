@@ -5,7 +5,7 @@ import { LoadingState } from './loading-state.interface';
 
 describe('DataLoader', () => {
   let dataLoader: DataLoader<string>;
-  let firstStateUpdate: Observable<LoadingState<any>>;
+  let firstStateUpdate: Observable<LoadingState<string>>;
 
   beforeEach(() => {
     dataLoader = new DataLoader<string>(() => of('test'));
