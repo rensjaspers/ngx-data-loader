@@ -4,22 +4,13 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges,
   TemplateRef,
 } from '@angular/core';
-import { Observable, ReplaySubject, Subject, merge, of, timer } from 'rxjs';
-import {
-  catchError,
-  finalize,
-  map,
-  scan,
-  startWith,
-  switchMap,
-  takeUntil,
-  tap,
-} from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { DataLoader } from './data-loader';
+import { DataLoaderConfig } from './data-loader-config.interface';
 import { LoadingState } from './loading-state.interface';
 
 @Component({
@@ -27,7 +18,7 @@ import { LoadingState } from './loading-state.interface';
   templateUrl: './ngx-data-loader.component.html',
   styleUrls: ['./ngx-data-loader.component.scss'],
 })
-export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
+export class NgxDataLoaderComponent<T = unknown> implements OnChanges {
   @ContentChild('loaded') loadedTemplate?: TemplateRef<unknown>;
   @ContentChild('error') errorTemplate?: TemplateRef<unknown>;
   @ContentChild('loading') loadingTemplate?: TemplateRef<unknown>;
@@ -99,127 +90,77 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
    * Emits the loading state when it changes.
    */
   @Output() loadingStateChange = new EventEmitter<LoadingState<T>>();
-  loadingState$!: Observable<LoadingState<T>>;
-  private loadTriggerSource = new ReplaySubject<void>(1);
-  private loadTrigger$ = this.loadTriggerSource.asObservable();
-  private cancelSource = new Subject<void>();
-  private stateOverrideSource = new Subject<LoadingState<T>>();
-
-  private stop$ = merge(this.cancelSource, this.stateOverrideSource);
-
-  ngOnInit(): void {
-    this.loadingState$ = this.getLoadingState().pipe(
-      tap((state) => this.loadingStateChange.emit(state))
-    );
-  }
+  dataLoader!: DataLoader<T>;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['initialData']) {
-      return;
+    this.createOrUpdateLoader();
+    if (this.shouldTriggerReload(changes)) {
+      this.reload();
     }
-    this.reload();
   }
 
   /**
    *  Resets the loading state and calls `loadFn`.
    */
   reload() {
-    this.loadTriggerSource.next();
+    this.dataLoader.load();
   }
 
   /**
    * Cancels `loadFn`. Loading state will remain unchanged.
    */
   cancel() {
-    this.cancelSource.next();
+    this.dataLoader.cancel();
   }
 
   /**
    * Updates the loading state as if the passed data were loaded through `loadFn`.
    */
   setData(data: T) {
-    this.stateOverrideSource.next({
-      data,
-      loaded: true,
-      loading: false,
-      error: null,
-    });
+    this.dataLoader.setData(data);
   }
 
   /**
    * Updates the loading state as if the passed error were thrown by `loadFn`.
    */
   setError(error: Error) {
-    this.stateOverrideSource.next({
-      data: null,
-      loaded: false,
-      loading: false,
-      error,
-    });
+    this.dataLoader.setError(error);
   }
 
-  private getLoadingState() {
-    const initialState = this.getInitialState();
-    const loadingUpdate$ = this.getLoadingStateUpdates();
-    const resultUpdate$ = this.getResultStateUpdates();
-    return merge(loadingUpdate$, resultUpdate$, this.stateOverrideSource).pipe(
-      startWith(initialState),
-      scan(
-        (state, update) => ({
-          ...state,
-          ...update,
-        }),
-        initialState
-      )
-    );
+  private createLoader() {
+    this.dataLoader = new DataLoader<T>(this.loadFn, this.getConfig());
   }
 
-  private getLoadingStateUpdates() {
-    return this.loadTrigger$.pipe(map(() => ({ loading: true, error: null })));
-  }
-
-  private getResultStateUpdates() {
-    return this.getDebouncedLoadTrigger().pipe(
-      switchMap(() => this.getLoadResult())
-    );
-  }
-
-  private getLoadResult() {
-    this.loadAttemptStarted.emit();
-    return this.loadFn(this.loadFnArgs).pipe(
-      map((data) => ({ data, loaded: true, loading: false })),
-      tap((state) => this.dataLoaded.emit(state.data)),
-      catchError((error) => this.onError(error)),
-      takeUntil(this.stop$),
-      finalize(() => this.loadAttemptFinished.emit())
-    );
-  }
-
-  private onError(error: Error) {
-    this.loadAttemptFailed.emit(error);
-    return of({ error, data: null, loaded: false, loading: false });
-  }
-
-  private getInitialState(): LoadingState<T> {
-    const hasInitialData = Object.prototype.hasOwnProperty.call(
-      this,
-      'initialData'
-    );
+  private getConfig(): DataLoaderConfig<T> {
     return {
-      data: this.initialData,
-      loaded: hasInitialData,
-      loading: false,
-      error: null,
+      loadFnArgs: this.loadFnArgs,
+      initialData: this.initialData,
+      debounceTime: this.debounceTime,
+      onLoadAttemptStart: () => this.loadAttemptStarted.emit(),
+      onLoadAttemptEnd: () => this.loadAttemptFinished.emit(),
+      onLoadAttemptFail: (error) => this.loadAttemptFailed.emit(error),
+      onDataLoad: (data) => this.dataLoaded.emit(data),
+      onLoadingStateChange: (state) => this.loadingStateChange.emit(state),
     };
   }
 
-  private getDebouncedLoadTrigger() {
-    return this.loadTrigger$.pipe(
-      switchMap(() =>
-        this.debounceTime > 0
-          ? timer(this.debounceTime).pipe(takeUntil(this.stop$))
-          : of(null)
-      )
-    );
+  private updateLoader() {
+    this.dataLoader.loadFn = this.loadFn;
+    this.dataLoader.config = this.getConfig();
+  }
+
+  private shouldTriggerReload(changes: SimpleChanges): boolean {
+    if (changes['initialData']?.firstChange) {
+      return false;
+    }
+    return true;
+  }
+
+  private createOrUpdateLoader() {
+    if (!this.dataLoader) {
+      this.createLoader();
+    } else {
+      this.updateLoader();
+    }
   }
 }
