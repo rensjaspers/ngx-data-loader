@@ -231,6 +231,14 @@ export class TodoListComponent {
 
 By doing this, you can ensure type safety in your presentational component's template while still taking advantage of the convenience provided by ngx-data-loader.
 
+## Contributing
+
+Please read [CONTRIBUTING.md](https://github.com/rensjaspers/ngx-data-loader/blob/main/CONTRIBUTING.md).
+
 ## License
 
 The MIT License (MIT). Please see [License File](https://github.com/rensjaspers/ngx-data-loader/blob/main/LICENSE) for more information.
+
+## Contact Information
+
+For any issues or questions regarding the `ngx-data-loader`, please use the [GitHub issues page](https://github.com/rensjaspers/ngx-data-loader/issues).
