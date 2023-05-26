@@ -9,8 +9,8 @@ import {
   takeUntil,
   tap,
 } from 'rxjs/operators';
-import { LoadingState } from './loading-state.interface';
 import { DataLoaderConfig } from './data-loader-config.interface';
+import { LoadingState } from './loading-state.interface';
 
 export class DataLoader<T = unknown> {
   loadingState$!: Observable<LoadingState<T>>;
@@ -31,6 +31,7 @@ export class DataLoader<T = unknown> {
   }
 
   load() {
+    this.cancel();
     this.loadTriggerSource.next();
   }
 
