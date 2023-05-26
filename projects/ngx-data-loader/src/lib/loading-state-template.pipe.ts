@@ -14,13 +14,8 @@ export class LoadingStateTemplatePipe implements PipeTransform {
     if (state.error) {
       return 'error';
     }
-    if (state.loaded) {
-      if (!state.loading) {
-        return 'data';
-      }
-      if (showStaleData === true) {
-        return 'data';
-      }
+    if (state.loaded && (!state.loading || showStaleData)) {
+      return 'data';
     }
     return 'loading';
   }
