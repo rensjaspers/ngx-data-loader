@@ -1,4 +1,4 @@
-<ng-container *ngIf="loadingState$ | async as state">
+<ng-container *ngIf="dataLoader && dataLoader.loadingState$ | async as state">
   <ng-container [ngSwitch]="state | loadingStateTemplate : showStaleData">
     <ngx-data-loader-error
       *ngSwitchCase="'error'"

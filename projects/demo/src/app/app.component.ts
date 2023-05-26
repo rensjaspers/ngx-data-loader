@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { delay, map } from 'rxjs/operators';
+import { interval } from 'rxjs';
+import { delay, map, switchMap } from 'rxjs/operators';
 import { LoadingState } from './../../../ngx-data-loader/src/lib/loading-state.interface';
 import { GetUsersResponse, User } from './get-users-response.interface';
 
@@ -20,7 +21,10 @@ export class AppComponent {
       .get<GetUsersResponse>('https://reqres.in/api/users/' + (userId || ''))
       .pipe(
         map((response) => response.data),
-        delay(500)
+        delay(500),
+        switchMap((data) =>
+          interval(1000).pipe(map((count) => ({ ...data, count })))
+        )
       );
 
   constructor(private http: HttpClient) {}
