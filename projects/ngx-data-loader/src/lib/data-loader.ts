@@ -68,7 +68,10 @@ export class DataLoader<T = unknown> {
           ...update,
         }),
         initialState
-      )
+      ),
+      tap((state) => {
+        this.config.onLoadingStateChange?.(state);
+      })
     );
   }
 
