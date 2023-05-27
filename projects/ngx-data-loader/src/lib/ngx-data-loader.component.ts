@@ -124,6 +124,7 @@ export class NgxDataLoaderComponent<T = unknown> implements OnInit, OnChanges {
    *  Resets the loading state and calls `loadFn`.
    */
   reload() {
+    this.cancel();
     this.loadTriggerSource.next();
   }
 
