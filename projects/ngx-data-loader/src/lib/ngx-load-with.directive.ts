@@ -278,6 +278,7 @@ export class NgxLoadWithDirective<T = unknown>
     if (this.loadedViewRef) {
       this.loadedViewRef.context.$implicit = data;
       this.loadedViewRef.context.ngxLoadWith = data;
+      this.loadedViewRef.context.loading = loading;
     } else {
       this.clearViewContainer();
       this.loadedViewRef = this.viewContainer.createEmbeddedView(
