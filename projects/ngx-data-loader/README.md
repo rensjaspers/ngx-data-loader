@@ -12,8 +12,6 @@ Simplify asynchronous data loading in Angular with NgxDataLoaderComponent.
 
 ## Description
 
-Description
-
 `NgxDataLoaderComponent` is a beginner-friendly library that simplifies asynchronous data loading in Angular. It provides a convenient solution for displaying loading spinners, skeletons, and error messages effortlessly. With `NgxDataLoaderComponent`, you can easily handle these common loading scenarios without the need for extensive code and complex setup.
 
 The component abstracts away tasks such as error handling, cancel/reload strategies, `Observable` (un)subscriptions, and template display logic, making it a breeze to work with asynchronous data in Angular applications.
