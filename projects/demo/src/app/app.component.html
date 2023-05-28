@@ -1,69 +1,88 @@
-<main>
-  <button (click)="dataLoader.reload()">Trigger reload</button>
-  <button (click)="dataLoader.cancel()">Cancel</button>
-  <button (click)="dataLoader.setData('some custom data')">
-    Set custom data
-  </button>
-  <button (click)="dataLoader.setError(getError('some custom error'))">
-    Set custom error
-  </button>
+<button (click)="loader.load()">Trigger reload</button>
+<button (click)="loader.cancel()">Cancel</button>
+<button (click)="loader.setData($any('some custom data'))">
+  Set custom data
+</button>
+<button (click)="loader.setError(fakeError)">Set custom error</button>
+<ng-template
+  [ngxLoadWith]="getUser"
+  [ngxLoadWithLoadingTemplate]="loading"
+  #loader="ngxLoadWith"
+  let-data
+>
+  {{ data | json }}
+</ng-template>
 
-  <ngx-data-loader
-    #dataLoader
-    [loadFn]="getUser"
-    [loadFnArgs]="userId"
-    [debounceTime]="debounceTime"
-    [showStaleData]="showStaleData"
-    [loadingTemplateDelay]="loadingTemplateDelay"
-    (loadingStateChange)="logChange($event)"
-  >
-    <ng-template #loaded let-data let-loading="loading">
-      <div *ngIf="loading">Reloading...</div>
-      <div class="user-list" [class.dim]="loading">
-        {{ data | json }}
-      </div>
-    </ng-template>
-    <ng-template #loading> Loading... </ng-template>
-    <ng-template #error let-error let-retry="retry">
-      Oops! Something went wrong. {{ error.message }}
-      <button (click)="retry()">Retry</button>
-    </ng-template>
-  </ngx-data-loader>
-</main>
+<ng-template #loading>loading...</ng-template>
 
-<div class="controls">
-  <div class="field">
-    <label for="args">loadFnArgs</label>
-    <input type="text" [(ngModel)]="userId" id="args" />
-    <small>Arguments to loadFn.</small>
-  </div>
-  <div class="field">
-    <label for="debounceTime">debounceTime</label>
-    <input type="number" [(ngModel)]="debounceTime" id="debounceTime" />
-    <small>Number of milliseconds to debounce reload triggers.</small>
-  </div>
+<ng-template>
+  <main>
+    <button (click)="dataLoader.reload()">Trigger reload</button>
+    <button (click)="dataLoader.cancel()">Cancel</button>
+    <button (click)="dataLoader.setData('some custom data')">
+      Set custom data
+    </button>
+    <button (click)="dataLoader.setError(getError('some custom error'))">
+      Set custom error
+    </button>
 
-  <div class="field">
-    <label for="loadingTemplateDelay">loadingTemplateDelay</label>
-    <input
-      type="number"
-      [(ngModel)]="loadingTemplateDelay"
-      id="loadingTemplateDelay"
-    />
-    <small
-      >How many milliseconds to wait before showing the loading template.
-      Default: <code>0</code></small
+    <ngx-data-loader
+      #dataLoader
+      [loadFn]="getUser"
+      [loadFnArgs]="userId"
+      [debounceTime]="debounceTime"
+      [showStaleData]="showStaleData"
+      [loadingTemplateDelay]="loadingTemplateDelay"
+      (loadingStateChange)="logChange($event)"
     >
-  </div>
+      <ng-template #loaded let-data let-loading="loading">
+        <div *ngIf="loading">Reloading...</div>
+        <div class="user-list" [class.dim]="loading">
+          {{ data | json }}
+        </div>
+      </ng-template>
+      <ng-template #loading> Loading... </ng-template>
+      <ng-template #error let-error let-retry="retry">
+        Oops! Something went wrong. {{ error.message }}
+        <button (click)="retry()">Retry</button>
+      </ng-template>
+    </ngx-data-loader>
+  </main>
 
-  <div class="field">
-    <div class="checkbox">
-      <label for="showStaleData">showStaleData</label>
-      <input type="checkbox" id="showStaleData" [(ngModel)]="showStaleData" />
+  <div class="controls">
+    <div class="field">
+      <label for="args">loadFnArgs</label>
+      <input type="text" [(ngModel)]="userId" id="args" />
+      <small>Arguments to loadFn.</small>
     </div>
-    <small
-      >Whether to keep displaying old data while reloading. Shows the loading
-      template template when set to false. Default: <code>false</code></small
-    >
+    <div class="field">
+      <label for="debounceTime">debounceTime</label>
+      <input type="number" [(ngModel)]="debounceTime" id="debounceTime" />
+      <small>Number of milliseconds to debounce reload triggers.</small>
+    </div>
+
+    <div class="field">
+      <label for="loadingTemplateDelay">loadingTemplateDelay</label>
+      <input
+        type="number"
+        [(ngModel)]="loadingTemplateDelay"
+        id="loadingTemplateDelay"
+      />
+      <small
+        >How many milliseconds to wait before showing the loading template.
+        Default: <code>0</code></small
+      >
+    </div>
+
+    <div class="field">
+      <div class="checkbox">
+        <label for="showStaleData">showStaleData</label>
+        <input type="checkbox" id="showStaleData" [(ngModel)]="showStaleData" />
+      </div>
+      <small
+        >Whether to keep displaying old data while reloading. Shows the loading
+        template template when set to false. Default: <code>false</code></small
+      >
+    </div>
   </div>
-</div>
+</ng-template>

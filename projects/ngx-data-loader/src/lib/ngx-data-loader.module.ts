@@ -5,6 +5,7 @@ import { LoadedComponent } from './loaded/loaded.component';
 import { LoadingStateTemplatePipe } from './loading-state-template.pipe';
 import { LoadingComponent } from './loading/loading.component';
 import { NgxDataLoaderComponent } from './ngx-data-loader.component';
+import { NgxLoadWithDirective } from './ngx-load-with.directive';
 
 @NgModule({
   declarations: [
@@ -13,8 +14,9 @@ import { NgxDataLoaderComponent } from './ngx-data-loader.component';
     ErrorComponent,
     LoadedComponent,
     LoadingStateTemplatePipe,
+    NgxLoadWithDirective,
   ],
-  exports: [NgxDataLoaderComponent],
+  exports: [NgxDataLoaderComponent, NgxLoadWithDirective],
   imports: [CommonModule],
 })
 export class NgxDataLoaderModule {}
