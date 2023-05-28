@@ -12,23 +12,25 @@ Simplify asynchronous data loading in Angular with NgxDataLoaderComponent.
 
 ## Description
 
-`NgxDataLoaderComponent` is a beginner-friendly solution that simplifies asynchronous data loading in Angular. It provides a convenient way to display loading spinners, skeletons, and error messages effortlessly. With `NgxDataLoaderComponent`, you can easily handle these common loading scenarios without the need for extensive code and complex setup.
+NgxDataLoader is an Angular library designed to streamline asynchronous data loading. Its `NgxDataLoaderComponent` delivers a hassle-free experience by taking care of observable unsubscription / memory leaks, tracking loading states, managing error handling, and ensuring the correct template displays at the right time.
 
-The component abstracts away tasks such as error handling, cancel/reload strategies, `Observable` (un)subscriptions, and template display logic, enabling smooth handling of asynchronous data in Angular applications.
+## Key Features
 
-To use `NgxDataLoaderComponent`, simply provide a `loadFn` that returns an `Observable` of the data you want to load. Additionally, you can customize the templates for each loading phase if desired. The component will then automatically handle the loading logic and display the appropriate template.
+**1. NgxDataLoaderComponent:** This component accepts a `loadFn` function that returns an Observable. It automatically initiates data loading, relieving you from this task.
 
-A noteworthy feature of `NgxDataLoaderComponent` is its ability to process dynamic arguments via `loadFnArgs`. This feature allows dynamic arguments to be passed into `loadFn`, and whenever the `loadFnArgs` input value changes, `loadFn` is executed with the new arguments. This simplifies data loading based on route parameters or input field values.
+**2. Loading and Error Templates:** Optionally, you can add loading and error templates simply by nesting them inside the `ngx-data-loader` component. These templates will be displayed automatically based on the current state.
 
-By leveraging `NgxDataLoaderComponent`, you can significantly reduce the amount of code and complexity required to handle common loading scenarios in your Angular projects.
+**3. Reload Method:** NgxDataLoaderComponent exposes a `reload` method, enabling you to refresh the data as needed.
 
+**4. Automatic Cleanup:** When the component gets destroyed, the loading operation is cancelled automatically, preventing potential memory leaks.
 
-## Features
+**5. Dynamic Arguments:** With the component's `loadFnArgs` input, you can pass arguments to the load function. Any changes to these arguments trigger an automatic reload, making it simple to load data based on dynamic values, like a route's ID parameter.
 
-- Declarative syntax that handles display and loading logic behind the scenes
-- Automatic reload on input changes
-- Provides `reload` and `cancel` methods
-- Automatic cancellation of ongoing http requests on cancel/reload/destroy[^note]
+## Benefits 
+
+NgxDataLoader has been designed with simplicity and efficiency in mind. By abstracting away complex RxJS operations, it presents a more beginner-friendly approach to managing asynchronous data loading in Angular applications.
+
+In essence, NgxDataLoader helps you focus more on developing your application's core functionality and less on managing state and error handling, resulting in cleaner and more readable code.
 
 ## Demo
 
