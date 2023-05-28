@@ -4,36 +4,36 @@ import {
   fakeAsync,
   TestBed,
   tick,
-} from "@angular/core/testing";
-import { map, of, throwError, timer } from "rxjs";
-import { ErrorComponent } from "./error/error.component";
-import { LoadedComponent } from "./loaded/loaded.component";
-import { LoadingStateTemplatePipe } from "./loading-state-template.pipe";
-import { LoadingComponent } from "./loading/loading.component";
-import { NgxDataLoaderComponent } from "./ngx-data-loader.component";
+} from '@angular/core/testing';
+import { map, of, throwError, timer } from 'rxjs';
+import { ErrorComponent } from './error/error.component';
+import { LoadedComponent } from './loaded/loaded.component';
+import { LoadingComponent } from './loading/loading.component';
+import { NgxDataLoaderComponent } from './ngx-data-loader.component';
+import { NgxLoadWithDirective } from './ngx-load-with.directive';
 
-describe("NgxDataLoaderComponent", () => {
+describe('NgxDataLoaderComponent', () => {
   let component: NgxDataLoaderComponent;
   let fixture: ComponentFixture<NgxDataLoaderComponent>;
   let loadFnSpy: jasmine.Spy;
 
-  const testData = { data: "data" };
-  const customValue = "custom value";
+  const testData = { data: 'data' };
+  const customValue = 'custom value';
   const getLoadingEl = () =>
-    fixture.nativeElement.querySelector("ngx-data-loader-loading");
+    fixture.nativeElement.querySelector('ngx-data-loader-loading');
   const getDataEl = () =>
-    fixture.nativeElement.querySelector("ngx-data-loader-loaded");
+    fixture.nativeElement.querySelector('ngx-data-loader-loaded');
   const getErrorEl = () =>
-    fixture.nativeElement.querySelector("ngx-data-loader-error");
+    fixture.nativeElement.querySelector('ngx-data-loader-error');
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
         NgxDataLoaderComponent,
+        NgxLoadWithDirective,
         LoadedComponent,
         LoadingComponent,
         ErrorComponent,
-        LoadingStateTemplatePipe,
       ],
     }).compileComponents();
 
@@ -42,12 +42,12 @@ describe("NgxDataLoaderComponent", () => {
     fixture.detectChanges();
   });
 
-  describe("component", () => {
-    it("should create", () => {
+  describe('component', () => {
+    it('should create', () => {
       expect(component).toBeTruthy();
     });
 
-    it("should not call loadFn before ngOnChanges", () => {
+    it('should not call loadFn before ngOnChanges', () => {
       loadFnSpy = jasmine.createSpy();
       component.loadFn = loadFnSpy.and.returnValue(of(testData));
       expect(loadFnSpy).not.toHaveBeenCalled();
@@ -55,7 +55,7 @@ describe("NgxDataLoaderComponent", () => {
       expect(loadFnSpy).toHaveBeenCalled();
     });
 
-    it("should render only a loading component when loading first time", () => {
+    it('should render only a loading component when loading first time', () => {
       component.loadFn = () => of({});
       component.reload();
       expect(getLoadingEl()).toBeTruthy();
@@ -63,7 +63,7 @@ describe("NgxDataLoaderComponent", () => {
       expect(getErrorEl()).toBeNull();
     });
 
-    it("should render only the data when initial loading is done", fakeAsync(() => {
+    it('should render only the data when initial loading is done', fakeAsync(() => {
       component.loadFn = () => of(testData);
       component.reload();
       tick();
@@ -73,8 +73,8 @@ describe("NgxDataLoaderComponent", () => {
       expect(getErrorEl()).toBeNull();
     }));
 
-    it("should render only an error when loading fails", fakeAsync(() => {
-      component.loadFn = () => throwError(() => new Error("test error"));
+    it('should render only an error when loading fails', fakeAsync(() => {
+      component.loadFn = () => throwError(() => new Error('test error'));
       component.reload();
       tick();
       fixture.detectChanges();
@@ -83,7 +83,7 @@ describe("NgxDataLoaderComponent", () => {
       expect(getLoadingEl()).toBeNull();
     }));
 
-    it("should render only the data template when reloading in stale data display mode", fakeAsync(() => {
+    it('should render only the data template when reloading in stale data display mode', fakeAsync(() => {
       component.loadFn = () => of(testData);
       component.showStaleData = true;
       component.reload();
@@ -97,7 +97,7 @@ describe("NgxDataLoaderComponent", () => {
       expect(getErrorEl()).toBeNull();
     }));
 
-    it("should render a loading template when reloading and showing stale data is not allowed", fakeAsync(() => {
+    it('should render a loading template when reloading and showing stale data is not allowed', fakeAsync(() => {
       component.loadFn = () => of(testData);
       component.showStaleData = false;
       component.reload();
@@ -112,13 +112,13 @@ describe("NgxDataLoaderComponent", () => {
       discardPeriodicTasks();
     }));
 
-    it("should not call loadFn after ngOnChanges when initialData input is set", () => {
+    it('should not call loadFn after ngOnChanges when initialData input is set', () => {
       loadFnSpy = jasmine.createSpy();
       component.loadFn = loadFnSpy.and.returnValue(of(testData));
       component.ngOnChanges({
         initialData: {
           previousValue: undefined,
-          currentValue: "custom data",
+          currentValue: 'custom data',
           firstChange: true,
           isFirstChange: () => true,
         },
@@ -126,7 +126,7 @@ describe("NgxDataLoaderComponent", () => {
       expect(loadFnSpy).not.toHaveBeenCalled();
     });
 
-    it("should call loadFn with new arguments when changed", () => {
+    it('should call loadFn with new arguments when changed', () => {
       loadFnSpy = jasmine.createSpy();
       component.loadFn = loadFnSpy.and.returnValue(of(testData));
       component.reload();
@@ -136,8 +136,8 @@ describe("NgxDataLoaderComponent", () => {
       expect(loadFnSpy).toHaveBeenCalledWith(1);
     });
 
-    describe("debounceTime", () => {
-      it("should debounce loadFn calls when set", fakeAsync(() => {
+    describe('debounceTime', () => {
+      it('should debounce loadFn calls when set', fakeAsync(() => {
         loadFnSpy = jasmine.createSpy();
         component.loadFn = loadFnSpy.and.returnValue(of(testData));
         component.debounceTime = 100;
@@ -155,7 +155,7 @@ describe("NgxDataLoaderComponent", () => {
         expect(loadFnSpy).toHaveBeenCalledTimes(2);
       }));
 
-      it("should not debounce displaying the loader", fakeAsync(() => {
+      it('should not debounce displaying the loader', fakeAsync(() => {
         component.loadFn = () => of(testData);
         component.debounceTime = 100;
         component.reload();
@@ -176,8 +176,8 @@ describe("NgxDataLoaderComponent", () => {
     });
   });
 
-  describe("setData", () => {
-    it("should render the custom data", fakeAsync(() => {
+  describe('setData', () => {
+    it('should render the custom data', fakeAsync(() => {
       component.setData(customValue);
       tick();
       fixture.detectChanges();
@@ -186,7 +186,7 @@ describe("NgxDataLoaderComponent", () => {
       expect(getErrorEl()).toBeNull();
     }));
 
-    it("should render the custom data when debounceTime is set", fakeAsync(() => {
+    it('should render the custom data when debounceTime is set', fakeAsync(() => {
       component.loadFn = () => timer(1000).pipe(map(() => testData));
       component.debounceTime = 100;
       fixture.detectChanges();
@@ -199,7 +199,7 @@ describe("NgxDataLoaderComponent", () => {
       expect(getDataEl()).toBeTruthy();
     }));
 
-    it("should pause loading on override and resume on reload", fakeAsync(() => {
+    it('should pause loading on override and resume on reload', fakeAsync(() => {
       component.loadFn = () => timer(1000).pipe(map(() => testData));
       component.debounceTime = 100;
       fixture.detectChanges();
@@ -222,9 +222,9 @@ describe("NgxDataLoaderComponent", () => {
     }));
   });
 
-  describe("setError", () => {
-    it("render the custom error", fakeAsync(() => {
-      const customError = new Error("custom error");
+  describe('setError', () => {
+    it('render the custom error', fakeAsync(() => {
+      const customError = new Error('custom error');
       component.setError(customError);
       tick();
       fixture.detectChanges();
@@ -234,8 +234,8 @@ describe("NgxDataLoaderComponent", () => {
     }));
   });
 
-  describe("cancel", () => {
-    it("should prevent loadFn from completing", fakeAsync(() => {
+  describe('cancel', () => {
+    it('should prevent loadFn from completing', fakeAsync(() => {
       component.loadFn = () => timer(100);
       component.reload();
       component.cancel();
