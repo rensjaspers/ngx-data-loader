@@ -1,6 +1,6 @@
 # NgxDataLoader
 
-Simplify asynchronous data loading in Angular with NgxDataLoaderComponent.
+Lightweight, beginner-friendly Angular component that simplifies asynchronous data loading.
 
 [![Build status](https://img.shields.io/github/actions/workflow/status/rensjaspers/ngx-data-loader/main.yml?branch=main)](https://github.com/rensjaspers/ngx-data-loader/actions/workflows/main.yml)
 [![NPM version](https://img.shields.io/npm/v/ngx-data-loader.svg)](https://www.npmjs.com/package/ngx-data-loader)
@@ -26,7 +26,7 @@ NgxDataLoader is an Angular library designed to streamline asynchronous data loa
 
 **5. Dynamic Arguments:** With the component's `loadFnArgs` input, you can pass arguments to the load function. Any changes to these arguments trigger an automatic reload, making it simple to load data based on dynamic values, like a route's ID parameter.
 
-## Benefits 
+## Benefits
 
 NgxDataLoader has been designed with simplicity and efficiency in mind. By abstracting away complex RxJS operations, it presents a more beginner-friendly approach to managing asynchronous data loading in Angular applications.
 
