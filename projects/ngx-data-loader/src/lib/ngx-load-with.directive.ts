@@ -230,14 +230,19 @@ export class NgxLoadWithDirective<T = unknown>
    */
   setData(data: T): void {
     this.cancel();
-    this.stateOverride.next({ loaded: true, loading: false, data });
+    this.stateOverride.next({
+      loaded: true,
+      loading: false,
+      data,
+      error: null,
+    });
   }
 
   /**
    * Updates the loading state as if the passed error were thrown by `loadWith` function.
    */
   setError(error: Error): void {
-    this.stateOverride.next({ loaded: false, loading: false, error });
+    this.stateOverride.next({ error });
   }
 
   private getLoadingPhase(state: LoadingState<T>): LoadingPhase {

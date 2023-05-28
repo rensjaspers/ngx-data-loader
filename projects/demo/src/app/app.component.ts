@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { interval } from 'rxjs';
 import { delay, map, switchMap } from 'rxjs/operators';
-import { LoadingState } from './../../../ngx-data-loader/src/lib/loading-state.interface';
 import { GetUsersResponse, User } from './get-users-response.interface';
+import { LoadingState } from 'ngx-data-loader';
 
 @Component({
   selector: 'app-root',

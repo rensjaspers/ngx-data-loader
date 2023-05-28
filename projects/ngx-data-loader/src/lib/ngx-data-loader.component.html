@@ -1,24 +1,31 @@
-<ng-container *ngIf="loadingState$ | async as state">
-  <ng-container [ngSwitch]="state | loadingStateTemplate : showStaleData">
-    <ngx-data-loader-error
-      *ngSwitchCase="'error'"
-      [error]="state.error"
-      [errorTemplate]="errorTemplate"
-      (reload)="reload()"
-    ></ngx-data-loader-error>
+<ng-template
+  #loader="ngxLoadWith"
+  [ngxLoadWith]="loadFn"
+  [ngxLoadWithArgs]="loadFnArgs"
+  [ngxLoadWithErrorTemplate]="error"
+  [ngxLoadWithLoadingTemplate]="loading"
+  (loadingStateChange)="loadingStateChange.emit($event)"
+  let-data
+  let-loading="loading"
+>
+  <ngx-data-loader-loaded
+    [loadedTemplate]="loadedTemplate"
+    [data]="data"
+    [loading]="loading"
+  ></ngx-data-loader-loaded>
+</ng-template>
 
-    <ngx-data-loader-loaded
-      *ngSwitchCase="'data'"
-      [data]="state.data"
-      [loading]="state.loading"
-      [loadedTemplate]="loadedTemplate"
-      [showStaleData]="showStaleData"
-    ></ngx-data-loader-loaded>
+<ng-template #error let-error>
+  <ngx-data-loader-error
+    [error]="error"
+    [errorTemplate]="errorTemplate"
+    (reload)="loader.load()"
+  ></ngx-data-loader-error>
+</ng-template>
 
-    <ngx-data-loader-loading
-      *ngSwitchCase="'loading'"
-      [loadingTemplateDelay]="loadingTemplateDelay"
-      [loadingTemplate]="loadingTemplate"
-    ></ngx-data-loader-loading>
-  </ng-container>
-</ng-container>
+<ng-template #loading>
+  <ngx-data-loader-loading
+    [loadingTemplateDelay]="loadingTemplateDelay"
+    [loadingTemplate]="loadingTemplate"
+  ></ngx-data-loader-loading>
+</ng-template>
