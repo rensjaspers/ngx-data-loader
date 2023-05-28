@@ -7,9 +7,14 @@
   [ngxLoadWithDebounceTime]="debounceTime"
   [ngxLoadWithStaleData]="showStaleData"
   (loadingStateChange)="loadingStateChange.emit($event)"
+  (loadError)="loadAttemptFailed.emit($event)"
+  (loadFinish)="loadAttemptFinished.emit()"
+  (loadSuccess)="dataLoaded.emit($event)"
+  (loadStart)="loadAttemptStarted.emit()"
   let-data
   let-loading="loading"
 >
+  {{ loading | json }}
   <ngx-data-loader-loaded
     [loadedTemplate]="loadedTemplate"
     [data]="data"
