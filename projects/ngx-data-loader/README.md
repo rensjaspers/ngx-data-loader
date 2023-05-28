@@ -12,15 +12,17 @@ Simplify asynchronous data loading in Angular with NgxDataLoaderComponent.
 
 ## Description
 
-`NgxDataLoaderComponent` streamlines asynchronous data loading in Angular by abstracting away tasks such as error handling, cancel/reload strategies,
-Observable (un)subscriptions, and template display logic.
+Description
 
-To use the component, provide a `loadFn` that returns an `Observable` of the data, along with optional templates for each loading phase.
-The component will then automatically handle the loading logic and display the appropriate template.
+`NgxDataLoaderComponent` is a beginner-friendly library that simplifies asynchronous data loading in Angular. It provides a convenient solution for displaying loading spinners, skeletons, and error messages effortlessly. With `NgxDataLoaderComponent`, you can easily handle these common loading scenarios without the need for extensive code and complex setup.
 
-A noteworthy feature of `NgxDataLoaderComponent` is its ability to process dynamic arguments via `loadFnArgs`. This feature permits
-dynamic arguments to be passed into `loadFn`, and whenever the `loadFnArgs` input value changes, `loadFn` is executed with the new arguments.
-This simplifies data loading based on route parameters or input field values.
+The component abstracts away tasks such as error handling, cancel/reload strategies, `Observable` (un)subscriptions, and template display logic, making it a breeze to work with asynchronous data in Angular applications.
+
+To get started, simply provide a `loadFn` that returns an `Observable` of the data you want to load. Additionally, you can customize the templates for each loading phase if desired. Once configured, `NgxDataLoaderComponent` takes care of the loading logic automatically, displaying the appropriate template based on the current loading state.
+
+One notable feature of `NgxDataLoaderComponent` is its support for dynamic arguments via `loadFnArgs`. This functionality enables you to pass dynamic arguments into the `loadFn`. Whenever the `loadFnArgs` input value changes, the `loadFn` is executed with the new arguments. This makes it easy to handle data loading based on route parameters or input field values, reducing complexity and enhancing flexibility.
+
+By leveraging `NgxDataLoaderComponent`, you can significantly reduce the amount of code and complexity required to handle common loading scenarios in your Angular projects.
 
 ## Features
 
