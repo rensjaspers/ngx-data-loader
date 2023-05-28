@@ -89,6 +89,22 @@ export class AppComponent {
 }
 ```
 
+### Reloading data:
+
+```html
+<!-- app.component.html -->
+<button (click)="todosLoader.reload()">Reload Todos</button>
+
+<ngx-data-loader [loadFn]="getTodos" #todosLoader>
+  <!-- Loading and Error templates -->
+  ...
+  <ng-template #loaded let-todos>
+    <!-- Content here -->
+    ...
+  </ng-template>
+</ngx-data-loader>
+```
+
 ### Loading data based on route parameters:
 
 ```html
@@ -113,22 +129,6 @@ export class AppComponent {
 
   constructor(private http: HttpClient, public route: ActivatedRoute) {}
 }
-```
-
-### Reloading data:
-
-```html
-<!-- app.component.html -->
-<button (click)="todosLoader.reload()">Reload Todos</button>
-
-<ngx-data-loader [loadFn]="getTodos" #todosLoader>
-  <!-- Loading and Error templates -->
-  ...
-  <ng-template #loaded let-todos>
-    <!-- Content here -->
-    ...
-  </ng-template>
-</ngx-data-loader>
 ```
 
 ### Loading data based on search input:
