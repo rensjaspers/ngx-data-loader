@@ -4,6 +4,8 @@
   [ngxLoadWithArgs]="loadFnArgs"
   [ngxLoadWithErrorTemplate]="error"
   [ngxLoadWithLoadingTemplate]="loading"
+  [ngxLoadWithDebounceTime]="debounceTime"
+  [ngxLoadWithStaleData]="showStaleData"
   (loadingStateChange)="loadingStateChange.emit($event)"
   let-data
   let-loading="loading"
