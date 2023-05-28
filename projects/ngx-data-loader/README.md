@@ -1,6 +1,6 @@
 # NgxDataLoader
 
-Simplify async data loading in Angular with NgxDataLoaderComponent.
+Simplify asynchronous data loading in Angular with NgxDataLoaderComponent.
 
 [![Build status](https://img.shields.io/github/actions/workflow/status/rensjaspers/ngx-data-loader/main.yml?branch=main)](https://github.com/rensjaspers/ngx-data-loader/actions/workflows/main.yml)
 [![NPM version](https://img.shields.io/npm/v/ngx-data-loader.svg)](https://www.npmjs.com/package/ngx-data-loader)
