@@ -115,6 +115,22 @@ export class AppComponent {
 }
 ```
 
+### Reloading data:
+
+```html
+<!-- app.component.html -->
+<button (click)="todosLoader.reload()">Reload Todos</button>
+
+<ngx-data-loader [loadFn]="getTodos" #todosLoader>
+  <!-- Loading and Error templates -->
+  ...
+  <ng-template #loaded let-todos>
+    <!-- Content here -->
+    ...
+  </ng-template>
+</ngx-data-loader>
+```
+
 ### Loading data based on search input:
 
 [Open on StackBlitz](https://stackblitz.com/edit/angular-8zg236?file=src/main.ts)
