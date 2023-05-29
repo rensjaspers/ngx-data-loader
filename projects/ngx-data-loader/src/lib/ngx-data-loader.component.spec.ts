@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { EmbeddedViewRef } from '@angular/core';
 import {
   ComponentFixture,
   discardPeriodicTasks,
@@ -11,15 +13,12 @@ import { LoadedComponent } from './loaded/loaded.component';
 import { LoadingComponent } from './loading/loading.component';
 import { NgxDataLoaderComponent } from './ngx-data-loader.component';
 import { LoadingState, NgxLoadWithDirective } from './ngx-load-with.directive';
-import { EmbeddedViewRef } from '@angular/core';
 
 describe('NgxDataLoaderComponent', () => {
   let component: NgxDataLoaderComponent;
   let fixture: ComponentFixture<NgxDataLoaderComponent>;
-  let loadFnSpy: jasmine.Spy;
 
   const testData = { data: 'data' };
-  const customValue = 'custom value';
   const getLoadingEl = () =>
     fixture.nativeElement.querySelector('ngx-data-loader-loading');
   const getDataEl = () =>
@@ -152,6 +151,7 @@ describe('NgxDataLoaderComponent', () => {
     component.loader['loadedViewRef'] = fakeViewRef;
 
     const data = testData;
+
     const loadingState: LoadingState<any> = {
       data,
       loading: false,
@@ -166,6 +166,9 @@ describe('NgxDataLoaderComponent', () => {
     expect(fakeViewRef.context.ngxLoadWith).toEqual(data);
     expect(fakeViewRef.context.loading).toBe(false);
   });
+
+  /* eslint-enable @typescript-eslint/no-explicit-any */
+  /* eslint-enable */
 
   it('should call setError on the loader when setError is called', () => {
     // Arrange: Spy on the setError method
