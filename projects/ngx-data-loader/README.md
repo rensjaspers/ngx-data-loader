@@ -38,13 +38,13 @@ In essence, NgxDataLoader helps you focus more on developing your application's 
 
 ## Installation
 
-Install the package
+Install the package and its peer dependency `ngx-load-with`:
 
 ```bash
-npm install ngx-data-loader
+npm install ngx-load-with ngx-data-loader
 ```
 
-Import the module
+Import the module:
 
 ```typescript
 import { NgxDataLoaderModule } from 'ngx-data-loader';
