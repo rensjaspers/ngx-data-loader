@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { interval } from 'rxjs';
 import { delay, map, switchMap } from 'rxjs/operators';
-import { GetUsersResponse, User } from './get-users-response.interface';
+import { GetUsersResponse } from './get-users-response.interface';
 
 @Component({
   selector: 'app-root',
