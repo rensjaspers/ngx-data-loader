@@ -10,7 +10,8 @@ import { ErrorComponent } from './error/error.component';
 import { LoadedComponent } from './loaded/loaded.component';
 import { LoadingComponent } from './loading/loading.component';
 import { NgxDataLoaderComponent } from './ngx-data-loader.component';
-import { NgxLoadWithDirective } from './ngx-load-with.directive';
+import { LoadingState, NgxLoadWithDirective } from './ngx-load-with.directive';
+import { EmbeddedViewRef } from '@angular/core';
 
 describe('NgxDataLoaderComponent', () => {
   let component: NgxDataLoaderComponent;
@@ -139,5 +140,56 @@ describe('NgxDataLoaderComponent', () => {
     spyOn(component.loader, 'cancel');
     component.cancel();
     expect(component.loader.cancel).toHaveBeenCalled();
+  });
+
+  it('should update loadedViewRef context when onLoaded is called and loadedViewRef exists', () => {
+    // Arrange: Create a fake ViewRef
+    const fakeViewRef: EmbeddedViewRef<any> = {
+      context: { $implicit: null, ngxLoadWith: null, loading: null },
+    } as any;
+
+    // Manually assign loadedViewRef
+    component.loader['loadedViewRef'] = fakeViewRef;
+
+    const data = testData;
+    const loadingState: LoadingState<any> = {
+      data,
+      loading: false,
+      loaded: true,
+    };
+
+    // Act: Call the onLoaded method
+    component.loader['onLoaded'](loadingState);
+
+    // Assert: Check if context was updated correctly
+    expect(fakeViewRef.context.$implicit).toEqual(data);
+    expect(fakeViewRef.context.ngxLoadWith).toEqual(data);
+    expect(fakeViewRef.context.loading).toBe(false);
+  });
+
+  it('should call setError on the loader when setError is called', () => {
+    // Arrange: Spy on the setError method
+    spyOn(component.loader, 'setError');
+
+    const testError = new Error('Test error');
+
+    // Act: Call the setError method
+    component.setError(testError);
+
+    // Assert: Check if setError was called correctly
+    expect(component.loader.setError).toHaveBeenCalledWith(testError);
+  });
+
+  it('should call setData on the loader when setData is called', () => {
+    // Arrange: Spy on the setData method
+    spyOn(component.loader, 'setData');
+
+    const testData = { data: 'data' };
+
+    // Act: Call the setData method
+    component.setData(testData);
+
+    // Assert: Check if setData was called correctly
+    expect(component.loader.setData).toHaveBeenCalledWith(testData);
   });
 });
