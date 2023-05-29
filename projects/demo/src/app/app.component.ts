@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { interval } from 'rxjs';
 import { delay, map, switchMap } from 'rxjs/operators';
 import { GetUsersResponse, User } from './get-users-response.interface';
-import { LoadingState } from 'ngx-data-loader';
 
 @Component({
   selector: 'app-root',
@@ -33,10 +32,6 @@ export class AppComponent {
       );
 
   constructor(private http: HttpClient) {}
-
-  logChange(event: LoadingState<User>) {
-    console.log(event);
-  }
 
   getError(message: string) {
     return new Error(message);

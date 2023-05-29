@@ -15,7 +15,6 @@
     [debounceTime]="debounceTime"
     [showStaleData]="showStaleData"
     [loadingTemplateDelay]="loadingTemplateDelay"
-    (loadingStateChange)="logChange($event)"
   >
     <ng-template #loaded let-data let-loading="loading">
       <div *ngIf="loading">Reloading...</div>
