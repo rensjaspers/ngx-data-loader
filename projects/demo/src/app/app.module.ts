@@ -1,10 +1,10 @@
-import { NgxDataLoaderModule } from 'ngx-data-loader';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { NgxDataLoaderModule } from 'ngx-data-loader';
 
-import { AppComponent } from './app.component';
-import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [AppComponent],

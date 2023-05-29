@@ -9,5 +9,4 @@ export class LoadedComponent {
   @Input() loadedTemplate?: TemplateRef<unknown>;
   @Input() data!: unknown;
   @Input() loading!: boolean;
-  @Input() showStaleData!: boolean;
 }
