@@ -7,8 +7,8 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
+import { LoadingState, NgxLoadWithDirective } from 'ngx-load-with';
 import { Observable } from 'rxjs';
-import { LoadingState, NgxLoadWithDirective } from './ngx-load-with.directive';
 
 @Component({
   selector: 'ngx-data-loader',

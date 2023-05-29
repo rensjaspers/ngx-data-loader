@@ -12,7 +12,7 @@ import { ErrorComponent } from './error/error.component';
 import { LoadedComponent } from './loaded/loaded.component';
 import { LoadingComponent } from './loading/loading.component';
 import { NgxDataLoaderComponent } from './ngx-data-loader.component';
-import { LoadingState, NgxLoadWithDirective } from './ngx-load-with.directive';
+import { LoadingState, NgxLoadWithModule } from 'ngx-load-with';
 
 describe('NgxDataLoaderComponent', () => {
   let component: NgxDataLoaderComponent;
@@ -30,11 +30,11 @@ describe('NgxDataLoaderComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         NgxDataLoaderComponent,
-        NgxLoadWithDirective,
         LoadedComponent,
         LoadingComponent,
         ErrorComponent,
       ],
+      imports: [NgxLoadWithModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(NgxDataLoaderComponent);
