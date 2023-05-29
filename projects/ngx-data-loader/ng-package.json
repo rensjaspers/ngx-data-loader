@@ -3,5 +3,6 @@
   "dest": "../../dist/ngx-data-loader",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "allowedNonPeerDependencies": ["ngx-load-with"]
 }
