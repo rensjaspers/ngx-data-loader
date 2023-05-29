@@ -121,4 +121,23 @@ describe('NgxDataLoaderComponent', () => {
 
     discardPeriodicTasks();
   }));
+
+  it('should call loader.setData when setData is called', () => {
+    spyOn(component.loader, 'setData');
+    component.setData(testData);
+    expect(component.loader.setData).toHaveBeenCalledWith(testData);
+  });
+
+  it('should call loader.setError when setError is called', () => {
+    spyOn(component.loader, 'setError');
+    const testError = new Error('Test error');
+    component.setError(testError);
+    expect(component.loader.setError).toHaveBeenCalledWith(testError);
+  });
+
+  it('should call loader.cancel when cancel is called', () => {
+    spyOn(component.loader, 'cancel');
+    component.cancel();
+    expect(component.loader.cancel).toHaveBeenCalled();
+  });
 });
