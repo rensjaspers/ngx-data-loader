@@ -38,11 +38,13 @@ In essence, NgxDataLoader helps you focus more on developing your application's 
 
 ## Installation
 
-Install the package and its peer dependency `ngx-load-with`:
+Install the package:
 
 ```bash
-npm install ngx-load-with ngx-data-loader
+npm install ngx-data-loader
 ```
+
+> Note: this package requires `ngx-load-with` as a peer dependency. Please make sure you install that as well. NgxDataLoader requires Angular 14 or higher.
 
 Import the module:
 
