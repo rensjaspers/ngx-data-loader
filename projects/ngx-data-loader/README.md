@@ -34,7 +34,7 @@ In essence, NgxDataLoader helps you focus more on developing your application's 
 
 ## Demo
 
-[View demo on StackBlitz](https://stackblitz.com/edit/ngx-data-loader-demo?file=src%2Fapp%2Fapp.component.html)
+⚡️ [View demo on StackBlitz](https://stackblitz.com/edit/ngx-data-loader-demo?file=src%2Fapp%2Fapp.component.html)
 
 ## Installation
 
@@ -135,9 +135,9 @@ export class AppComponent {
 
 ### Loading data based on search input:
 
-[Open on StackBlitz](https://stackblitz.com/edit/angular-8zg236?file=src/main.ts)
+⚡️ [Open on StackBlitz](https://stackblitz.com/edit/angular-8zg236?file=src/main.ts)
 
-[View advanced demo on StackBlitz](https://stackblitz.com/edit/angular-qfl9sp?file=src%2Fmain.ts)
+⚡️ [View advanced demo on StackBlitz](https://stackblitz.com/edit/angular-qfl9sp?file=src%2Fmain.ts)
 
 ```html
 <!-- app.component.html -->
