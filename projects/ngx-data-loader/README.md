@@ -44,7 +44,7 @@ Install the package:
 npm install ngx-data-loader
 ```
 
-> Note: this package requires `ngx-load-with` as a peer dependency. Please make sure you install that as well. NgxDataLoader requires Angular 14 or higher.
+> Note: this package requires **[`ngx-load-with`](https://npmjs.com/ngx-load-with)** as a peer dependency. Please make sure you install that as well. NgxDataLoader requires Angular 14 or higher.
 
 Import the module:
 
@@ -251,6 +251,8 @@ export class TodoListComponent {
 ```
 
 By doing this, you can ensure type safety in your presentational component's template while still taking advantage of the convenience provided by ngx-data-loader.
+
+If the lack of intellisense in your template is a dealbreaker for you, there's an alternative! You can directly use the **[`ngx-load-with`](https://github.com/rensjaspers/ngx-load-with)** directive, which was authored by the same author and does support template type inference. While its API is slightly different, it's similar enough to ngx-data-loader that you'll be comfortable using it.
 
 ## Contributing
 
