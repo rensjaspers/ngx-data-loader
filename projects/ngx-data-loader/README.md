@@ -44,7 +44,7 @@ Install the package:
 npm install ngx-data-loader
 ```
 
-> Note: this package requires **[`ngx-load-with`](https://npmjs.com/ngx-load-with)** as a peer dependency. Please make sure you install that as well. NgxDataLoader requires Angular 14 or higher.
+> Note: this package requires **[`ngx-load-with`](https://npmjs.com/ngx-load-with)** as a peer dependency. Please make sure you install that as well. NgxDataLoader requires Angular 15 or higher.
 
 Import the module:
 
